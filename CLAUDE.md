@@ -1,0 +1,118 @@
+# Consultant Tracking — CLAUDE.md
+
+This repository is the **Consultant Tracking** application of the MaluDB Business OS (`github.com/maludb/maludb-os-consultant-tracking`,
+private; local clone and install path `/srv/apps/consultant_tracking`; catalog key `consultant_tracking`; DNS label `consulting`).
+The kernel is `/var/www` (`maludb-os-core`); read its CLAUDE.md first — the kernel owns identity, the directory, the agents and
+approvals; this application owns the commercial record of consulting work (clients, engagements, time, expenses with receipts,
+AI usage and hosting pass-through, invoices) and **is not the books**: the accounting system reads it through the kernel (K7).
+
+## Read first
+1. `docs/consultant-tracking-design.md` — the plan (Phase 0): what it is and is not (§1), actors (§2), roles and rights (§3),
+   clients without accounts and the secure invoice (§4), what pauses for agents and the two shipped agents (§5), the memory
+   model (§6 — the tables), the question inventory with every tool named (§7), the accounting interface — shares, reads,
+   exports (§8), the screens (§9), the build order (§10), what the kernel and siblings owe (§12), **the owner's decisions
+   (§13, recorded as D1–D16 in §15 — rules, not questions; nothing is built until §15 is filled)**, the state (§16).
+2. The plugin `maludb-os-integration` (`~/maludb-os-integration`, skill `os-integration` and its references:
+   `memory.md`, `mcp-and-api.md`, `sign-on-and-directory.md`, `agents.md`, `roles-and-rights.md`, `sms-and-reads.md`,
+   `registration.md`, `php-sign-on-kit.md`, `testing-without-a-kernel.md`) — how it fits.
+3. `/srv/apps/helpdesk` — the nearest **built** exemplar: its kit (`app/*.php`), `maludb-os.json`, `docs/build-specs/tickets-core.md`
+   (the shape of a slice spec), `tests/phase0|phase2|phase3|phase4` (the shape of a proof suite), `deploy/` (templates and
+   `ROOT_STEPS.sh`). `/srv/apps/gl/docs/gl-design.md` is the sibling plan written the same day in the same shape.
+4. The kernel's retired specs — prior art: `docs/build-specs/time.md`, `expenses.md`, `sales-invoicing.md`, `documents.md`,
+   `projects-tasks.md` in `/var/www` (the design says by name what it keeps and what it overturns).
+
+## Rules that bind here
+- `htmx-php-builder` skills govern the PHP (`php-patterns` before any PHP, `design-system` before any markup, `php-session-auth`
+  for session hardening and CSRF, `mcp-servers` for the two read servers, `chat-actions` for the command bar, `new-screen` for
+  every screen); `os-integration` governs the fit. Where the two conflict, the integration contract wins: **no password, no
+  login form, no account, no model key, no Twilio key, no shared tables, no actions server of our own, no writes to the directory,
+  no writes to another application** (K7 is reads only — the ledger reads our shares; we never post to it).
+- **Vocabulary: "agent" means an OS AI agent**, always. The person doing the work is a *consultant*; the owner of an engagement
+  its *manager*; the issuer of invoices *billing*; the external accountant *finance*; a *client* is a party, never a member.
+- **The checkpoint gate**: no feature PHP until the owner approves the schema + tool surface + action manifest + slice specs
+  together (Phase 1). Schema changes after that are numbered additive migrations, each with sign-off. **Never modify a
+  migration; add one.**
+- **The database is the referee**; PHP presents its refusals as field errors and never re-implements them: a billed item is
+  billed once (`invoice_line_items` unique per item); approved and invoiced entries are locked; no self-approval; a receipt
+  is required to submit at or above the threshold; one currency per document, fixed once a line exists; `INV-`/`CN-` numbers
+  are gapless on issue (`document_sequences`, a table); a void releases its items; a kernel AI month allocates to the cent.
+- **Agents draft; a person approves, issues, sends and forgives** (design §5): issuing, voiding, writing off, crediting and
+  recording payment pause under `money_out`; sending and nudging under `external_send`; approvals of time, expenses, usage and
+  milestones are refused to agents by the default policy. A person doing the same is never paused.
+- **Cost rates reveal pay**: `member_cost_rates` is read only under `cost.view`; a manager's `cost.view` reaches the margin of
+  their own engagements, never the rate table; a cost rate never appears in a log payload or on the secure link.
+- **Clients have no account** (design §4): the invoice's secure link `/i/<token>` (hashed, rotatable, expiring) is their door;
+  it shows the invoice, its backing detail (receipts only when the engagement shares them), payments, the balance and the
+  "I paid this" claim — never a note, a cost, a rate card name or another document. Public paths are named in the vhost's
+  allow-list, CSRF- or signature-checked, rate-limited, logged with `source = 'portal'`.
+- Every state-changing handler: `require_post()` + `verify_csrf()` (an action token stands in) + the right (`require_right()`,
+  SQL `ct_has_right()`) + `ct_can_see_engagement()` for the record + `log_activity()` + `emit_action_status()`; a create's
+  `location` ends in the record id. Money events carry `amount` and `currency` in `after`.
+- The kernel's rules copied here: activity `source` is `web` for the UI, `agent` under a run token, `cron` for the worker,
+  `portal` for a public door; `action` is `entity.verb`; `mcp_*` views are the only thing the read roles see, with caller
+  checks as uncorrelated sets tested once per statement (the kernel's db/160 lesson); `app.member_id` is set before any
+  query; an unknown member id is refused, never created. **A record's history is the activity log** — no audit table.
+- Reports are **SQL functions** (`ct_unbilled`, `ct_utilization`, `ct_realization`, `ct_budget_status`, `ct_margin`,
+  `ct_ar_aging`, `ct_revenue`, `ct_ai_passthrough`, `ct_missing_time`) so a screen, a tool and a CSV never disagree.
+- Email is MaluMail (the application's own optional `MALUMAIL_API_KEY`); texts only through the kernel (K6), every refusal
+  falling back to email. No model is ever called from PHP: "draft", "summarise", "read this receipt" are the expert's, through
+  the kernel's chat endpoint.
+- **Every port env (`APP_INTERNAL_PORT`, `MCP_RECORDS_PORT`, `MCP_ACTIVITY_PORT`) is in `maludb-os.json` `env.required`** and
+  pinned in `config/.env` before the installer's `apply` (8185 / 8831 / 8832 — design §13.15). **Never put a `config/.env`
+  here before `apply`** except that three-line port pin (`deploy/ROOT_STEPS.sh` step 0); proofs read `$CT_DEV_ENV`.
+- Phone first: a consultant logs time and snaps receipts at 375 px; the week grid is a day list on a phone; `capture="environment"`
+  on the expense form; no modals; full-page create/edit; cards for named things, tables for timesheets, lines and ledgers;
+  every name a link, every page a way back.
+- Commit after every finished step on `main`, in the sibling repos' message style (`Consultant Tracking: …`); never push
+  unless the owner asks. Smokes and fixtures are named `SMOKE <run>`; proofs run on a scratch database and never touch the
+  installed application; the installer's `plan` (`php /var/www/bin/app_install.php plan /srv/apps/consultant_tracking`) runs
+  at the end of every phase.
+
+## Build order and the handoff (decided 2026-10-04)
+
+The plan is the planning-class model's whole part (design §13.16). **A worker model (Sonnet 5.5) builds everything from it**,
+in this order, stopping and escalating on any ambiguity rather than improvising — a question the design does not answer is
+written into the slice spec's "Open questions" for the owner, never guessed.
+
+0. **Wait for §15.** Nothing is built until the owner's answers to the sixteen decisions of design §13 are recorded in §15 as
+   D1–D16. If an answer overturns a recommendation, update the affected sections of the design in the same commit.
+1. **K17** in the kernel (`/var/www`): a migration seeding the `consultant_tracking` catalog row (Sales & Service / `other` /
+   `feather-briefcase` / `high`), on the pattern of db/167 (`gl`). Commit there in the kernel's message style.
+2. **Phase 0, second half**: `db/001`–`0NN` — the mirror and roles (copied from Help Desk, prefix `ct_`), settings and the
+   seeds (§6), clients, rates, engagements, time, expenses, usage, invoicing, documents, talking, agents, tokens — with the
+   referee rules as triggers; the nine report functions; `ct_has_right()`, `ct_can_see_engagement()`; the `mcp_*` views;
+   `db/proof/phase0_proof.sql` on a scratch database (the cases of design §10, phase 0); the kit copied from Help Desk and
+   proven without a kernel (`tests/phase0/run.sh`); `maludb-os.json` (§14 — the six `shares[]`, the one `reads[]`, every port
+   env, the approvals of §5); `os/{expert,biller}.md`; the seven skills; `deploy/` with the vhost allow-list and `ROOT_STEPS.sh`
+   pinning 8185/8831/8832; the installer's `plan` clean.
+3. **Phase 1**: `docs/consultant-tracking-mcp-tool-surface.md` (every tool of design §7 with arguments, the resolve table,
+   the log-payload rules, the six share documents' shapes `os.ct-*/1`), `docs/consultant-tracking-action-manifest.md` (every
+   screen of §9, every action of §5 with its category), `mcp/action_registry.json` (built clean by
+   `bin/build_action_registry.php --check`), and the ten specs in `docs/build-specs/` — `sso-shell`, then slices 1–9 of
+   design §10, each in the shape of `/srv/apps/helpdesk/docs/build-specs/tickets-core.md` (screens, files, query-function
+   signatures, handlers, manifest entries, log events, notifications, status vocabulary, out of scope, proof, "Open questions"
+   EMPTY). **The owner approves Phase 1 as a whole before any PHP.**
+4. **Phase 2** (`sso-shell`), then **slice 1** (clients, rates and settings — the CRUD pattern), **slice 2** (engagements), then
+   **slice 3, time — THE EXEMPLAR**: build it with the most care, prove it at 375 and 1280 (`tests/phase3/slice3/run.sh`), and
+   stop for the owner's look before slice 4. Every later slice copies its shape.
+5. **Slices 4 → 9** in order, one at a time, each from its spec: screens + handlers + `log_activity()` + manifest entries +
+   the tools' query functions, proven on a scratch database, the spec's "Built and proven" and design §16 updated, one commit
+   per slice.
+6. **Phase 4**: the two MCP servers over the same query functions (`mcp/records_server.py`, `mcp/activity_server.py`, tool
+   modules `mcp/ct_*.py`, own `mcp/venv`), `app_roles` and the six `shares[]` admitted to the kernel's token, the registry
+   wrapper `deploy/kernel-registry-consultant_tracking.json`, the agents' grants and the Clerk's duty — Help Desk's
+   `tests/phase4/run.sh` is the pattern (the gate, the tools, the registry, the hook).
+7. **Phase 5** with the owner: ports pinned, `apply` (root — the owner runs it; the classifier refuses it), DNS and TLS for
+   `consulting.<domain>`, the MaluMail key, the hires, the first rate card and client, the end-to-end proof of design §10.
+
+## Environment facts
+- Install path `/srv/apps/consultant_tracking`; database `subello_consultant_tracking` on the office's PostgreSQL 17 (roles
+  `consultant_tracking_rw`, `consultant_tracking_records_ro`, `consultant_tracking_activity_ro`) — not yet created.
+- Vhost `consulting.subello.com`; ports to pin: `APP_INTERNAL_PORT=8185`, `MCP_RECORDS_PORT=8831`, `MCP_ACTIVITY_PORT=8832`
+  (the kernel owns 8080 and 8811–8816; HR 8180/8821/8822; Projects 8181/8823/8824; Help Desk 8182/8825/8826; Cidery
+  8183/8827/8828; General Ledger 8184/8829/8830; Reservations 8100; txtSchedules 8101–8103; Help Desk's proofs use 8291–8297 —
+  pick 8301–8307 for ours). The kernel's internal API: `OS_INTERNAL_URL=http://127.0.0.1:8080`.
+- Kernel items this application waits on (design §12): K17 catalog seed (first), K18 the people rule, K19 a cost tag on runs,
+  K16/K8 wake-an-agent; siblings: G1 (General Ledger's `invoice_receipts` share and source import), H2 (HR pays
+  reimbursements), P1 (Projects' `projects_list`).
+- **State (2026-10-04): the plan written; the repository created; the owner's decisions (§13) OPEN.** Nothing else exists.

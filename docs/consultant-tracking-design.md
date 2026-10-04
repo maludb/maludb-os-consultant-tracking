@@ -15,7 +15,8 @@ copies). The kernel's retired `time.md`, `expenses.md`, `sales-invoicing.md`, `d
 > worker model builds from. **Checkpoint.** This document and the owner's answers (§13, recorded in §15) are Phase 0's
 > first half; the schema in `db/`, `maludb-os.json`, `os/`, `skills/` and `deploy/` complete it. Phase 1 adds
 > `docs/consultant-tracking-mcp-tool-surface.md`, `docs/consultant-tracking-action-manifest.md` and the slice specs in
-> `docs/build-specs/`. **No feature PHP is written until the owner approves them together.**
+> `docs/build-specs/`. **No feature PHP is written until the owner approves them together.** The decisions this document
+> needed from the owner are §13, answered in §15 (2026-10-04).
 
 ## 1. What Consultant Tracking is, and is not
 
@@ -547,17 +548,35 @@ exist. K17 is small and comes first; G1 and H2 are owed by their applications' n
 - Vhost allow-list (public): `/i/`, `/api/v1/health`, `/mcp/records`, `/mcp/activity`.
 - Kernel files: `mcp/registries/consultant_tracking.json` (made by the installer), the K17 catalog seed migration.
 
-## 15. The owner's answers
+## 15. The owner's answers (2026-10-04 — rules, not questions)
 
-*Open — the sixteen decisions of §13 await the owner. Each answer is recorded here as D1–D16, a rule not a question,
-before Phase 0's second half begins.*
+Every recommendation of §13 was taken, in one sitting, the same day the plan was written.
+
+| # | Decision | Where it lives |
+|---|---|---|
+| D1 | **"Consultant Tracking", catalog key `consultant_tracking`**, repository `maludb-os-consultant-tracking`, clone and install path `/srv/apps/consultant_tracking`, DNS label **`consulting`** (`consulting.<domain>`), database `<tenant>_consultant_tracking`, roles `consultant_tracking_rw` / `_records_ro` / `_activity_ro`, SQL prefix `ct_` | `maludb-os.json`; §14 |
+| D2 | **Five roles**: Consultant (key `user`), Manager, Billing, Finance (an external's read-only role with cost and margin), CT admin; a Manager's `cost.view` reaches the margin of **their own engagements only**; the rate table is the admin's | §3; `ct_roles`; `app_roles` |
+| D3 | **Not a default install; installed with `--grant-standing-departments`** so every insider is a Consultant; the repository stays **private** | §10; the org |
+| D4 | **Scope none**; departments are practices, a dimension on engagements and time, never a wall; sites unused | §3; `engagements.department_id`, `time_entries.department_id` |
+| D5 | **Two kinds in v1**: time-and-materials (optional not-to-exceed cap) and fixed bid (milestones); **retainers Extended**, the kind admitted by the schema | §6; §11; `engagements.kind` |
+| D6 | **Time**: weekly timesheet from Monday; 0.25 h increments (setting); a timer rounding up; submit → manager approves or rejects with a reason; locked once approved or invoiced; bill and cost rates snapshotted **at approval** (override → engagement role rate → rate card → none; "no rate" never invoiced at zero); no self-approval but a super-admin | §6; slice 3; the triggers |
+| D7 | **Expenses**: receipt required at or above **$75** (setting, per-category override); markup default **0 %**; personal-card expenses reimbursed by **HR** through `reimbursements_approved` (H2); company-card expenses to the ledger by `expenses_by_category`; tax inside the amount; one currency per expense | §6; §8; `ct_settings.receipt_threshold` |
+| D8 | **AI usage**: charges at cost, cost plus markup, or a resale price per unit; four sources — by hand, provider CSV (Anthropic and OpenAI mappings shipped), hosting schedules, the kernel's closed AI month **allocated by rules**; the remainder shown, never billed; the AI budget **warns at 80 %** and never blocks | §5; §6; §8; slice 5 |
+| D9 | **Invoicing**: one engagement per invoice; gapless on issue; time grouped per the engagement's setting (by person default); the secure link carries the backing detail and receipts when the engagement allows (default yes); the client's "I paid this" claim confirmed by billing; the link dies **180 days** after payment; **no PDF in v1** | §4; §6; slice 6; `ct_settings.link_lifetime_days` |
+| D10 | **The accounting interface is K7 shares and exports**: the six shares of §8, one read from the ledger (`invoice_receipts`, G1), CSV/JSON exports of the same documents; payments recorded here as **status only**; **no SaaS connector in v1** | §8; `maludb-os.json` `shares[]`/`reads[]`; slice 8 |
+| D11 | **Two shipped agents, hired on install**: the expert and the **Billing Clerk** (`0 7 * * *`); the morning note goes to the **first super-admin** until the owner names a billing person | §5; `os/{expert,biller}.md`; `agents[]` |
+| D12 | **Agents draft; a person approves, issues, sends and forgives**: `money_out` for issuing, voiding, writing off, crediting, recording payment; `external_send` for sending and nudging; approvals of time, expenses, usage and milestones refused to agents by the default policy | §5; `approvals[]` |
+| D13 | **Numbering**: `ENG-0001` at creation; `INV-00001` and `CN-00001` gapless on issue; `EXP-000001` and `USG-000001` at creation; prefixes are settings | `document_sequences`; `ct_settings` |
+| D14 | **K17–K19, G1, H2, P1 approved**, each built in its own repository; **K17 first**; K18 and K19 Extended | §12 |
+| D15 | **Ports pinned before `apply`**: `APP_INTERNAL_PORT=8185`, `MCP_RECORDS_PORT=8831`, `MCP_ACTIVITY_PORT=8832`, all three in `env.required` | §14; `config/.env`; `deploy/ROOT_STEPS.sh` |
+| D16 | **Sonnet 5.5 builds everything from this plan** — K17, Phase 0's second half, Phase 1 for the owner's approval, Phases 2–5 — with **time (slice 3) built and shown to the owner first** as the exemplar every later slice copies | `CLAUDE.md` "Build order and the handoff" |
 
 ## 16. State
 
-**2026-10-04 — the plan written.** This document; the repository `maludb/maludb-os-consultant-tracking` created
-private in the org and cloned to `/srv/apps/consultant_tracking`; `CLAUDE.md` and `README.md` written with the build
-order and the worker's rules; the kernel's README names the repository. Nothing else exists. **Next: the owner's answers
-to §13 (recorded in §15), then the handoff to the worker model** — Phase 0's second half (the schema and its proof, the
-kit from Help Desk, `maludb-os.json`, `os/{expert,biller}.md`, the seven skills, `deploy/` with `ROOT_STEPS.sh` pinning
-8185/8831/8832) and **K17** in the kernel, then Phase 1 (the tool surface, the manifest, the ten specs) as the
-checkpoint before any PHP.
+**2026-10-04 — the plan approved.** The plan written (this document); the repository `maludb/maludb-os-consultant-tracking`
+created private in the org and cloned to `/srv/apps/consultant_tracking`; the owner answered all sixteen questions of §13 the
+same day, every recommendation taken (§15, D1–D16). Nothing else exists yet. **Handed to the worker model (Sonnet 5.5).** Next,
+in the order of `CLAUDE.md`: **K17** (the catalog seed) in the kernel; **Phase 0's second half** — the schema `db/001`–`0NN` and
+its proof on a scratch database, the kit from Help Desk, `maludb-os.json`, `os/{expert,biller}.md`, the seven skills, `deploy/`
+with `ROOT_STEPS.sh` pinning 8185/8831/8832; then **Phase 1** (the tool surface, the manifest, the ten specs) as the checkpoint
+before any PHP; then Phase 2, slices 1–2, and **slice 3 — time — shown to the owner before slice 4**.

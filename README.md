@@ -12,8 +12,8 @@ An optional application: installed on request beside [maludb-os-core](https://gi
 consultancy or an AI agency, granted to every insider (everyone logs time). Built with `htmx-php-builder`, fitted to
 `maludb-os-integration` 0.6.0, served as `consulting.<domain>`; catalog key `consultant_tracking`.
 
-- **The plan:** `docs/consultant-tracking-design.md` (Phase 0, 2026-10-04). The owner's sixteen decisions are §13; their
-  answers go in §15 before anything is built.
+- **The plan:** `docs/consultant-tracking-design.md` (Phase 0, 2026-10-04 — **approved**; the owner's sixteen decisions are
+  §15, D1–D16).
 - **The build:** `CLAUDE.md` — the order, the rules, the handoff to the worker model.
-- Status: plan written; decisions open. Next: the owner's answers, K17 in the kernel, Phase 0's second half, Phase 1 as the
-  checkpoint before any PHP.
+- Status: approved plan, handed to the worker model (Sonnet 5.5). Next: K17 in the kernel, Phase 0's second half (schema and
+  proof, kit, `maludb-os.json`, agents, skills, deploy), Phase 1 as the checkpoint before any PHP.

@@ -11,7 +11,7 @@ AI usage and hosting pass-through, invoices) and **is not the books**: the accou
    clients without accounts and the secure invoice (§4), what pauses for agents and the two shipped agents (§5), the memory
    model (§6 — the tables), the question inventory with every tool named (§7), the accounting interface — shares, reads,
    exports (§8), the screens (§9), the build order (§10), what the kernel and siblings owe (§12), **the owner's decisions
-   (§13, recorded as D1–D16 in §15 — rules, not questions; nothing is built until §15 is filled)**, the state (§16).
+   (§13, all sixteen answered 2026-10-04 and recorded as D1–D16 in §15 — rules, not questions)**, the state (§16).
 2. The plugin `maludb-os-integration` (`~/maludb-os-integration`, skill `os-integration` and its references:
    `memory.md`, `mcp-and-api.md`, `sign-on-and-directory.md`, `agents.md`, `roles-and-rights.md`, `sms-and-reads.md`,
    `registration.md`, `php-sign-on-kit.md`, `testing-without-a-kernel.md`) — how it fits.
@@ -74,8 +74,7 @@ The plan is the planning-class model's whole part (design §13.16). **A worker m
 in this order, stopping and escalating on any ambiguity rather than improvising — a question the design does not answer is
 written into the slice spec's "Open questions" for the owner, never guessed.
 
-0. **Wait for §15.** Nothing is built until the owner's answers to the sixteen decisions of design §13 are recorded in §15 as
-   D1–D16. If an answer overturns a recommendation, update the affected sections of the design in the same commit.
+0. **§15 is filled** (2026-10-04, D1–D16 — every recommendation taken). Build to it; a decision is never relitigated.
 1. **K17** in the kernel (`/var/www`): a migration seeding the `consultant_tracking` catalog row (Sales & Service / `other` /
    `feather-briefcase` / `high`), on the pattern of db/167 (`gl`). Commit there in the kernel's message style.
 2. **Phase 0, second half**: `db/001`–`0NN` — the mirror and roles (copied from Help Desk, prefix `ct_`), settings and the
@@ -115,4 +114,5 @@ written into the slice spec's "Open questions" for the owner, never guessed.
 - Kernel items this application waits on (design §12): K17 catalog seed (first), K18 the people rule, K19 a cost tag on runs,
   K16/K8 wake-an-agent; siblings: G1 (General Ledger's `invoice_receipts` share and source import), H2 (HR pays
   reimbursements), P1 (Projects' `projects_list`).
-- **State (2026-10-04): the plan written; the repository created; the owner's decisions (§13) OPEN.** Nothing else exists.
+- **State (2026-10-04): the plan APPROVED (§15 D1–D16); the repository created; handed to the worker model.** Nothing else
+  exists. Next: K17 in the kernel, then Phase 0's second half (step 2 above).

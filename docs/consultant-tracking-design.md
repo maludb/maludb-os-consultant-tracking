@@ -648,6 +648,10 @@ the thumbnail beside the amount, reimbursements (ticks, one reference, atomic), 
 for slice 8; `tests/phase3/slice4/run.sh` — **223 checks green**; the registry reads 46 screens and 68 actions built; Phase 2's browser follows. Decisions in the spec; no open question.
 
 
+**2026-10-05 — db/017** (planning model): `ct_ar_aging()` and `ct_client_statement()` admitted anyone with `reports.view` — a Manager could read every client's
+balances through the records MCP. Both now need `billing.write`, or `reports.view` across every engagement (Finance, the admin), the rule slice 6 gave the screens as
+`receivables.view`. Open to the owner from slice 6: whether Apache's access log should leave `/i/` out (a secure-link token lives 180 days after payment).
+
 **2026-10-05 — db/016** (planning model): three defects of db/011 that slice 5's proofs found — a schedule's final run before its end date (the check admits an inactive
 schedule), the statement hash without `generated_at`/`rolled_up_at` (a re-pull of an allocated month is accepted when its substance is unchanged), and a CSV row's cost kept as the
 file's fact (the guard derives the unit cost for `csv_import` as for `kernel_ledger`). The spec's "Open questions" is empty again; the schedules and import proofs cover the fixes.

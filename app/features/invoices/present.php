@@ -58,5 +58,6 @@ function present_billing_summary(array $b): array
 {
     return ['unbilled' => $b['wip'], 'drafts' => array_map(static fn (array $i): array => present_invoice($i), $b['drafts']), 'draft_count' => $b['draft_count'], 'owed' => $b['owed'], 'overdue' => $b['overdue'], 'due_to_draft' => $b['due_to_draft'],
             'due' => array_map(static fn (array $e): array => ['engagement_id' => $e['engagement_id'], 'number' => $e['number'], 'name' => $e['name'], 'next_billing_date' => $e['next_billing_date'], 'unbilled' => $e['wip']['total_amount'], 'currency' => $e['currency']], $b['due']),
-            'milestones_waiting' => $b['milestones_waiting'], 'claims_waiting' => $b['claims'], 'aging' => $b['aging']];
+            'milestones_waiting' => $b['milestones_waiting'], 'claims_waiting' => $b['claims'], 'aging' => $b['aging'],
+            'statement' => $b['statement'] ?? null];
 }

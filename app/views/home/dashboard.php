@@ -15,6 +15,7 @@ $coming = static fn (string $id, string $icon, string $title, string $text, stri
             <?php if ($may['expenses']): ?>
                 <?= $s['my_expenses'] === null ? $coming('home-my-expenses', 'feather-credit-card', 'My expenses', 'What you are owed and what awaits a receipt appear here.', 'slice 4') : view('expenses/partials/home.php', ['x' => $s['my_expenses'], 'tz' => $tz]) ?>
             <?php endif; ?>
+            <?= view('home/partials/bell.php', ['rows' => $s['bell'], 'tz' => $tz]) ?>
         </div>
         <div class="col-lg-6">
             <?php if ($may['approve']): ?>

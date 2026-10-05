@@ -1,6 +1,6 @@
 {
     "generated_from": "docs/consultant-tracking-action-manifest.md",
-    "generated_at": "2026-10-05T16:29:33+00:00",
+    "generated_at": "2026-10-05T17:00:48+00:00",
     "screens": {
         "dashboard": {
             "screen": "dashboard",
@@ -75,8 +75,8 @@
             "section": "Home, settings and tokens (Phase 2 and slice 9)",
             "when": "which agents work here (the expert, the Billing Clerk), their last runs — read-only; hiring and grants link to the kernel",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "connections": {
             "screen": "connections",
@@ -84,8 +84,8 @@
             "section": "Home, settings and tokens (Phase 2 and slice 9)",
             "when": "which sibling applications read what of ours and what we read — the kernel's facts, read-only",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "client-list": {
             "screen": "client-list",

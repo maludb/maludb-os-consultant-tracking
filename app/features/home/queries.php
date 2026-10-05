@@ -33,18 +33,29 @@ function home_summary(PDO $pdo, int $memberId): array
         require_once dirname(__DIR__) . '/time/queries.php';
         require_once dirname(__DIR__) . '/expenses/queries.php';
         require_once dirname(__DIR__) . '/usage/queries.php';
-        $approvals = ['weeks' => has_right('time.approve') ? array_slice(timesheets_pending($pdo, $memberId), 0, 8) : [], 'expenses' => has_right('expenses.approve') ? array_slice(expenses_pending($pdo, $memberId), 0, 8) : null,
-                      'usage' => has_right('usage.approve') ? usage_pending($pdo, 8) : null];
+        $weeks = has_right('time.approve') ? timesheets_pending($pdo, $memberId) : [];
+        $exps = has_right('expenses.approve') ? expenses_pending($pdo, $memberId) : null;
+        $usage = has_right('usage.approve') ? usage_pending($pdo, 500) : null;
+        $approvals = ['weeks' => array_slice($weeks, 0, 8), 'expenses' => $exps === null ? null : array_slice($exps, 0, 8), 'usage' => $usage === null ? null : array_slice($usage, 0, 8),
+                      'counts' => ['weeks' => has_right('time.approve') ? count($weeks) : null, 'expenses' => $exps === null ? null : count($exps), 'usage' => $usage === null ? null : count($usage)]];
     }
     $billing = null;
     if (has_right('invoices.draft') || has_right('billing.write') || has_right('reports.view')) {                      // slice 6: WIP, drafts to issue, due to draft, who owes us, claims waiting
         require_once dirname(__DIR__) . '/invoices/queries.php';
         require_once dirname(__DIR__) . '/payments/queries.php';
         $billing = billing_summary($pdo);
+        $billing['statement'] = null;                                                  // the OS's AI statement, last month held: its status and what remains to allocate (usage.write reads it)
+        if (has_right('billing.write') && has_right('usage.write')) {
+            require_once dirname(__DIR__) . '/usage/queries.php';
+            $st = ai_statement_status($pdo)[0] ?? null;
+            $billing['statement'] = $st === null ? null : ['period' => $st['period'], 'status' => $st['status'], 'kernel_status' => $st['kernel_status'], 'amount' => $st['statement_amount'], 'allocated' => $st['allocated_amount'], 'remainder' => $st['remainder']];
+        }
     }
+    require_once dirname(__DIR__) . '/settings/queries.php';
+    $bell = find_my_notifications($pdo, $memberId, false, 5);                         // everyone's: the bell's last five
     $clerk = has_right('billing.write') ? find_clerk_note($pdo) : null;                // slice 8: the Billing Clerk's latest morning note (Billing's, never a Manager's)
     return [
-        'my_week' => $myWeek, 'timer' => $timer, 'my_expenses' => $myExpenses, 'approvals' => $approvals, 'budget_alerts' => $alerts, 'billing' => $billing, 'clerk_note' => $clerk,
+        'my_week' => $myWeek, 'timer' => $timer, 'my_expenses' => $myExpenses, 'approvals' => $approvals, 'budget_alerts' => $alerts, 'billing' => $billing, 'clerk_note' => $clerk, 'bell' => $bell,
         'may' => [
             'time' => has_right('time.write'), 'expenses' => has_right('expenses.write'),
             'approve' => has_right('time.approve') || has_right('expenses.approve') || has_right('usage.approve'),

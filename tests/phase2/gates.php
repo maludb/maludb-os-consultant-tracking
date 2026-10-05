@@ -40,7 +40,7 @@ foreach ($matrix as $route => $allowed) {
 ok($wrong === [], "$n role × screen checks (" . count($matrix) . ' screens × 5 roles) answer 200 or 403 as the rights say' . ($wrong ? ': ' . implode('; ', array_slice($wrong, 0, 8)) : ''));
 $r = page($jUser, '/time/approvals');
 ok(str_contains($r['body'], 'You may not approve time.'), 'a refusal says what the person may not do, in words ("You may not approve time.")');
-ok(trim((string) shell_exec('grep -rl "render_nav_stub(" ' . escapeshellarg(dirname(__DIR__, 2) . '/html') . ' 2>/dev/null')) !== '', 'the placeholders stand (Phase 2); each names its slice');
+ok(trim((string) shell_exec('grep -rl "render_nav_stub(" ' . escapeshellarg(dirname(__DIR__, 2) . '/html') . ' 2>/dev/null')) === '', 'no placeholder is left: every screen is built (Phase 3 complete; slice 9 replaced the last two)');
 $menu = fn (string $j): array => (preg_match_all('/id="nav-([a-z-]+)"/', page($j, '/')['body'], $m) ? $m[1] : []);
 $groups = fn (string $j): array => (preg_match_all('/nxl-caption"><label>([^<]+)</', page($j, '/')['body'], $m) ? $m[1] : []);
 ok($groups($jUser) === ['Work', 'Reports', 'Settings', 'Me'] && !in_array('time-approvals', $menu($jUser), true) && in_array('timesheet', $menu($jUser), true) && in_array('reports', $menu($jUser), true) && !in_array('exports', $menu($jUser), true) && in_array('my-settings', $menu($jUser), true), 'a Consultant sees Work, Reports (their own utilization), Settings (My settings) and Me: ' . implode(', ', $groups($jUser)));

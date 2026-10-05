@@ -15,7 +15,7 @@ echo "1. The registry\n";
 $screens = $reg['screens']; $actions = $reg['actions'];
 $unbuilt = array_keys(array_filter($screens, fn ($s) => empty($s['built'])));
 ok(count($actions) === 108 && count(array_filter($actions, fn ($a) => !empty($a['built']))) === 108, 'the registry: 108 actions, every one built');
-ok(count($screens) === 78 && $unbuilt === ['agents', 'connections'], 'the registry: 78 screens, built but slice 9\'s two (' . implode(', ', $unbuilt) . ')');
+ok(count($screens) === 78 && $unbuilt === [], 'the registry: 78 screens, every one built (slice 9 built agents and connections)');
 $ex = $actions['export_download']; $mn = $actions['morning_note_send'];
 ok($ex['endpoint'] === '/exports/download.php' && array_column($ex['params'], 'name') === ['export', 'format', 'from', 'to'] && $ex['params'][0]['required'] === true && $ex['log_event'] === 'export.download' && $ex['approval'] === null, 'export_download: /exports/download.php, params export, format (required), from, to; logs export.download; no approval');
 ok($mn['endpoint'] === '/billing/morning-note.php' && array_column($mn['params'], 'name') === ['body', 'to_member'] && $mn['params'][0]['required'] === true && $mn['log_event'] === 'morning_note.send' && $mn['approval'] === null, 'morning_note_send: /billing/morning-note.php, params body (required), to_member; logs morning_note.send; no approval');

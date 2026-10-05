@@ -348,7 +348,7 @@ tool; the reports are the same SQL functions the screens call. Records tools: ab
 
   **Reads (`reads[]`, each `why` stated)**: `gl.invoice_receipts` — *"mark our invoices paid from the ledger's
   receipts (by our invoice number)"* — a share General Ledger owes (G1, §12); until it exists billing records payments
-  by hand. Extended: `projects.projects_list` (P1) to pick a project by name; `hr.leave_taken_by_member` (people) for
+  by hand. `hr.reimbursements_paid` — *"mark our approved expenses reimbursed from HR's pay runs, by our expense number"* (H2, owed by HR; declared 2026-10-05 after slice 8 built the read). Extended: `projects.projects_list` (P1) to pick a project by name; `hr.leave_taken_by_member` (people) for
   capacity in the utilization report.
 
   **Exports** (a person's download, for a firm without General Ledger or with QuickBooks, Xero or Sage): the same

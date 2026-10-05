@@ -147,6 +147,11 @@
       "app": "gl",
       "tool": "invoice_receipts",
       "why": "Mark our invoices paid from the ledger's receipts, by our invoice number (G1 — owed by General Ledger)"
+    },
+    {
+      "app": "hr",
+      "tool": "reimbursements_paid",
+      "why": "Mark our approved expenses reimbursed from HR's pay runs, by our expense number (H2 — owed by HR); people: the read names our own people, so the kernel's K18 people rule applies"
     }
   ],
   "agents": [

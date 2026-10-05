@@ -115,7 +115,6 @@ function connections_summary(PDO $pdo): array
     }
     $declared = [];
     foreach ((array) ($m['reads'] ?? []) as $r) { $declared[$r['app'] . '.' . $r['tool']] = (string) ($r['why'] ?? ''); }
-    $declared += ['hr.reimbursements_paid' => 'Mark an approved personal-card expense reimbursed when a pay run paid it (H2 — owed by HR; not declared in maludb-os.json until HR ships the share)'];
     $reads = [];
     foreach ($declared as $key => $why) {
         [$app, $tool] = explode('.', $key, 2);

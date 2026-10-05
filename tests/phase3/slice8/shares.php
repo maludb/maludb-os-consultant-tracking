@@ -23,7 +23,7 @@ $tools = array_column($spec['shares'], 'tool');
 ok($tools === ['invoices_issued', 'credit_notes_issued', 'expenses_by_category', 'unbilled_summary', 'reimbursements_approved', 'engagement_list'], 'maludb-os.json shares[]: invoices_issued, credit_notes_issued, expenses_by_category, unbilled_summary, reimbursements_approved, engagement_list');
 $byTool = array_column($spec['shares'], null, 'tool');
 ok(($byTool['reimbursements_approved']['people'] ?? false) === true && count(array_filter($spec['shares'], fn ($s) => !empty($s['people']))) === 1 && count(array_filter($spec['shares'], fn ($s) => !empty($s['scoped']))) === 0, 'only reimbursements_approved is people (HR reads it); none is scoped (one firm, no sites)');
-ok($spec['reads'] === [['app' => 'gl', 'tool' => 'invoice_receipts', 'why' => $spec['reads'][0]['why']]] && count($spec['reads']) === 1, 'reads[]: the one read, gl.invoice_receipts');
+ok(array_map(fn ($r) => $r['app'] . '.' . $r['tool'], $spec['reads']) === ['gl.invoice_receipts', 'hr.reimbursements_paid'] && !array_filter($spec['reads'], fn ($r) => empty($r['why'])), 'reads[]: the two reads the worker makes — gl.invoice_receipts (G1) and hr.reimbursements_paid (H2) — each with its why');
 
 echo "2. The kernel's token: every row\n";
 $k = share('share_invoices_issued', 'kernel', '-', [$p['from'], $p['to']]);

@@ -16,6 +16,6 @@ consultancy or an AI agency, granted to every insider (everyone logs time). Buil
   §15, D1–D16).
 - **The build:** `CLAUDE.md` — the order, the rules, the handoff to the worker model.
 - Status: approved plan; **K17 and Phase 0's second half built and proven 2026-10-05** (schema db/001–015 with 171 proof checks, the
-  kit with 15, `maludb-os.json`, agents, skills, deploy). Next: Phase 1 (the tool surface, the manifest, the ten specs) as the checkpoint
-  before any PHP; then Phase 2 and slices 1–3 (time, the exemplar) by the planning model; slices 4–9 and Phases 4–5 by the worker model.
+  kit with 15, `maludb-os.json`, agents, skills, deploy). Phase 1 written 2026-10-05 (the tool surface, the manifest with 78 screens and 108 actions, the registry, the ten specs) — awaiting the
+  owner's approval before any PHP; then Phase 2 and slices 1–3 (time, the exemplar) by the planning model; slices 4–9 and Phases 4–5 by the worker model.
 - The proofs: `tests/phase0/run.sh` (a scratch database, `php -S`, fixtures; nothing installed is touched).

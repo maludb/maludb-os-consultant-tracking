@@ -1,0 +1,4715 @@
+{
+    "generated_from": "docs/consultant-tracking-action-manifest.md",
+    "generated_at": "2026-10-05T00:57:55+00:00",
+    "screens": {
+        "dashboard": {
+            "screen": "dashboard",
+            "url": "/",
+            "section": "Home, settings and tokens (Phase 2 and slice 9)",
+            "when": "home: my week and timer, my reimbursements due; for a manager the approvals waiting and the budget alerts; for billing WIP, drafts, invoices due to draft, the aging, the OS statement's state, the Clerk's last note",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "notifications": {
+            "screen": "notifications",
+            "url": "/notifications",
+            "section": "Home, settings and tokens (Phase 2 and slice 9)",
+            "when": "what the bell holds, and to mark it read",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "activity": {
+            "screen": "activity",
+            "url": "/activity",
+            "section": "Home, settings and tokens (Phase 2 and slice 9)",
+            "when": "their own trail, or a record's",
+            "params": [
+                "engagement",
+                "invoice",
+                "timesheet"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "settings": {
+            "screen": "settings",
+            "url": "/settings/",
+            "section": "Home, settings and tokens (Phase 2 and slice 9)",
+            "when": "how they are told (email, text, which kinds)",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "tokens": {
+            "screen": "tokens",
+            "url": "/settings/tokens/",
+            "section": "Home, settings and tokens (Phase 2 and slice 9)",
+            "when": "their own MCP tokens: mint one, revoke one",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "settings-general": {
+            "screen": "settings-general",
+            "url": "/settings/general",
+            "section": "Home, settings and tokens (Phase 2 and slice 9)",
+            "when": "the firm's settings: currency, week start, increment, receipt threshold, markup default, terms, grouping, link lifetime, reminders, thresholds, capacity default, the morning-note recipient",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "numbering": {
+            "screen": "numbering",
+            "url": "/settings/numbering",
+            "section": "Home, settings and tokens (Phase 2 and slice 9)",
+            "when": "the prefixes and next numbers (ENG, INV, CN, EXP, USG)",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "agents": {
+            "screen": "agents",
+            "url": "/settings/agents",
+            "section": "Home, settings and tokens (Phase 2 and slice 9)",
+            "when": "which agents work here (the expert, the Billing Clerk), their last runs — read-only; hiring and grants link to the kernel",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "connections": {
+            "screen": "connections",
+            "url": "/settings/connections",
+            "section": "Home, settings and tokens (Phase 2 and slice 9)",
+            "when": "which sibling applications read what of ours and what we read — the kernel's facts, read-only",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "client-list": {
+            "screen": "client-list",
+            "url": "/clients/",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "when": "the clients as cards with active engagements and open balance",
+            "params": [
+                "q",
+                "archived"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "client-add": {
+            "screen": "client-add",
+            "url": "/clients/new",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "when": "to add a client",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "client-view": {
+            "screen": "client-view",
+            "url": "/clients/{id}",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "when": "one client: contacts, engagements, open invoices, the statement, the claims, documents, the timeline",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "client-edit": {
+            "screen": "client-edit",
+            "url": "/clients/{id}/edit",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "when": "to change a client's details, terms, currency, PO rule, default rate card",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "client-statement": {
+            "screen": "client-statement",
+            "url": "/clients/{id}/statement",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "when": "the client's statement for a period, with Send",
+            "params": [
+                "from",
+                "to"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "role-list": {
+            "screen": "role-list",
+            "url": "/settings/roles/",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "when": "the consulting roles (titles a rate is priced by)",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "rate-card-list": {
+            "screen": "rate-card-list",
+            "url": "/settings/rate-cards/",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "when": "the rate cards as cards",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "rate-card-add": {
+            "screen": "rate-card-add",
+            "url": "/settings/rate-cards/new",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "when": "to add a rate card (optionally copied from another)",
+            "params": [
+                "copy_of"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "rate-card-view": {
+            "screen": "rate-card-view",
+            "url": "/settings/rate-cards/{id}",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "when": "one card: the rate per consulting role, the engagements using it",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "rate-card-edit": {
+            "screen": "rate-card-edit",
+            "url": "/settings/rate-cards/{id}/edit",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "when": "to rename a card or change its effective date",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "cost-rate-list": {
+            "screen": "cost-rate-list",
+            "url": "/settings/cost-rates/",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "when": "every person's cost rate by date range (admin, Finance)",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "capacity-list": {
+            "screen": "capacity-list",
+            "url": "/settings/capacity/",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "when": "every person's capacity by date range",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "activity-type-list": {
+            "screen": "activity-type-list",
+            "url": "/settings/activity-types/",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "when": "the activity types and their billable default",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "category-list": {
+            "screen": "category-list",
+            "url": "/settings/categories/",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "when": "the expense categories with receipt and markup overrides",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "provider-list": {
+            "screen": "provider-list",
+            "url": "/settings/providers/",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "when": "the usage providers and their saved CSV mappings",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "tax-rate-list": {
+            "screen": "tax-rate-list",
+            "url": "/settings/tax-rates/",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "when": "the tax rates",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "engagement-list": {
+            "screen": "engagement-list",
+            "url": "/engagements/",
+            "section": "Engagements (slice 2)",
+            "when": "the engagements as cards with budget bars, by status",
+            "params": [
+                "q",
+                "client",
+                "kind",
+                "status",
+                "department",
+                "manager",
+                "mine"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "engagement-add": {
+            "screen": "engagement-add",
+            "url": "/engagements/new",
+            "section": "Engagements (slice 2)",
+            "when": "to add an engagement for a client",
+            "params": [
+                "client"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "engagement-view": {
+            "screen": "engagement-view",
+            "url": "/engagements/{id}",
+            "section": "Engagements (slice 2)",
+            "when": "one engagement: overview with budget status, staffing, rates, milestones, time, expenses, usage, invoices, documents, timeline",
+            "params": [
+                "tab"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "engagement-edit": {
+            "screen": "engagement-edit",
+            "url": "/engagements/{id}/edit",
+            "section": "Engagements (slice 2)",
+            "when": "to change an engagement's terms, dates, budgets, cadence, policy, grouping, manager, practice",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "engagement-staffing": {
+            "screen": "engagement-staffing",
+            "url": "/engagements/{id}/staffing",
+            "section": "Engagements (slice 2)",
+            "when": "who is staffed, in what role, at what override; add and end a staffing",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "engagement-rates": {
+            "screen": "engagement-rates",
+            "url": "/engagements/{id}/rates",
+            "section": "Engagements (slice 2)",
+            "when": "the role rates on this engagement overriding the card; what each person resolves to today",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "engagement-milestones": {
+            "screen": "engagement-milestones",
+            "url": "/engagements/{id}/milestones",
+            "section": "Engagements (slice 2)",
+            "when": "the milestones: add, deliver, accept, cancel",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "budget-alerts": {
+            "screen": "budget-alerts",
+            "url": "/usage/budgets",
+            "section": "Engagements (slice 2)",
+            "when": "every active engagement's budgets and burn, and the alerts to acknowledge",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "timesheet": {
+            "screen": "timesheet",
+            "url": "/time/",
+            "section": "Time — THE EXEMPLAR (slice 3)",
+            "when": "my week: the grid of days and engagements, the timer bar, add an entry, Submit; a rejected week's reason; another week",
+            "params": [
+                "week",
+                "member"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "time-entry-add": {
+            "screen": "time-entry-add",
+            "url": "/time/entries/new",
+            "section": "Time — THE EXEMPLAR (slice 3)",
+            "when": "to log an entry",
+            "params": [
+                "engagement",
+                "date",
+                "week"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "time-entry-edit": {
+            "screen": "time-entry-edit",
+            "url": "/time/entries/{id}/edit",
+            "section": "Time — THE EXEMPLAR (slice 3)",
+            "when": "to change a draft or rejected entry",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "time-approvals": {
+            "screen": "time-approvals",
+            "url": "/time/approvals",
+            "section": "Time — THE EXEMPLAR (slice 3)",
+            "when": "the submitted weeks awaiting me, by person; open one, approve or reject",
+            "params": [
+                "member"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "timesheet-view": {
+            "screen": "timesheet-view",
+            "url": "/time/weeks/{id}",
+            "section": "Time — THE EXEMPLAR (slice 3)",
+            "when": "one week as its manager sees it: the entries with rates, approve or reject, the timeline",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "team-time": {
+            "screen": "team-time",
+            "url": "/time/team",
+            "section": "Time — THE EXEMPLAR (slice 3)",
+            "when": "everyone's hours per day for a week, missing days marked",
+            "params": [
+                "week",
+                "department"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "missing-time": {
+            "screen": "missing-time",
+            "url": "/time/missing",
+            "section": "Time — THE EXEMPLAR (slice 3)",
+            "when": "who has not submitted a week and which days are empty",
+            "params": [
+                "week"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "written-off": {
+            "screen": "written-off",
+            "url": "/time/written-off",
+            "section": "Time — THE EXEMPLAR (slice 3)",
+            "when": "the hours written off, with reasons",
+            "params": [
+                "from",
+                "to",
+                "engagement"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "expense-list": {
+            "screen": "expense-list",
+            "url": "/expenses/",
+            "section": "Expenses and receipts (slice 4)",
+            "when": "my expenses as cards by status with the receipt flag and the reimbursement state",
+            "params": [
+                "status",
+                "engagement",
+                "member"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "expense-add": {
+            "screen": "expense-add",
+            "url": "/expenses/new",
+            "section": "Expenses and receipts (slice 4)",
+            "when": "to record an expense with the camera first",
+            "params": [
+                "engagement",
+                "date"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "expense-view": {
+            "screen": "expense-view",
+            "url": "/expenses/{id}",
+            "section": "Expenses and receipts (slice 4)",
+            "when": "one expense: the receipt, the money, the status and reasons, approve or reject, the timeline",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "expense-edit": {
+            "screen": "expense-edit",
+            "url": "/expenses/{id}/edit",
+            "section": "Expenses and receipts (slice 4)",
+            "when": "to change a draft or rejected expense",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "expense-approvals": {
+            "screen": "expense-approvals",
+            "url": "/expenses/approvals",
+            "section": "Expenses and receipts (slice 4)",
+            "when": "submitted expenses awaiting me, the receipt beside the amount",
+            "params": [
+                "engagement",
+                "missing_receipt"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "reimbursements": {
+            "screen": "reimbursements",
+            "url": "/expenses/reimbursements",
+            "section": "Expenses and receipts (slice 4)",
+            "when": "what each person is owed; mark reimbursed by hand until HR reads it",
+            "params": [
+                "member"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "company-card": {
+            "screen": "company-card",
+            "url": "/expenses/company-card",
+            "section": "Expenses and receipts (slice 4)",
+            "when": "company-card spend by category and month",
+            "params": [
+                "from",
+                "to"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "usage-list": {
+            "screen": "usage-list",
+            "url": "/usage/",
+            "section": "AI usage and hosting (slice 5)",
+            "when": "the usage charges by engagement, period, kind, source, status",
+            "params": [
+                "engagement",
+                "from",
+                "to",
+                "kind",
+                "source",
+                "status"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "usage-add": {
+            "screen": "usage-add",
+            "url": "/usage/new",
+            "section": "AI usage and hosting (slice 5)",
+            "when": "to record a usage charge with its pricing and the provider's invoice",
+            "params": [
+                "engagement"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "usage-view": {
+            "screen": "usage-view",
+            "url": "/usage/{id}",
+            "section": "AI usage and hosting (slice 5)",
+            "when": "one charge: quantity, cost, pricing, billable, its source (import, schedule, statement line), approve or void, the timeline",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "usage-edit": {
+            "screen": "usage-edit",
+            "url": "/usage/{id}/edit",
+            "section": "AI usage and hosting (slice 5)",
+            "when": "to change a draft charge",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "usage-import": {
+            "screen": "usage-import",
+            "url": "/usage/import",
+            "section": "AI usage and hosting (slice 5)",
+            "when": "a provider's CSV usage export: the mapping, a five-row preview, duplicates counted, then import",
+            "params": [
+                "provider",
+                "engagement"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "os-statement": {
+            "screen": "os-statement",
+            "url": "/usage/os",
+            "section": "AI usage and hosting (slice 5)",
+            "when": "the kernel's months as it reports them: pull, allocate, the lines with their remainders, the charges made",
+            "params": [
+                "period"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "allocation-rule-list": {
+            "screen": "allocation-rule-list",
+            "url": "/settings/allocation-rules/",
+            "section": "AI usage and hosting (slice 5)",
+            "when": "the rules that place the OS statement on engagements",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "allocation-rule-add": {
+            "screen": "allocation-rule-add",
+            "url": "/settings/allocation-rules/new",
+            "section": "AI usage and hosting (slice 5)",
+            "when": "to add a rule",
+            "params": [
+                "engagement"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "allocation-rule-edit": {
+            "screen": "allocation-rule-edit",
+            "url": "/settings/allocation-rules/{id}/edit",
+            "section": "AI usage and hosting (slice 5)",
+            "when": "to change a rule",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "schedule-list": {
+            "screen": "schedule-list",
+            "url": "/settings/schedules/",
+            "section": "AI usage and hosting (slice 5)",
+            "when": "the hosting schedules: next date, last run, run now",
+            "params": [
+                "engagement"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "schedule-add": {
+            "screen": "schedule-add",
+            "url": "/settings/schedules/new",
+            "section": "AI usage and hosting (slice 5)",
+            "when": "to add a schedule",
+            "params": [
+                "engagement"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "schedule-edit": {
+            "screen": "schedule-edit",
+            "url": "/settings/schedules/{id}/edit",
+            "section": "AI usage and hosting (slice 5)",
+            "when": "to change a schedule",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "unbilled": {
+            "screen": "unbilled",
+            "url": "/billing/unbilled",
+            "section": "Billing (slice 6)",
+            "when": "the WIP by engagement and client; Draft invoice from it",
+            "params": [
+                "as_of",
+                "client"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "unbilled-items": {
+            "screen": "unbilled-items",
+            "url": "/billing/unbilled/{id}",
+            "section": "Billing (slice 6)",
+            "when": "the items behind one engagement's WIP",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "invoice-list": {
+            "screen": "invoice-list",
+            "url": "/invoices/",
+            "section": "Billing (slice 6)",
+            "when": "the invoices with status, overdue, period filters and a totals footer",
+            "params": [
+                "q",
+                "client",
+                "engagement",
+                "status",
+                "overdue"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "invoice-add": {
+            "screen": "invoice-add",
+            "url": "/invoices/new",
+            "section": "Billing (slice 6)",
+            "when": "to draft an invoice for an engagement and a period",
+            "params": [
+                "engagement",
+                "from",
+                "to"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "invoice-view": {
+            "screen": "invoice-view",
+            "url": "/invoices/{id}",
+            "section": "Billing (slice 6)",
+            "when": "one invoice: lines, the backing items, payments, credits, claims, the link, the client's preview, the actions by status, the timeline",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "invoice-edit": {
+            "screen": "invoice-edit",
+            "url": "/invoices/{id}/edit",
+            "section": "Billing (slice 6)",
+            "when": "the draft's lines editor: regroup, add a fixed or adjustment line, discount, tax; the items listed and removable",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "invoice-preview": {
+            "screen": "invoice-preview",
+            "url": "/invoices/{id}/preview",
+            "section": "Billing (slice 6)",
+            "when": "the invoice as the client will see it on the link",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "due-to-draft": {
+            "screen": "due-to-draft",
+            "url": "/billing/due",
+            "section": "Billing (slice 6)",
+            "when": "the engagements whose billing date has passed and the accepted milestones not yet invoiced",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "credit-note-list": {
+            "screen": "credit-note-list",
+            "url": "/credit-notes/",
+            "section": "Billing (slice 6)",
+            "when": "the credit notes",
+            "params": [
+                "client",
+                "status"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "credit-note-add": {
+            "screen": "credit-note-add",
+            "url": "/credit-notes/new",
+            "section": "Billing (slice 6)",
+            "when": "to draft a credit note against an invoice",
+            "params": [
+                "invoice"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "credit-note-view": {
+            "screen": "credit-note-view",
+            "url": "/credit-notes/{id}",
+            "section": "Billing (slice 6)",
+            "when": "one credit note: lines, applications, issue, apply, void",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "credit-note-edit": {
+            "screen": "credit-note-edit",
+            "url": "/credit-notes/{id}/edit",
+            "section": "Billing (slice 6)",
+            "when": "the draft's lines",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "payment-list": {
+            "screen": "payment-list",
+            "url": "/payments/",
+            "section": "Billing (slice 6)",
+            "when": "payments recorded, by invoice and client",
+            "params": [
+                "client",
+                "from",
+                "to"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "claims": {
+            "screen": "claims",
+            "url": "/billing/claims",
+            "section": "Billing (slice 6)",
+            "when": "what clients said on the link and billing has not decided",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "ar-aging": {
+            "screen": "ar-aging",
+            "url": "/reports/ar-aging",
+            "section": "Billing (slice 6)",
+            "when": "who owes us in five buckets",
+            "params": [
+                "as_of"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "reports": {
+            "screen": "reports",
+            "url": "/reports/",
+            "section": "Reports (slice 7)",
+            "when": "the reports as cards: utilization, realization, unbilled, revenue, margin, budget burn, AI pass-through, expense report, missing time, who owes us",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "report": {
+            "screen": "report",
+            "url": "/reports/{report}",
+            "section": "Reports (slice 7)",
+            "when": "one report with its filters and a CSV: utilization, realization, wip, revenue, margin, budget-burn, ai-passthrough, expenses, missing-time",
+            "params": [
+                "from",
+                "to",
+                "engagement",
+                "client",
+                "member",
+                "department",
+                "by"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "exports": {
+            "screen": "exports",
+            "url": "/exports",
+            "section": "Reports (slice 7)",
+            "when": "the downloads: invoices issued, credit notes, expenses by category, reimbursements, WIP, time detail, usage detail — CSV and JSON for a period",
+            "params": [
+                "from",
+                "to"
+            ],
+            "built": false,
+            "stub": false
+        }
+    },
+    "actions": {
+        "prefs_save": {
+            "action": "prefs_save",
+            "section": "Home, settings and tokens (Phase 2 and slice 9)",
+            "endpoint": "/settings/prefs.php",
+            "params": [
+                {
+                    "name": "email_enabled",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no"
+                },
+                {
+                    "name": "text_enabled",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no"
+                },
+                {
+                    "name": "kinds",
+                    "required": false,
+                    "repeated": true,
+                    "hint": ""
+                },
+                {
+                    "name": "text_kinds",
+                    "required": false,
+                    "repeated": true,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": null,
+            "log_event": "prefs.save",
+            "who": "own",
+            "built": false
+        },
+        "notification_read": {
+            "action": "notification_read",
+            "section": "Home, settings and tokens (Phase 2 and slice 9)",
+            "endpoint": "/settings/notifications/read.php",
+            "params": [
+                {
+                    "name": "notification",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "empty marks all"
+                }
+            ],
+            "undo": null,
+            "confirm": false,
+            "approval": null,
+            "log_event": "notification.read",
+            "who": "own",
+            "built": false
+        },
+        "token_mint": {
+            "action": "token_mint",
+            "section": "Home, settings and tokens (Phase 2 and slice 9)",
+            "endpoint": "/settings/tokens/mint.php",
+            "params": [
+                {
+                    "name": "label",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "scope",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "mcp or api"
+                }
+            ],
+            "undo": "token_revoke",
+            "confirm": false,
+            "approval": null,
+            "log_event": "token.mint",
+            "who": "own",
+            "built": false
+        },
+        "token_revoke": {
+            "action": "token_revoke",
+            "section": "Home, settings and tokens (Phase 2 and slice 9)",
+            "endpoint": "/settings/tokens/revoke.php",
+            "params": [
+                {
+                    "name": "token",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": null,
+            "log_event": "token.revoke",
+            "who": "own",
+            "built": false
+        },
+        "settings_save": {
+            "action": "settings_save",
+            "section": "Home, settings and tokens (Phase 2 and slice 9)",
+            "endpoint": "/settings/general.php",
+            "params": [
+                {
+                    "name": null,
+                    "note": "any field of the settings (firm_name"
+                },
+                {
+                    "name": "firm_address",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "firm_tax_id",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "base_currency",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "timezone",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "week_start_dow",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "hours_increment",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "max_hours_per_day",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "receipt_threshold",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "default_markup_pct",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "default_terms_days",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "default_time_grouping",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "share_receipts_default",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "link_lifetime_days",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "reminder_days",
+                    "required": false,
+                    "repeated": true,
+                    "hint": ""
+                },
+                {
+                    "name": "budget_thresholds_pct",
+                    "required": false,
+                    "repeated": true,
+                    "hint": ""
+                },
+                {
+                    "name": "ai_budget_threshold_pct",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "capacity_hours_per_week",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "ai_statement_poll",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "morning_note_member",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "missing_time_nudge_dow",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": null,
+                    "note": "invoice_footer)"
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": "other",
+            "log_event": "settings.save",
+            "who": "admin",
+            "built": false
+        },
+        "numbering_save": {
+            "action": "numbering_save",
+            "section": "Home, settings and tokens (Phase 2 and slice 9)",
+            "endpoint": "/settings/numbering.php",
+            "params": [
+                {
+                    "name": "kind",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "engagement or invoice or credit_note or expense or usage_charge"
+                },
+                {
+                    "name": "prefix",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "next_value",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "padding",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": true,
+            "approval": "other",
+            "log_event": "numbering.save",
+            "who": "admin",
+            "built": false
+        },
+        "client_save": {
+            "action": "client_save",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "endpoint": "/clients/save.php",
+            "params": [
+                {
+                    "name": "name",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "legal_name",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "code",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "2 to 8 capitals"
+                },
+                {
+                    "name": "email",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "phone",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "billing_address",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "tax_id",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "terms_days",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "currency",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "3 letters"
+                },
+                {
+                    "name": "po_required",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no"
+                },
+                {
+                    "name": "rate_card",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "the default card"
+                },
+                {
+                    "name": "notes",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "client_archive",
+            "confirm": false,
+            "approval": null,
+            "log_event": "client.create",
+            "who": "clients",
+            "built": false
+        },
+        "client_update": {
+            "action": "client_update",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "endpoint": "/clients/save.php",
+            "params": [
+                {
+                    "name": "client",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "name",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "legal_name",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "code",
+                    "repeated": false,
+                    "hint": "2 to 8 capitals"
+                },
+                {
+                    "required": false,
+                    "name": "email",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "phone",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "billing_address",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "tax_id",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "terms_days",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "currency",
+                    "repeated": false,
+                    "hint": "3 letters"
+                },
+                {
+                    "required": false,
+                    "name": "po_required",
+                    "repeated": false,
+                    "hint": "yes or no"
+                },
+                {
+                    "required": false,
+                    "name": "rate_card",
+                    "repeated": false,
+                    "hint": "the default card"
+                },
+                {
+                    "required": false,
+                    "name": "notes",
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": null,
+            "log_event": "client.update",
+            "who": "clients",
+            "built": false,
+            "partial": true
+        },
+        "client_archive": {
+            "action": "client_archive",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "endpoint": "/clients/archive.php",
+            "params": [
+                {
+                    "name": "client",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "client_restore",
+            "confirm": true,
+            "approval": null,
+            "log_event": "client.archive",
+            "who": "clients",
+            "built": false
+        },
+        "client_restore": {
+            "action": "client_restore",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "endpoint": "/clients/restore.php",
+            "params": [
+                {
+                    "name": "client",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "client_archive",
+            "confirm": false,
+            "approval": null,
+            "log_event": "client.restore",
+            "who": "clients",
+            "built": false
+        },
+        "client_delete": {
+            "action": "client_delete",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "endpoint": "/clients/delete.php",
+            "params": [
+                {
+                    "name": "client",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "only one with no engagement"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "deletion",
+            "log_event": "client.delete",
+            "who": "admin",
+            "built": false
+        },
+        "client_contact_save": {
+            "action": "client_contact_save",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "endpoint": "/clients/contacts/save.php",
+            "params": [
+                {
+                    "name": "client",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "name",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "email",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "phone",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "role",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "receives_invoices",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no"
+                },
+                {
+                    "name": "is_primary",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no"
+                },
+                {
+                    "name": "contact",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change an existing one"
+                }
+            ],
+            "undo": "client_contact_remove",
+            "confirm": false,
+            "approval": null,
+            "log_event": "client_contact.save",
+            "who": "clients",
+            "built": false
+        },
+        "client_contact_remove": {
+            "action": "client_contact_remove",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "endpoint": "/clients/contacts/remove.php",
+            "params": [
+                {
+                    "name": "contact",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": null,
+            "log_event": "client_contact.remove",
+            "who": "clients",
+            "built": false
+        },
+        "statement_send": {
+            "action": "statement_send",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "endpoint": "/clients/statement-send.php",
+            "params": [
+                {
+                    "name": "client",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "from",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "to",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "to_email",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "else the contacts who receive invoices"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "external_send",
+            "log_event": "client.statement_send",
+            "who": "billing",
+            "built": false
+        },
+        "consulting_role_save": {
+            "action": "consulting_role_save",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "endpoint": "/settings/roles/save.php",
+            "params": [
+                {
+                    "name": "title",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "key",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "lowercase"
+                },
+                {
+                    "name": "description",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "sort_order",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "role",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change an existing one"
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": "other",
+            "log_event": "consulting_role.save",
+            "who": "admin",
+            "built": false
+        },
+        "consulting_role_archive": {
+            "action": "consulting_role_archive",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "endpoint": "/settings/roles/archive.php",
+            "params": [
+                {
+                    "name": "role",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": true,
+            "approval": "other",
+            "log_event": "consulting_role.archive",
+            "who": "admin",
+            "built": false
+        },
+        "rate_card_save": {
+            "action": "rate_card_save",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "endpoint": "/settings/rate-cards/save.php",
+            "params": [
+                {
+                    "name": "name",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "currency",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "3 letters"
+                },
+                {
+                    "name": "effective_from",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "description",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "copy_of",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "a card whose rates are copied"
+                },
+                {
+                    "name": "rate_card",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change an existing one"
+                }
+            ],
+            "undo": "rate_card_delete",
+            "confirm": false,
+            "approval": "other",
+            "log_event": "rate_card.save",
+            "who": "cards",
+            "built": false
+        },
+        "rate_card_rate_save": {
+            "action": "rate_card_rate_save",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "endpoint": "/settings/rate-cards/rate.php",
+            "params": [
+                {
+                    "name": "rate_card",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "role",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "bill_rate",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "per hour"
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": "other",
+            "log_event": "rate_card.rate",
+            "who": "cards",
+            "built": false
+        },
+        "rate_card_archive": {
+            "action": "rate_card_archive",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "endpoint": "/settings/rate-cards/archive.php",
+            "params": [
+                {
+                    "name": "rate_card",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": true,
+            "approval": "other",
+            "log_event": "rate_card.archive",
+            "who": "cards",
+            "built": false
+        },
+        "rate_card_delete": {
+            "action": "rate_card_delete",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "endpoint": "/settings/rate-cards/delete.php",
+            "params": [
+                {
+                    "name": "rate_card",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "only one no engagement or client uses"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "deletion",
+            "log_event": "rate_card.delete",
+            "who": "admin",
+            "built": false
+        },
+        "cost_rate_save": {
+            "action": "cost_rate_save",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "endpoint": "/settings/cost-rates/save.php",
+            "params": [
+                {
+                    "name": "member",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "hourly_cost",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "in the base currency"
+                },
+                {
+                    "name": "valid_from",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "valid_to",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "note",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "cost_rate",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change an existing range"
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": true,
+            "approval": "other",
+            "log_event": "cost_rate.save",
+            "who": "admin",
+            "built": false
+        },
+        "cost_rate_end": {
+            "action": "cost_rate_end",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "endpoint": "/settings/cost-rates/end.php",
+            "params": [
+                {
+                    "name": "cost_rate",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "valid_to",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": "other",
+            "log_event": "cost_rate.end",
+            "who": "admin",
+            "built": false
+        },
+        "capacity_save": {
+            "action": "capacity_save",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "endpoint": "/settings/capacity/save.php",
+            "params": [
+                {
+                    "name": "member",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "hours_per_week",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "valid_from",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "valid_to",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "capacity",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change an existing range"
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": "other",
+            "log_event": "capacity.save",
+            "who": "admin",
+            "built": false
+        },
+        "activity_type_save": {
+            "action": "activity_type_save",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "endpoint": "/settings/activity-types/save.php",
+            "params": [
+                {
+                    "name": "label",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "key",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "billable_default",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no"
+                },
+                {
+                    "name": "sort_order",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "activity",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change an existing one"
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": "other",
+            "log_event": "activity_type.save",
+            "who": "admin",
+            "built": false
+        },
+        "activity_type_archive": {
+            "action": "activity_type_archive",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "endpoint": "/settings/activity-types/archive.php",
+            "params": [
+                {
+                    "name": "activity",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": true,
+            "approval": "other",
+            "log_event": "activity_type.archive",
+            "who": "admin",
+            "built": false
+        },
+        "expense_category_save": {
+            "action": "expense_category_save",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "endpoint": "/settings/categories/save.php",
+            "params": [
+                {
+                    "name": "label",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "key",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "receipt_required_above",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "default_markup_pct",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "billable_default",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no"
+                },
+                {
+                    "name": "sort_order",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "category",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change an existing one"
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": "other",
+            "log_event": "expense_category.save",
+            "who": "admin",
+            "built": false
+        },
+        "expense_category_archive": {
+            "action": "expense_category_archive",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "endpoint": "/settings/categories/archive.php",
+            "params": [
+                {
+                    "name": "category",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": true,
+            "approval": "other",
+            "log_event": "expense_category.archive",
+            "who": "admin",
+            "built": false
+        },
+        "usage_provider_save": {
+            "action": "usage_provider_save",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "endpoint": "/settings/providers/save.php",
+            "params": [
+                {
+                    "name": "name",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "provider_key",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "lowercase"
+                },
+                {
+                    "name": "csv_mapping",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "JSON"
+                },
+                {
+                    "name": "sort_order",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "provider",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change an existing one"
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": "other",
+            "log_event": "usage_provider.save",
+            "who": "admin",
+            "built": false
+        },
+        "tax_rate_save": {
+            "action": "tax_rate_save",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "endpoint": "/settings/tax-rates/save.php",
+            "params": [
+                {
+                    "name": "name",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "rate",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "percent"
+                },
+                {
+                    "name": "is_default",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no"
+                },
+                {
+                    "name": "tax_rate",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change an existing one"
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": "other",
+            "log_event": "tax_rate.save",
+            "who": "admin",
+            "built": false
+        },
+        "tax_rate_archive": {
+            "action": "tax_rate_archive",
+            "section": "Clients, rates and the vocabulary (slice 1)",
+            "endpoint": "/settings/tax-rates/archive.php",
+            "params": [
+                {
+                    "name": "tax_rate",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": true,
+            "approval": "other",
+            "log_event": "tax_rate.archive",
+            "who": "admin",
+            "built": false
+        },
+        "engagement_save": {
+            "action": "engagement_save",
+            "section": "Engagements (slice 2)",
+            "endpoint": "/engagements/save.php",
+            "params": [
+                {
+                    "name": "client",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "name",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "kind",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "time_and_materials or fixed_bid"
+                },
+                {
+                    "name": "start_date",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "end_date",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "currency",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "3 letters or the client's"
+                },
+                {
+                    "name": "po_number",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "rate_card",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "nte_amount",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "T&M"
+                },
+                {
+                    "name": "budget_hours",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "budget_amount",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "ai_budget_amount",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "markup_pct",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "the expense policy"
+                },
+                {
+                    "name": "requires_receipt_above",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "billing_cadence",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "weekly or biweekly or monthly or on_milestone or manual"
+                },
+                {
+                    "name": "time_grouping",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "by_person or by_role or by_activity or by_day or single_line"
+                },
+                {
+                    "name": "share_receipts_with_client",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no"
+                },
+                {
+                    "name": "department",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "the practice"
+                },
+                {
+                    "name": "manager",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "projects_ref",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "description",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "start_now",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes activates it"
+                }
+            ],
+            "undo": "engagement_cancel",
+            "confirm": false,
+            "approval": null,
+            "log_event": "engagement.create",
+            "who": "manage (engagements.manage)",
+            "built": false
+        },
+        "engagement_update": {
+            "action": "engagement_update",
+            "section": "Engagements (slice 2)",
+            "endpoint": "/engagements/save.php",
+            "params": [
+                {
+                    "name": "engagement",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "client",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "name",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "kind",
+                    "repeated": false,
+                    "hint": "time_and_materials or fixed_bid"
+                },
+                {
+                    "required": false,
+                    "name": "start_date",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "end_date",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "currency",
+                    "repeated": false,
+                    "hint": "3 letters or the client's"
+                },
+                {
+                    "required": false,
+                    "name": "po_number",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "rate_card",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "nte_amount",
+                    "repeated": false,
+                    "hint": "T&M"
+                },
+                {
+                    "required": false,
+                    "name": "budget_hours",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "budget_amount",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "ai_budget_amount",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "markup_pct",
+                    "repeated": false,
+                    "hint": "the expense policy"
+                },
+                {
+                    "required": false,
+                    "name": "requires_receipt_above",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "billing_cadence",
+                    "repeated": false,
+                    "hint": "weekly or biweekly or monthly or on_milestone or manual"
+                },
+                {
+                    "required": false,
+                    "name": "time_grouping",
+                    "repeated": false,
+                    "hint": "by_person or by_role or by_activity or by_day or single_line"
+                },
+                {
+                    "required": false,
+                    "name": "share_receipts_with_client",
+                    "repeated": false,
+                    "hint": "yes or no"
+                },
+                {
+                    "required": false,
+                    "name": "department",
+                    "repeated": false,
+                    "hint": "the practice"
+                },
+                {
+                    "required": false,
+                    "name": "manager",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "projects_ref",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "description",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "start_now",
+                    "repeated": false,
+                    "hint": "yes activates it"
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": null,
+            "log_event": "engagement.update",
+            "who": "manage",
+            "built": false,
+            "partial": true
+        },
+        "engagement_activate": {
+            "action": "engagement_activate",
+            "section": "Engagements (slice 2)",
+            "endpoint": "/engagements/activate.php",
+            "params": [
+                {
+                    "name": "engagement",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "engagement_hold",
+            "confirm": false,
+            "approval": null,
+            "log_event": "engagement.activate",
+            "who": "manage",
+            "built": false
+        },
+        "engagement_hold": {
+            "action": "engagement_hold",
+            "section": "Engagements (slice 2)",
+            "endpoint": "/engagements/hold.php",
+            "params": [
+                {
+                    "name": "engagement",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "reason",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "engagement_activate",
+            "confirm": false,
+            "approval": null,
+            "log_event": "engagement.hold",
+            "who": "manage",
+            "built": false
+        },
+        "engagement_close": {
+            "action": "engagement_close",
+            "section": "Engagements (slice 2)",
+            "endpoint": "/engagements/close.php",
+            "params": [
+                {
+                    "name": "engagement",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "reason",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "engagement_reopen",
+            "confirm": true,
+            "approval": null,
+            "log_event": "engagement.close",
+            "who": "manage",
+            "built": false
+        },
+        "engagement_reopen": {
+            "action": "engagement_reopen",
+            "section": "Engagements (slice 2)",
+            "endpoint": "/engagements/reopen.php",
+            "params": [
+                {
+                    "name": "engagement",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "reason",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "engagement_close",
+            "confirm": false,
+            "approval": null,
+            "log_event": "engagement.reopen",
+            "who": "manage",
+            "built": false
+        },
+        "engagement_cancel": {
+            "action": "engagement_cancel",
+            "section": "Engagements (slice 2)",
+            "endpoint": "/engagements/cancel.php",
+            "params": [
+                {
+                    "name": "engagement",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "reason",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": null,
+            "log_event": "engagement.cancel",
+            "who": "manage",
+            "built": false
+        },
+        "engagement_delete": {
+            "action": "engagement_delete",
+            "section": "Engagements (slice 2)",
+            "endpoint": "/engagements/delete.php",
+            "params": [
+                {
+                    "name": "engagement",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft only"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "deletion",
+            "log_event": "engagement.delete",
+            "who": "manage",
+            "built": false
+        },
+        "engagement_member_save": {
+            "action": "engagement_member_save",
+            "section": "Engagements (slice 2)",
+            "endpoint": "/engagements/staffing/save.php",
+            "params": [
+                {
+                    "name": "engagement",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "member",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "role",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a consulting role"
+                },
+                {
+                    "name": "valid_from",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "today"
+                },
+                {
+                    "name": "valid_to",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "bill_rate_override",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "per hour"
+                },
+                {
+                    "name": "note",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "staffing",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change an existing one"
+                }
+            ],
+            "undo": "engagement_member_end",
+            "confirm": false,
+            "approval": null,
+            "log_event": "engagement.staff",
+            "who": "manage (staffing.write)",
+            "built": false
+        },
+        "engagement_member_end": {
+            "action": "engagement_member_end",
+            "section": "Engagements (slice 2)",
+            "endpoint": "/engagements/staffing/end.php",
+            "params": [
+                {
+                    "name": "staffing",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "valid_to",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "today"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": null,
+            "log_event": "engagement.unstaff",
+            "who": "manage",
+            "built": false
+        },
+        "engagement_role_rate_save": {
+            "action": "engagement_role_rate_save",
+            "section": "Engagements (slice 2)",
+            "endpoint": "/engagements/rates/save.php",
+            "params": [
+                {
+                    "name": "engagement",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "role",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "bill_rate",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "per hour; empty removes the override"
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": "other",
+            "log_event": "engagement.role_rate",
+            "who": "manage",
+            "built": false
+        },
+        "milestone_save": {
+            "action": "milestone_save",
+            "section": "Engagements (slice 2)",
+            "endpoint": "/engagements/milestones/save.php",
+            "params": [
+                {
+                    "name": "engagement",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "name",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "amount",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "due_date",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "description",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "sort_order",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "milestone",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change an existing one"
+                }
+            ],
+            "undo": "milestone_delete",
+            "confirm": false,
+            "approval": null,
+            "log_event": "milestone.save",
+            "who": "manage (milestones.write)",
+            "built": false
+        },
+        "milestone_deliver": {
+            "action": "milestone_deliver",
+            "section": "Engagements (slice 2)",
+            "endpoint": "/engagements/milestones/deliver.php",
+            "params": [
+                {
+                    "name": "milestone",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "note",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": null,
+            "log_event": "milestone.deliver",
+            "who": "manage",
+            "built": false
+        },
+        "milestone_accept": {
+            "action": "milestone_accept",
+            "section": "Engagements (slice 2)",
+            "endpoint": "/engagements/milestones/accept.php",
+            "params": [
+                {
+                    "name": "milestone",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "acceptance_note",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "who at the client accepted and how"
+                },
+                {
+                    "name": "accepted_by",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "a member; default the caller"
+                },
+                {
+                    "name": "file",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "multipart evidence"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "other",
+            "log_event": "milestone.accept",
+            "who": "manage",
+            "built": false
+        },
+        "milestone_cancel": {
+            "action": "milestone_cancel",
+            "section": "Engagements (slice 2)",
+            "endpoint": "/engagements/milestones/cancel.php",
+            "params": [
+                {
+                    "name": "milestone",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "reason",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": null,
+            "log_event": "milestone.cancel",
+            "who": "manage",
+            "built": false
+        },
+        "milestone_delete": {
+            "action": "milestone_delete",
+            "section": "Engagements (slice 2)",
+            "endpoint": "/engagements/milestones/delete.php",
+            "params": [
+                {
+                    "name": null,
+                    "note": "milestone (planned"
+                },
+                {
+                    "name": null,
+                    "note": "never accepted)"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "deletion",
+            "log_event": "milestone.delete",
+            "who": "manage",
+            "built": false
+        },
+        "budget_alert_write": {
+            "action": "budget_alert_write",
+            "section": "Engagements (slice 2)",
+            "endpoint": "/usage/budgets/check.php",
+            "params": [
+                {
+                    "name": "engagement",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "empty checks every active one"
+                }
+            ],
+            "undo": null,
+            "confirm": false,
+            "approval": null,
+            "log_event": "budget_alert.write",
+            "who": "manage or billing",
+            "built": false
+        },
+        "budget_alert_acknowledge": {
+            "action": "budget_alert_acknowledge",
+            "section": "Engagements (slice 2)",
+            "endpoint": "/usage/budgets/acknowledge.php",
+            "params": [
+                {
+                    "name": "alert",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": false,
+            "approval": null,
+            "log_event": "budget_alert.acknowledge",
+            "who": "manage",
+            "built": false
+        },
+        "attachment_add": {
+            "action": "attachment_add",
+            "section": "Engagements (slice 2)",
+            "endpoint": "/engagements/attachments/save.php",
+            "params": [
+                {
+                    "name": "record_type",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "client or engagement or milestone or expense or usage_charge or invoice or credit_note"
+                },
+                {
+                    "name": "record",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "its id"
+                },
+                {
+                    "name": "file",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "multipart"
+                },
+                {
+                    "name": "client_visible",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no"
+                }
+            ],
+            "undo": "attachment_delete",
+            "confirm": false,
+            "approval": null,
+            "log_event": "attachment.add",
+            "who": "the record's writer",
+            "built": false
+        },
+        "attachment_delete": {
+            "action": "attachment_delete",
+            "section": "Engagements (slice 2)",
+            "endpoint": "/engagements/attachments/delete.php",
+            "params": [
+                {
+                    "name": "attachment",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "deletion",
+            "log_event": "attachment.delete",
+            "who": "the record's manager",
+            "built": false
+        },
+        "note_add": {
+            "action": "note_add",
+            "section": "Engagements (slice 2)",
+            "endpoint": "/engagements/notes/save.php",
+            "params": [
+                {
+                    "name": "record_type",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "record",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "body",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "note_delete",
+            "confirm": false,
+            "approval": null,
+            "log_event": "note.add",
+            "who": "the record's viewer",
+            "built": false
+        },
+        "note_delete": {
+            "action": "note_delete",
+            "section": "Engagements (slice 2)",
+            "endpoint": "/engagements/notes/delete.php",
+            "params": [
+                {
+                    "name": "note",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "deletion",
+            "log_event": "note.delete",
+            "who": "own or admin",
+            "built": false
+        },
+        "time_entry_save": {
+            "action": "time_entry_save",
+            "section": "Time — THE EXEMPLAR (slice 3)",
+            "endpoint": "/time/entries/save.php",
+            "params": [
+                {
+                    "name": "engagement",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "date",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "hours",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "in the increment"
+                },
+                {
+                    "name": "activity",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "an activity type"
+                },
+                {
+                    "name": "billable",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no; the activity's default"
+                },
+                {
+                    "name": "note",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "client-visible"
+                },
+                {
+                    "name": "internal_note",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "member",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "a manager logging for someone"
+                },
+                {
+                    "name": "entry",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change an existing one"
+                }
+            ],
+            "undo": "time_entry_delete",
+            "confirm": false,
+            "approval": null,
+            "log_event": "time_entry.save",
+            "who": "own or manage",
+            "built": false
+        },
+        "time_entry_delete": {
+            "action": "time_entry_delete",
+            "section": "Time — THE EXEMPLAR (slice 3)",
+            "endpoint": "/time/entries/delete.php",
+            "params": [
+                {
+                    "name": "entry",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft or rejected one"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "deletion",
+            "log_event": "time_entry.delete",
+            "who": "own or manage",
+            "built": false
+        },
+        "timer_start": {
+            "action": "timer_start",
+            "section": "Time — THE EXEMPLAR (slice 3)",
+            "endpoint": "/time/timer/start.php",
+            "params": [
+                {
+                    "name": "engagement",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "activity",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "note",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "timer_stop",
+            "confirm": false,
+            "approval": null,
+            "log_event": "timer.start",
+            "who": "own",
+            "built": false
+        },
+        "timer_stop": {
+            "action": "timer_stop",
+            "section": "Time — THE EXEMPLAR (slice 3)",
+            "endpoint": "/time/timer/stop.php",
+            "params": [
+                {
+                    "name": null,
+                    "note": "—"
+                }
+            ],
+            "undo": null,
+            "confirm": false,
+            "approval": null,
+            "log_event": "timer.stop",
+            "who": "own",
+            "built": false
+        },
+        "timesheet_submit": {
+            "action": "timesheet_submit",
+            "section": "Time — THE EXEMPLAR (slice 3)",
+            "endpoint": "/time/weeks/submit.php",
+            "params": [
+                {
+                    "name": "week",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "its Monday or a timesheet; this week by default"
+                },
+                {
+                    "name": "member",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "a manager submitting for someone"
+                }
+            ],
+            "undo": "timesheet_reopen",
+            "confirm": true,
+            "approval": null,
+            "log_event": "timesheet.submit",
+            "who": "own or manage",
+            "built": false
+        },
+        "timesheet_reopen": {
+            "action": "timesheet_reopen",
+            "section": "Time — THE EXEMPLAR (slice 3)",
+            "endpoint": "/time/weeks/reopen.php",
+            "params": [
+                {
+                    "name": null,
+                    "note": "timesheet (submitted"
+                },
+                {
+                    "name": null,
+                    "note": "nothing approved yet)"
+                }
+            ],
+            "undo": "timesheet_submit",
+            "confirm": false,
+            "approval": null,
+            "log_event": "timesheet.reopen",
+            "who": "own or manage",
+            "built": false
+        },
+        "timesheet_approve": {
+            "action": "timesheet_approve",
+            "section": "Time — THE EXEMPLAR (slice 3)",
+            "endpoint": "/time/weeks/approve.php",
+            "params": [
+                {
+                    "name": "timesheet",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "approves the entries on the engagements the approver manages"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "other",
+            "log_event": "timesheet.approve",
+            "who": "approve",
+            "built": false
+        },
+        "timesheet_reject": {
+            "action": "timesheet_reject",
+            "section": "Time — THE EXEMPLAR (slice 3)",
+            "endpoint": "/time/weeks/reject.php",
+            "params": [
+                {
+                    "name": "timesheet",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "reason",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "other",
+            "log_event": "timesheet.reject",
+            "who": "approve",
+            "built": false
+        },
+        "time_entry_write_off": {
+            "action": "time_entry_write_off",
+            "section": "Time — THE EXEMPLAR (slice 3)",
+            "endpoint": "/time/entries/write-off.php",
+            "params": [
+                {
+                    "name": null,
+                    "note": "entry (approved"
+                },
+                {
+                    "name": null,
+                    "note": "unbilled)"
+                },
+                {
+                    "name": "reason",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "time_entry.write_off",
+            "who": "manage",
+            "built": false
+        },
+        "timesheet_nudge_send": {
+            "action": "timesheet_nudge_send",
+            "section": "Time — THE EXEMPLAR (slice 3)",
+            "endpoint": "/time/weeks/nudge.php",
+            "params": [
+                {
+                    "name": "member",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "week",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "last week by default"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "external_send",
+            "log_event": "timesheet.nudge",
+            "who": "approve or billing",
+            "built": false
+        },
+        "expense_save": {
+            "action": "expense_save",
+            "section": "Expenses and receipts (slice 4)",
+            "endpoint": "/expenses/save.php",
+            "params": [
+                {
+                    "name": "engagement",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "date",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "category",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "amount",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "gross"
+                },
+                {
+                    "name": "description",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "tax_amount",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "vendor_name",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "paid_with",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "personal or company_card"
+                },
+                {
+                    "name": "billable",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no"
+                },
+                {
+                    "name": "markup_pct",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "the policy's unless said"
+                },
+                {
+                    "name": "member",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "a manager recording for someone"
+                },
+                {
+                    "name": "file",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "multipart receipt"
+                },
+                {
+                    "name": "expense",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change an existing one"
+                }
+            ],
+            "undo": "expense_delete",
+            "confirm": false,
+            "approval": null,
+            "log_event": "expense.save",
+            "who": "own or manage",
+            "built": false
+        },
+        "expense_delete": {
+            "action": "expense_delete",
+            "section": "Expenses and receipts (slice 4)",
+            "endpoint": "/expenses/delete.php",
+            "params": [
+                {
+                    "name": "expense",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft or rejected one"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "deletion",
+            "log_event": "expense.delete",
+            "who": "own or manage",
+            "built": false
+        },
+        "expense_submit": {
+            "action": "expense_submit",
+            "section": "Expenses and receipts (slice 4)",
+            "endpoint": "/expenses/submit.php",
+            "params": [
+                {
+                    "name": "expense",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "refused without a receipt at or above the threshold"
+                }
+            ],
+            "undo": null,
+            "confirm": false,
+            "approval": null,
+            "log_event": "expense.submit",
+            "who": "own or manage",
+            "built": false
+        },
+        "expense_approve": {
+            "action": "expense_approve",
+            "section": "Expenses and receipts (slice 4)",
+            "endpoint": "/expenses/approve.php",
+            "params": [
+                {
+                    "name": "expense",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "expense_reject",
+            "confirm": true,
+            "approval": "other",
+            "log_event": "expense.approve",
+            "who": "approve",
+            "built": false
+        },
+        "expense_reject": {
+            "action": "expense_reject",
+            "section": "Expenses and receipts (slice 4)",
+            "endpoint": "/expenses/reject.php",
+            "params": [
+                {
+                    "name": "expense",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "reason",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "other",
+            "log_event": "expense.reject",
+            "who": "approve",
+            "built": false
+        },
+        "expense_mark_reimbursed": {
+            "action": "expense_mark_reimbursed",
+            "section": "Expenses and receipts (slice 4)",
+            "endpoint": "/expenses/reimburse.php",
+            "params": [
+                {
+                    "name": "expense",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "or expenses[] for one person"
+                },
+                {
+                    "name": "reference",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "the pay run or payment"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "other",
+            "log_event": "expense.reimburse",
+            "who": "billing",
+            "built": false
+        },
+        "usage_charge_draft": {
+            "action": "usage_charge_draft",
+            "section": "AI usage and hosting (slice 5)",
+            "endpoint": "/usage/save.php",
+            "params": [
+                {
+                    "name": "engagement",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "kind",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "model_usage or api or hosting or storage or other"
+                },
+                {
+                    "name": "description",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "period_start",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "period_end",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "provider",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "quantity",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "unit",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "tokens or calls or gb or gb_month or vm_hours or months or units"
+                },
+                {
+                    "name": "unit_cost",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "pricing",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "cost or markup or resale"
+                },
+                {
+                    "name": "markup_pct",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "resale_unit_price",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "per million tokens"
+                },
+                {
+                    "name": "billable",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no"
+                },
+                {
+                    "name": "file",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "multipart; the provider's invoice"
+                },
+                {
+                    "name": "charge",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change a draft"
+                }
+            ],
+            "undo": "usage_charge_delete",
+            "confirm": false,
+            "approval": null,
+            "log_event": "usage_charge.draft",
+            "who": "usage",
+            "built": false
+        },
+        "usage_charge_delete": {
+            "action": "usage_charge_delete",
+            "section": "AI usage and hosting (slice 5)",
+            "endpoint": "/usage/delete.php",
+            "params": [
+                {
+                    "name": "charge",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "deletion",
+            "log_event": "usage_charge.delete",
+            "who": "usage",
+            "built": false
+        },
+        "usage_charge_approve": {
+            "action": "usage_charge_approve",
+            "section": "AI usage and hosting (slice 5)",
+            "endpoint": "/usage/approve.php",
+            "params": [
+                {
+                    "name": "charge",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "usage_charge_void",
+            "confirm": true,
+            "approval": "other",
+            "log_event": "usage_charge.approve",
+            "who": "approve (usage.approve)",
+            "built": false
+        },
+        "usage_charge_void": {
+            "action": "usage_charge_void",
+            "section": "AI usage and hosting (slice 5)",
+            "endpoint": "/usage/void.php",
+            "params": [
+                {
+                    "name": "charge",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "unbilled"
+                },
+                {
+                    "name": "reason",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": null,
+            "log_event": "usage_charge.void",
+            "who": "usage",
+            "built": false
+        },
+        "usage_import": {
+            "action": "usage_import",
+            "section": "AI usage and hosting (slice 5)",
+            "endpoint": "/usage/import.php",
+            "params": [
+                {
+                    "name": "provider",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "engagement",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "file",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "multipart CSV"
+                },
+                {
+                    "name": "mapping",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "JSON; the provider's saved one by default"
+                },
+                {
+                    "name": "save_mapping",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes remembers it"
+                }
+            ],
+            "undo": "usage_import_delete",
+            "confirm": true,
+            "approval": null,
+            "log_event": "usage_import.run",
+            "who": "usage",
+            "built": false
+        },
+        "usage_import_delete": {
+            "action": "usage_import_delete",
+            "section": "AI usage and hosting (slice 5)",
+            "endpoint": "/usage/import-delete.php",
+            "params": [
+                {
+                    "name": "import",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "removes its draft charges"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "deletion",
+            "log_event": "usage_import.delete",
+            "who": "usage",
+            "built": false
+        },
+        "ai_statement_pull": {
+            "action": "ai_statement_pull",
+            "section": "AI usage and hosting (slice 5)",
+            "endpoint": "/usage/os/pull.php",
+            "params": [
+                {
+                    "name": "period",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "a month; every closed month not yet pulled by default"
+                }
+            ],
+            "undo": null,
+            "confirm": false,
+            "approval": null,
+            "log_event": "ai_statement.pull",
+            "who": "usage",
+            "built": false
+        },
+        "ai_statement_allocate": {
+            "action": "ai_statement_allocate",
+            "section": "AI usage and hosting (slice 5)",
+            "endpoint": "/usage/os/allocate.php",
+            "params": [
+                {
+                    "name": "statement",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a closed month"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": null,
+            "log_event": "ai_statement.allocate",
+            "who": "usage",
+            "built": false
+        },
+        "allocation_rule_save": {
+            "action": "allocation_rule_save",
+            "section": "AI usage and hosting (slice 5)",
+            "endpoint": "/settings/allocation-rules/save.php",
+            "params": [
+                {
+                    "name": "name",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "engagement",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "agent",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "a kernel agent id"
+                },
+                {
+                    "name": "department",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "a kernel department id"
+                },
+                {
+                    "name": "application",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "a kernel application id"
+                },
+                {
+                    "name": "share_pct",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "100"
+                },
+                {
+                    "name": "pricing",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "cost or markup or resale"
+                },
+                {
+                    "name": "markup_pct",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "resale_unit_price",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "valid_from",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "valid_to",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "active",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no"
+                },
+                {
+                    "name": "rule",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change an existing one"
+                }
+            ],
+            "undo": "allocation_rule_delete",
+            "confirm": false,
+            "approval": "other",
+            "log_event": "allocation_rule.save",
+            "who": "usage",
+            "built": false
+        },
+        "allocation_rule_delete": {
+            "action": "allocation_rule_delete",
+            "section": "AI usage and hosting (slice 5)",
+            "endpoint": "/settings/allocation-rules/delete.php",
+            "params": [
+                {
+                    "name": "rule",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "deletion",
+            "log_event": "allocation_rule.delete",
+            "who": "usage",
+            "built": false
+        },
+        "recurring_charge_save": {
+            "action": "recurring_charge_save",
+            "section": "AI usage and hosting (slice 5)",
+            "endpoint": "/settings/schedules/save.php",
+            "params": [
+                {
+                    "name": "engagement",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "kind",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "description",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "unit_cost",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "next_date",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "provider",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "quantity",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "unit",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "pricing",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "markup_pct",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "resale_unit_price",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "cadence",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "weekly or monthly or quarterly or yearly"
+                },
+                {
+                    "name": "every_n",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "end_date",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "active",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no"
+                },
+                {
+                    "name": "schedule",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change an existing one"
+                }
+            ],
+            "undo": "recurring_charge_delete",
+            "confirm": false,
+            "approval": "other",
+            "log_event": "recurring_charge.save",
+            "who": "usage",
+            "built": false
+        },
+        "recurring_charge_run": {
+            "action": "recurring_charge_run",
+            "section": "AI usage and hosting (slice 5)",
+            "endpoint": "/settings/schedules/run.php",
+            "params": [
+                {
+                    "name": "schedule",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "due"
+                }
+            ],
+            "undo": null,
+            "confirm": false,
+            "approval": null,
+            "log_event": "recurring_charge.run",
+            "who": "usage",
+            "built": false
+        },
+        "recurring_charge_delete": {
+            "action": "recurring_charge_delete",
+            "section": "AI usage and hosting (slice 5)",
+            "endpoint": "/settings/schedules/delete.php",
+            "params": [
+                {
+                    "name": "schedule",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "deletion",
+            "log_event": "recurring_charge.delete",
+            "who": "usage",
+            "built": false
+        },
+        "invoice_draft": {
+            "action": "invoice_draft",
+            "section": "Billing (slice 6)",
+            "endpoint": "/invoices/save.php",
+            "params": [
+                {
+                    "name": "engagement",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "period_start",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "period_end",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "issue_date",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "today"
+                },
+                {
+                    "name": "due_date",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "the client's terms"
+                },
+                {
+                    "name": "po_number",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "memo",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to the client"
+                },
+                {
+                    "name": "terms_text",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "internal_note",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "add_unbilled",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes pulls the approved unbilled items through the engagement's grouping"
+                }
+            ],
+            "undo": "invoice_delete",
+            "confirm": false,
+            "approval": null,
+            "log_event": "invoice.draft",
+            "who": "draft",
+            "built": false
+        },
+        "invoice_update": {
+            "action": "invoice_update",
+            "section": "Billing (slice 6)",
+            "endpoint": "/invoices/save.php",
+            "params": [
+                {
+                    "name": "invoice",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                },
+                {
+                    "required": false,
+                    "name": "engagement",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "period_start",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "period_end",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "issue_date",
+                    "repeated": false,
+                    "hint": "today"
+                },
+                {
+                    "required": false,
+                    "name": "due_date",
+                    "repeated": false,
+                    "hint": "the client's terms"
+                },
+                {
+                    "required": false,
+                    "name": "po_number",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "memo",
+                    "repeated": false,
+                    "hint": "to the client"
+                },
+                {
+                    "required": false,
+                    "name": "terms_text",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "internal_note",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "add_unbilled",
+                    "repeated": false,
+                    "hint": "yes pulls the approved unbilled items through the engagement's grouping"
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": null,
+            "log_event": "invoice.update",
+            "who": "draft",
+            "built": false,
+            "partial": true
+        },
+        "invoice_add_unbilled": {
+            "action": "invoice_add_unbilled",
+            "section": "Billing (slice 6)",
+            "endpoint": "/invoices/add-unbilled.php",
+            "params": [
+                {
+                    "name": "invoice",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                },
+                {
+                    "name": "through",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "a date; today"
+                }
+            ],
+            "undo": null,
+            "confirm": false,
+            "approval": null,
+            "log_event": "invoice.add_unbilled",
+            "who": "draft",
+            "built": false
+        },
+        "invoice_line_save": {
+            "action": "invoice_line_save",
+            "section": "Billing (slice 6)",
+            "endpoint": "/invoices/lines/save.php",
+            "params": [
+                {
+                    "name": "invoice",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                },
+                {
+                    "name": "kind",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "fixed or adjustment or discount or time or expense or usage"
+                },
+                {
+                    "name": "description",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "unit_price",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "quantity",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "1"
+                },
+                {
+                    "name": "unit",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "tax_rate",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "sort_order",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "line",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change an existing one"
+                }
+            ],
+            "undo": "invoice_line_remove",
+            "confirm": false,
+            "approval": null,
+            "log_event": "invoice.line_save",
+            "who": "draft",
+            "built": false
+        },
+        "invoice_line_remove": {
+            "action": "invoice_line_remove",
+            "section": "Billing (slice 6)",
+            "endpoint": "/invoices/lines/remove.php",
+            "params": [
+                {
+                    "name": "line",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "its backing items return to unbilled"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": null,
+            "log_event": "invoice.line_remove",
+            "who": "draft",
+            "built": false
+        },
+        "invoice_item_remove": {
+            "action": "invoice_item_remove",
+            "section": "Billing (slice 6)",
+            "endpoint": "/invoices/items/remove.php",
+            "params": [
+                {
+                    "name": "item",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "one backing item leaves its line and is unbilled again"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": null,
+            "log_event": "invoice.item_remove",
+            "who": "draft",
+            "built": false
+        },
+        "invoice_delete": {
+            "action": "invoice_delete",
+            "section": "Billing (slice 6)",
+            "endpoint": "/invoices/delete.php",
+            "params": [
+                {
+                    "name": "invoice",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft; its items are released"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "deletion",
+            "log_event": "invoice.delete",
+            "who": "draft",
+            "built": false
+        },
+        "invoice_issue": {
+            "action": "invoice_issue",
+            "section": "Billing (slice 6)",
+            "endpoint": "/invoices/issue.php",
+            "params": [
+                {
+                    "name": "invoice",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "nte_override_reason",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "billing only; when the not-to-exceed would be crossed"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "invoice.issue",
+            "who": "billing",
+            "built": false
+        },
+        "invoice_send": {
+            "action": "invoice_send",
+            "section": "Billing (slice 6)",
+            "endpoint": "/invoices/send.php",
+            "params": [
+                {
+                    "name": "invoice",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "issued"
+                },
+                {
+                    "name": "to_email",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "else the contacts who receive invoices"
+                },
+                {
+                    "name": "message",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "external_send",
+            "log_event": "invoice.send",
+            "who": "billing",
+            "built": false
+        },
+        "invoice_remind": {
+            "action": "invoice_remind",
+            "section": "Billing (slice 6)",
+            "endpoint": "/invoices/remind.php",
+            "params": [
+                {
+                    "name": "invoice",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "past due"
+                },
+                {
+                    "name": "message",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "external_send",
+            "log_event": "invoice.remind",
+            "who": "billing",
+            "built": false
+        },
+        "invoice_void": {
+            "action": "invoice_void",
+            "section": "Billing (slice 6)",
+            "endpoint": "/invoices/void.php",
+            "params": [
+                {
+                    "name": "invoice",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "nothing paid or credited"
+                },
+                {
+                    "name": "reason",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "invoice.void",
+            "who": "billing",
+            "built": false
+        },
+        "invoice_write_off": {
+            "action": "invoice_write_off",
+            "section": "Billing (slice 6)",
+            "endpoint": "/invoices/write-off.php",
+            "params": [
+                {
+                    "name": "invoice",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "reason",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "invoice.write_off",
+            "who": "billing",
+            "built": false
+        },
+        "invoice_external_ref_set": {
+            "action": "invoice_external_ref_set",
+            "section": "Billing (slice 6)",
+            "endpoint": "/invoices/external-ref.php",
+            "params": [
+                {
+                    "name": "invoice",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "external_ref",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "what the ledger calls it"
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": null,
+            "log_event": "invoice.external_ref",
+            "who": "billing",
+            "built": false
+        },
+        "secure_link_rotate": {
+            "action": "secure_link_rotate",
+            "section": "Billing (slice 6)",
+            "endpoint": "/invoices/secure-link.php",
+            "params": [
+                {
+                    "name": null,
+                    "note": "invoice (a new link"
+                },
+                {
+                    "name": null,
+                    "note": "the old one dead)"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": null,
+            "log_event": "invoice.secure_link_rotate",
+            "who": "billing",
+            "built": false
+        },
+        "payment_record": {
+            "action": "payment_record",
+            "section": "Billing (slice 6)",
+            "endpoint": "/payments/save.php",
+            "params": [
+                {
+                    "name": "invoice",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "amount",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "paid_on",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "today"
+                },
+                {
+                    "name": "method",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "transfer or card or cheque or cash or other"
+                },
+                {
+                    "name": "reference",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "payment_void",
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "payment.record",
+            "who": "billing",
+            "built": false
+        },
+        "payment_void": {
+            "action": "payment_void",
+            "section": "Billing (slice 6)",
+            "endpoint": "/payments/void.php",
+            "params": [
+                {
+                    "name": "payment",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "reason",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "payment.void",
+            "who": "billing",
+            "built": false
+        },
+        "payment_claim_confirm": {
+            "action": "payment_claim_confirm",
+            "section": "Billing (slice 6)",
+            "endpoint": "/billing/claims/confirm.php",
+            "params": [
+                {
+                    "name": "claim",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "amount",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "the claim's or the balance"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "payment_claim.confirm",
+            "who": "billing",
+            "built": false
+        },
+        "payment_claim_dismiss": {
+            "action": "payment_claim_dismiss",
+            "section": "Billing (slice 6)",
+            "endpoint": "/billing/claims/dismiss.php",
+            "params": [
+                {
+                    "name": "claim",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "reason",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": false,
+            "approval": "other",
+            "log_event": "payment_claim.dismiss",
+            "who": "billing",
+            "built": false
+        },
+        "credit_note_draft": {
+            "action": "credit_note_draft",
+            "section": "Billing (slice 6)",
+            "endpoint": "/credit-notes/save.php",
+            "params": [
+                {
+                    "name": "client",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "or the invoice's"
+                },
+                {
+                    "name": "invoice",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "the one it corrects"
+                },
+                {
+                    "name": "reason",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "issue_date",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "credit_note",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change a draft"
+                }
+            ],
+            "undo": "credit_note_delete",
+            "confirm": false,
+            "approval": null,
+            "log_event": "credit_note.draft",
+            "who": "billing",
+            "built": false
+        },
+        "credit_note_line_save": {
+            "action": "credit_note_line_save",
+            "section": "Billing (slice 6)",
+            "endpoint": "/credit-notes/lines/save.php",
+            "params": [
+                {
+                    "name": "credit_note",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                },
+                {
+                    "name": "description",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "unit_price",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "kind",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "quantity",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "1"
+                },
+                {
+                    "name": "tax_rate",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "line",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change one"
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": null,
+            "log_event": "credit_note.line_save",
+            "who": "billing",
+            "built": false
+        },
+        "credit_note_delete": {
+            "action": "credit_note_delete",
+            "section": "Billing (slice 6)",
+            "endpoint": "/credit-notes/delete.php",
+            "params": [
+                {
+                    "name": "credit_note",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "deletion",
+            "log_event": "credit_note.delete",
+            "who": "billing",
+            "built": false
+        },
+        "credit_note_issue": {
+            "action": "credit_note_issue",
+            "section": "Billing (slice 6)",
+            "endpoint": "/credit-notes/issue.php",
+            "params": [
+                {
+                    "name": "credit_note",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "credit_note.issue",
+            "who": "billing",
+            "built": false
+        },
+        "credit_note_apply": {
+            "action": "credit_note_apply",
+            "section": "Billing (slice 6)",
+            "endpoint": "/credit-notes/apply.php",
+            "params": [
+                {
+                    "name": "credit_note",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "issued"
+                },
+                {
+                    "name": "invoice",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "amount",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "credit_note_unapply",
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "credit_note.apply",
+            "who": "billing",
+            "built": false
+        },
+        "credit_note_unapply": {
+            "action": "credit_note_unapply",
+            "section": "Billing (slice 6)",
+            "endpoint": "/credit-notes/unapply.php",
+            "params": [
+                {
+                    "name": "credit_note",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "invoice",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "credit_note_apply",
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "credit_note.unapply",
+            "who": "billing",
+            "built": false
+        },
+        "credit_note_void": {
+            "action": "credit_note_void",
+            "section": "Billing (slice 6)",
+            "endpoint": "/credit-notes/void.php",
+            "params": [
+                {
+                    "name": "credit_note",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "unapplied"
+                },
+                {
+                    "name": "reason",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "credit_note.void",
+            "who": "billing",
+            "built": false
+        },
+        "export_download": {
+            "action": "export_download",
+            "section": "Reports (slice 7)",
+            "endpoint": "/exports/download.php",
+            "params": [
+                {
+                    "name": "export",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "invoices or credit_notes or expenses or reimbursements or wip or time or usage"
+                },
+                {
+                    "name": "format",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "csv or json"
+                },
+                {
+                    "name": "from",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "to",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": false,
+            "approval": null,
+            "log_event": "export.download",
+            "who": "billing (exports.download)",
+            "built": false
+        },
+        "morning_note_send": {
+            "action": "morning_note_send",
+            "section": "The worker, the doors and the shares (slice 8)",
+            "endpoint": "/billing/morning-note.php",
+            "params": [
+                {
+                    "name": "body",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "the Clerk's note"
+                },
+                {
+                    "name": "to_member",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "the settings' recipient by default"
+                }
+            ],
+            "undo": null,
+            "confirm": false,
+            "approval": null,
+            "log_event": "morning_note.send",
+            "who": "billing or the Clerk",
+            "built": false
+        }
+    }
+}

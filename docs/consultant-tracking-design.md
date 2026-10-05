@@ -595,8 +595,7 @@ paid derived, void releasing, write-off, a credit note, every report with figure
 non-members, the activity trail). The kit copied from General Ledger (Help Desk's lineage) and un-ledgered — the engagement
 gates, the activity funnel's keys (engagement, client, invoice, timesheet), the menu of five groups, the directory fixture of the
 firm's actors, the dev router with the `/i/` door — proven without a kernel (`tests/phase0/run.sh`, **15 checks green**, ports
-8301–8307). `maludb-os.json` (every port env required, six shares, one read, two agents with grants and the 07:00 duty, 47
-approval categories), `os/{expert,biller}.md`, seven skills (four runbooks), `deploy/` templates with the public door and
+8301–8307). `maludb-os.json` (every port env required, six shares, one read, two agents with grants and the 07:00 duty, 57 approval categories), `os/{expert,biller}.md`, seven skills (four runbooks), `deploy/` templates with the public door and
 `ROOT_STEPS.sh` pinning 8185/8831/8832, `deploy/kernel-registry-consultant_tracking.json` (20 entities); the installer's `plan`
 reads the repository clean (the two MCP ports show unfilled until the owner's step 0 pin, as designed).
 
@@ -612,6 +611,13 @@ skipping a whole line; (f) **the margin bills approved hours only**; written-off
 today's open invoices** bucketed by the date asked — a historical aging is Extended; (h) retainers are refused by the guard
 (`kind = 'retainer'` admitted by the CHECK) until their spec lands.
 
-**Next**: Phase 1 — `docs/consultant-tracking-mcp-tool-surface.md`, `docs/consultant-tracking-action-manifest.md`,
-`mcp/action_registry.json`, the ten specs — as the checkpoint before any PHP; then Phase 2, slices 1–2, and **slice 3 — time —
-the exemplar**; the handoff to Sonnet 5.5 follows it.
+**2026-10-05 — Phase 1 WRITTEN, awaiting the owner's approval (the checkpoint before any PHP).** `docs/consultant-tracking-mcp-tool-surface.md`
+(43 named records tools + `records_search` + `app_roles`, six of them the shares; 6 activity tools; the coverage table of §7; the log-payload
+rules; the resolution table; the six share documents `os.ct-*/1` and the G1 read), `docs/consultant-tracking-action-manifest.md` (78 screens,
+108 actions, 57 with an approval category — exactly `maludb-os.json` `approvals[]`, checked), `mcp/action_registry.json` (built clean,
+`--check` OK, every endpoint resolved; nothing built yet), and the ten specs in `docs/build-specs/` — `sso-shell` (Phase 2), `clients-rates-settings`
+(1), `engagements` (2), **`time-core` (3 — THE EXEMPLAR)**, `expenses-receipts` (4), `usage-and-os-statement` (5), `invoicing` (6), `reports` (7),
+`worker-doors-shares` (8), `home-admin-tokens` (9) — each with screens, rules, files, query-function signatures, handlers, manifest entries, log
+events, notifications, vocabulary, out of scope, the proof checklist, and "Open questions" EMPTY. The installer's `plan` now maps every approval
+category to its log event through the registry. **Next**: the owner approves Phase 1 as a whole; then Phase 2 (`sso-shell`), slices 1–2, and
+slice 3 — time — the exemplar; the handoff to Sonnet 5.5 follows it.

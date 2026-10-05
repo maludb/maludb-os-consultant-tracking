@@ -481,6 +481,46 @@
     {
       "action": "numbering_save",
       "category": "other"
+    },
+    {
+      "action": "consulting_role_archive",
+      "category": "other"
+    },
+    {
+      "action": "rate_card_archive",
+      "category": "other"
+    },
+    {
+      "action": "cost_rate_end",
+      "category": "other"
+    },
+    {
+      "action": "activity_type_archive",
+      "category": "other"
+    },
+    {
+      "action": "expense_category_archive",
+      "category": "other"
+    },
+    {
+      "action": "tax_rate_archive",
+      "category": "other"
+    },
+    {
+      "action": "usage_charge_delete",
+      "category": "deletion"
+    },
+    {
+      "action": "credit_note_delete",
+      "category": "deletion"
+    },
+    {
+      "action": "credit_note_apply",
+      "category": "money_out"
+    },
+    {
+      "action": "credit_note_unapply",
+      "category": "money_out"
     }
   ]
 }

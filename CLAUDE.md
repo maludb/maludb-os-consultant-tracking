@@ -126,8 +126,10 @@ written into the spec's "Open questions" for the owner — never guessed.
 - **State (2026-10-05): the plan APPROVED (§15 D1–D16, D16 revised to the GL division); K17 applied in the kernel (db/168); Phase 0's
   second half BUILT and PROVEN** — `db/001`–`015` (171 checks, `db/proof/phase0_proof.sql`), the kit from General Ledger un-ledgered
   (`tests/phase0/run.sh`, 15 checks; scratch ports 8301–8307), `maludb-os.json`, `os/{expert,biller}.md`, seven skills, `deploy/`,
-  the installer's `plan` clean. The decisions taken while building are design §16 (a–h) — rules, not questions. **Next: Phase 1**
-  (the tool surface, the manifest, the registry, the ten specs) as the checkpoint before any PHP.
+  the installer's `plan` clean. The decisions taken while building are design §16 (a–h) — rules, not questions. **Phase 1 WRITTEN 2026-10-05** —
+  `docs/consultant-tracking-mcp-tool-surface.md`, `docs/consultant-tracking-action-manifest.md` (78 screens, 108 actions, 57 approvals = `maludb-os.json`),
+  `mcp/action_registry.json` (`--check` OK), the ten specs in `docs/build-specs/` — **awaiting the owner's approval as a whole before any PHP.**
+  Then Phase 2 (`sso-shell`), slices 1–2, slice 3 (time, the exemplar), the handoff.
 - The proofs: `tests/setup_dev.sh` builds the scratch database `ct_dev` and writes `$CT_DEV_ENV` (`/tmp/ct-dev.env`); `tests/phase0/run.sh`
   is the regression (the schema proof, then the kit on `php -S :8307` with `tests/dev_router.php`); `bin/directory_sync.php --from-file
   bin/dev_directory.json` applies the fixture (Owner 1, Priya 26, Marco 27, Bea 28, Ann 29, Dana 30). **Never put a `config/.env` here

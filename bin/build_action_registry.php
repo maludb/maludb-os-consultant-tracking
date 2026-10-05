@@ -279,7 +279,7 @@ function param(string $piece, bool $required, string $hint): array
 }
 
 $registry = [
-    'generated_from' => 'docs/business-os-action-manifest.md',
+    'generated_from' => 'docs/consultant-tracking-action-manifest.md',
     'generated_at' => date('c'),
     'screens' => $screens,
     'actions' => $actions,

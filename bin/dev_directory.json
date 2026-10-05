@@ -106,8 +106,7 @@
       "capability": "read",
       "role": "finance",
       "roles": [
-        "finance",
-        "user"
+        "finance"
       ],
       "rights": [],
       "scopes": [],
@@ -267,6 +266,27 @@
           }
         ],
         "updated_at": "2026-01-01T00:00:00Z"
+      },
+      {
+        "id": 40,
+        "display_name": "SMOKE Clerk",
+        "email": null,
+        "member_kind": "agent",
+        "business_role": "user",
+        "is_external": false,
+        "status": "active",
+        "job_title": "Billing Clerk",
+        "phone": null,
+        "timezone": "UTC",
+        "departments": [
+          {
+            "id": 3,
+            "name": "Accounting",
+            "is_admin": false,
+            "is_primary": true
+          }
+        ],
+        "updated_at": "2026-01-01T00:00:00Z"
       }
     ],
     "departments": [
@@ -363,6 +383,14 @@
         "is_primary": true,
         "joined_at": "2026-01-01T00:00:00Z",
         "left_at": null
+      },
+      {
+        "member_id": 40,
+        "department_id": 3,
+        "is_admin": false,
+        "is_primary": true,
+        "joined_at": "2026-01-01T00:00:00Z",
+        "left_at": null
       }
     ],
     "deleted_departments": [],
@@ -414,8 +442,7 @@
         "member_id": 29,
         "role": "finance",
         "roles": [
-          "finance",
-          "user"
+          "finance"
         ],
         "rights": [],
         "capability": "read",
@@ -425,6 +452,17 @@
         "member_id": 30,
         "role": "user",
         "roles": [
+          "user"
+        ],
+        "rights": [],
+        "capability": "write",
+        "scopes": []
+      },
+      {
+        "member_id": 40,
+        "role": "billing",
+        "roles": [
+          "billing",
           "user"
         ],
         "rights": [],

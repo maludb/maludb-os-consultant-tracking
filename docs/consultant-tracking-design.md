@@ -94,7 +94,7 @@ General Ledger, §13.3).
 | `user` | Consultant | write | `time.write` (own), `expenses.write` (own), `engagements.view` (staffed), `attachments.write` (own records), `reports.view_own` |
 | `manager` | Manager | write | Consultant's + `engagements.manage` (theirs and their departments'), `staffing.write`, `time.approve`, `expenses.approve`, `usage.write`, `usage.approve`, `milestones.write`, `rates.view` (bill rates), `cost.view` (cost and margin **on their engagements**), `invoices.draft`, `reports.view` (their engagements) |
 | `billing` | Billing | write | Manager's across **every** engagement + `clients.manage`, `rate_cards.manage`, `billing.write` (issue, send, remind, credit, record a payment, write off, void), `exports.download` |
-| `finance` | Finance | read | every read, `cost.view` everywhere, `exports.download`; **no writes** — an external's role |
+| `finance` | Finance | read | every read, `cost.view` everywhere, `exports.download`; **no writes** — an external's role, granted ALONE (never with `user`, which logs time) |
 | `admin` | CT admin (is_admin) | admin | every right + `settings.manage` (settings, consulting roles, cost rates, categories, providers, allocation rules, numbering, agents' settings) |
 
 **The rules** (`ct_has_right(right)` and `ct_can_see_engagement(engagement_id)` in SQL for the views and in PHP for
@@ -619,4 +619,9 @@ rules; the resolution table; the six share documents `os.ct-*/1` and the G1 read
 (1), `engagements` (2), **`time-core` (3 — THE EXEMPLAR)**, `expenses-receipts` (4), `usage-and-os-statement` (5), `invoicing` (6), `reports` (7),
 `worker-doors-shares` (8), `home-admin-tokens` (9) — each with screens, rules, files, query-function signatures, handlers, manifest entries, log
 events, notifications, vocabulary, out of scope, the proof checklist, and "Open questions" EMPTY. The installer's `plan` now maps every approval
-category to its log event through the registry. **Next**: Phase 2 (`sso-shell`), slices 1–2, and slice 3 — time — the exemplar; the handoff to Sonnet 5.5 follows it.
+category to its log event through the registry. **2026-10-05 — Phase 2 BUILT and proven** (`docs/build-specs/sso-shell.md`): the nxl shell phone first (the tab bar Home · Time · Expenses · Engagements · More;
+the sidebar by right in five groups; the role badge; the bell; the command bar through the kernel's chat endpoint), the dashboard's regions as empty states by right,
+My settings (`prefs_save`), Tokens (`token_mint`, `token_revoke`), Notifications (`notification_read`), Activity (own rows, a record's by key), own sign-out, the web
+manifest, the design-system assets, 57 placeholders that name their slice; `tests/phase2/run.sh` — **247 checks green**; the installer's `plan` clean. One rule learned:
+**Finance holds the `finance` role alone** (the `user` role carries `time.write`/`expenses.write`; an external reader is never granted it) — §3 amended.
+**Next**: slices 1–2, then slice 3 — time — the exemplar; the handoff to Sonnet 5.5 follows it.

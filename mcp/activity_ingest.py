@@ -48,7 +48,6 @@ def _episode_body(row: dict) -> dict:
         "agent_run_id": row["agent_run_id"],
         "department_id": row["department_id"],
         "kernel_request_id": row["kernel_request_id"],
-        "site_id": row["site_id"],
         "actor_client_id": row["actor_client_id"],        # a client who acted by the secure link
         "engagement_id": row["engagement_id"],            # every engagement-scoped event: memory can answer "what happened on ENG-0042"
         "client_id": row["client_id"],

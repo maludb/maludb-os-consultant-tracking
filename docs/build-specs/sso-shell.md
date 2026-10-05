@@ -115,23 +115,38 @@ Every other screen of the manifest answers the placeholder.
 Everything with a record: clients, engagements, time, expenses, usage, invoices, reports (slices 1–9); the outbox's sender and the worker
 (slice 8); the two MCP servers (Phase 4).
 
-## Proof (`tests/phase2/run.sh`: the scratch database, the fake kernel on :8302, fake MaluDB on :8303, the app on `php -S :8301` through
-`tests/dev_router.php`, headless Chromium at 375 × 740 and 1280 × 800; the registry `--check`)
-- [ ] **Sign-on**: a minted hand-off opens a session (302 to `/`), the mirror row carries capability and roles, `member.sign_on` logged with
-  both; replay, another audience, a tampered signature, an unknown member, an inactive claim, a claim with no capability → the one page, each
-  refusal logged with its reason; the sign-out notice ends every session (204 both ways).
-- [ ] **The gates**: a Consultant's menu shows Work and My settings only; `/time/approvals` → 403 in words; `/settings/general` → 403; the
-  Manager, Billing, Finance and admin fixtures see their groups; a revoked grant in the feed (`access[]` with no capability) shuts the door
-  within one sync; an inactive member's session ends on the next request.
-- [ ] **The sync**: `--full` applies the fixture (six members, four departments, memberships, access); an incremental feed moves Marco to
-  Billing and his menu changes; a department archived in the feed is archived here.
-- [ ] **The action-token path**: a signed action token with the relay acts as the member and answers JSON; without the relay → 401; a run
-  token for an unknown agent → 401 and `member.refused`; an agent the fake kernel vouches for is admitted at first contact.
-- [ ] **The ingest**: a row shipped to the fake MaluDB with `application: consultant_tracking` first, the checkpoint advanced, a failure leaves
-  it where it was.
-- [ ] **The command bar**: the fake kernel's reply rendered; a 403 shown in the kernel's words; `assistant.ask` logged without the text.
-- [ ] **The vhost template** renders with the ports filled and `apachectl -t` accepts it (syntax only, nothing installed).
-- [ ] **375 × 740 and 1280 × 800**: the tab bar on the phone, the sidebar on the desktop, every button ≥ 44 px, `scrollWidth` = viewport,
-  no console errors, JavaScript off still signs in and reads the home; the registry reads 5 screens and 4 actions as built.
+## Proof (`tests/phase2/run.sh`: the scratch database, the fake kernel on :8302, fake MaluDB on :8303, fake MaluMail on :8306, the app on `php -S :8301` through
+`tests/dev_router.php` — or a real Apache with `CT_APP=apache` —, headless Chromium at 375 × 740 and 1280 × 800; the registry `--check`)
+**Built and proven 2026-10-05: 247 checks green** (sso 43, gates 81, sync 25, ingest 12, kernel_compat 9, vhost 26, browser 51; the registry matches the manifest);
+the installer's `plan` reads the repository clean. The world the proofs reason about is `bin/dev_directory.json`: the Owner (super-admin, IT), Priya (Consultant,
+AI Strategy), Marco (Manager, AI Strategy), Bea (Billing, Accounting), Ann (Finance — the finance role ALONE, external, read), Dana (Consultant, ML Engineering),
+and the Billing Clerk (agent 40, billing).
+- [x] **Sign-on**: a minted hand-off opens a session (302 to `/`), the mirror row carries capability and roles, `member.sign_on` logged with both; replay, another
+  audience, a tampered signature, an unknown member, an inactive claim, a claim with no capability → the one page, each refusal logged with its reason; the sign-out
+  notice ends every session (204 both ways); roles {} with capability admin → every right and the badge "CT admin"; roles [user] alone → a Consultant.
+- [x] **The gates**: 37 screens × 5 roles answer 200 or 403 as the rights say; a refusal in words ("You may not approve time."); a Consultant's menu is Work, Reports
+  (their own utilization), Settings, Me; a Manager's adds Manage and Billing (Unbilled, Invoices — no credit notes, no firm settings); Billing sees Rate cards and Credit
+  notes, not the cost rates; Finance sees Engagements, Who owes us, Reports, Exports and no timesheet; the admin everything; the dashboard's regions by right; a revoked
+  grant in the feed shuts the door within one sync; an inactive member's session ends on the next request.
+- [x] **The sync**: `--full` applies the fixture (seven members, four practices, memberships, access); an incremental feed moves Marco to Billing and his open session
+  sees Credit notes at once; back to Manager and it is gone; a suspended member's sessions end; `--from-file`; an unreachable kernel reported and cleared.
+- [x] **The action-token path**: a signed action token with the relay acts as the member and answers JSON; without the relay → 401; a run token for an unknown agent → 401
+  and `member.refused`; an agent the fake kernel vouches for is admitted at first contact and its rows carry the run's request id; an agent may not mint a token or open a
+  person's dashboard, but may save its own notification choices.
+- [x] **The ingest**: rows shipped to the fake MaluDB with `application: consultant_tracking` first, `engagement_id` and `timesheet_id` where set, nulls dropped, the
+  checkpoint advanced only past accepted rows, no token value in any episode.
+- [x] **The command bar**: the fake kernel's reply rendered; 404 and 409 shown in the kernel's words; a paused action shown as "waits for approval"; a succeeded
+  `invoice_draft` fires `invoiceChanged`; `assistant.ask` logged without the text.
+- [x] **The kernel's wire formats**: tokens, claims, the sign-out notice, a person's action token and the kernel token minted by the kernel's own functions are accepted.
+- [x] **The vhost's rules** (through the dev router): `/sso`, `/sso/logout`, the canonical URLs, `/usage/os`, `/reports/{report}`, the public door 404 until slice 6,
+  `/api` blocked but for health, the manifest and the assets served, nothing outside `html/` reachable.
+- [x] **375 × 740 and 1280 × 800**: five tabs on the phone (Home, Time, Expenses, Engagements, More), the sidebar on the desktop, every tab ≥ 44 px, `scrollWidth` =
+  viewport, HTMX navigation pushing URL and title and re-stamping `data-screen`, the placeholders naming their slice, the tokens flow, the settings form landing
+  with its notice, no console errors, JavaScript off whole, installable.
+
+**Decisions taken while building (2026-10-05):** the home's Billing region shows for `reports.view` too (Finance reads everything); a Consultant sees the Reports
+group (their own utilization, `reports.view_own`); the tab bar honours a right spec with alternatives (`nav_has_right()`); Finance holds the `finance` role alone —
+the `user` role carries `time.write` and `expenses.write`, so an external reader is never granted it (the fixture and the design's §3 say so); the home's regions
+are keys of `home_summary()` that each slice fills.
 
 ## Open questions

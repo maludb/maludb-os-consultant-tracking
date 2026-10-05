@@ -1,6 +1,6 @@
 {
     "generated_from": "docs/consultant-tracking-action-manifest.md",
-    "generated_at": "2026-10-05T00:57:55+00:00",
+    "generated_at": "2026-10-05T08:45:43+00:00",
     "screens": {
         "dashboard": {
             "screen": "dashboard",
@@ -8,7 +8,7 @@
             "section": "Home, settings and tokens (Phase 2 and slice 9)",
             "when": "home: my week and timer, my reimbursements due; for a manager the approvals waiting and the budget alerts; for billing WIP, drafts, invoices due to draft, the aging, the OS statement's state, the Clerk's last note",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "notifications": {
@@ -17,7 +17,7 @@
             "section": "Home, settings and tokens (Phase 2 and slice 9)",
             "when": "what the bell holds, and to mark it read",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "activity": {
@@ -30,7 +30,7 @@
                 "invoice",
                 "timesheet"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "settings": {
@@ -39,7 +39,7 @@
             "section": "Home, settings and tokens (Phase 2 and slice 9)",
             "when": "how they are told (email, text, which kinds)",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "tokens": {
@@ -48,7 +48,7 @@
             "section": "Home, settings and tokens (Phase 2 and slice 9)",
             "when": "their own MCP tokens: mint one, revoke one",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "settings-general": {
@@ -58,7 +58,7 @@
             "when": "the firm's settings: currency, week start, increment, receipt threshold, markup default, terms, grouping, link lifetime, reminders, thresholds, capacity default, the morning-note recipient",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "numbering": {
             "screen": "numbering",
@@ -67,7 +67,7 @@
             "when": "the prefixes and next numbers (ENG, INV, CN, EXP, USG)",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "agents": {
             "screen": "agents",
@@ -76,7 +76,7 @@
             "when": "which agents work here (the expert, the Billing Clerk), their last runs — read-only; hiring and grants link to the kernel",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "connections": {
             "screen": "connections",
@@ -85,7 +85,7 @@
             "when": "which sibling applications read what of ours and what we read — the kernel's facts, read-only",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "client-list": {
             "screen": "client-list",
@@ -97,7 +97,7 @@
                 "archived"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "client-add": {
             "screen": "client-add",
@@ -106,7 +106,7 @@
             "when": "to add a client",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "client-view": {
             "screen": "client-view",
@@ -115,7 +115,7 @@
             "when": "one client: contacts, engagements, open invoices, the statement, the claims, documents, the timeline",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "client-edit": {
             "screen": "client-edit",
@@ -124,7 +124,7 @@
             "when": "to change a client's details, terms, currency, PO rule, default rate card",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "client-statement": {
             "screen": "client-statement",
@@ -145,7 +145,7 @@
             "when": "the consulting roles (titles a rate is priced by)",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "rate-card-list": {
             "screen": "rate-card-list",
@@ -154,7 +154,7 @@
             "when": "the rate cards as cards",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "rate-card-add": {
             "screen": "rate-card-add",
@@ -165,7 +165,7 @@
                 "copy_of"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "rate-card-view": {
             "screen": "rate-card-view",
@@ -174,7 +174,7 @@
             "when": "one card: the rate per consulting role, the engagements using it",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "rate-card-edit": {
             "screen": "rate-card-edit",
@@ -183,7 +183,7 @@
             "when": "to rename a card or change its effective date",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "cost-rate-list": {
             "screen": "cost-rate-list",
@@ -192,7 +192,7 @@
             "when": "every person's cost rate by date range (admin, Finance)",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "capacity-list": {
             "screen": "capacity-list",
@@ -201,7 +201,7 @@
             "when": "every person's capacity by date range",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "activity-type-list": {
             "screen": "activity-type-list",
@@ -210,7 +210,7 @@
             "when": "the activity types and their billable default",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "category-list": {
             "screen": "category-list",
@@ -219,7 +219,7 @@
             "when": "the expense categories with receipt and markup overrides",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "provider-list": {
             "screen": "provider-list",
@@ -228,7 +228,7 @@
             "when": "the usage providers and their saved CSV mappings",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "tax-rate-list": {
             "screen": "tax-rate-list",
@@ -237,7 +237,7 @@
             "when": "the tax rates",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "engagement-list": {
             "screen": "engagement-list",
@@ -254,7 +254,7 @@
                 "mine"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "engagement-add": {
             "screen": "engagement-add",
@@ -265,7 +265,7 @@
                 "client"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "engagement-view": {
             "screen": "engagement-view",
@@ -276,7 +276,7 @@
                 "tab"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "engagement-edit": {
             "screen": "engagement-edit",
@@ -285,7 +285,7 @@
             "when": "to change an engagement's terms, dates, budgets, cadence, policy, grouping, manager, practice",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "engagement-staffing": {
             "screen": "engagement-staffing",
@@ -321,7 +321,7 @@
             "when": "every active engagement's budgets and burn, and the alerts to acknowledge",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "timesheet": {
             "screen": "timesheet",
@@ -333,7 +333,7 @@
                 "member"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "time-entry-add": {
             "screen": "time-entry-add",
@@ -346,7 +346,7 @@
                 "week"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "time-entry-edit": {
             "screen": "time-entry-edit",
@@ -355,7 +355,7 @@
             "when": "to change a draft or rejected entry",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "time-approvals": {
             "screen": "time-approvals",
@@ -366,7 +366,7 @@
                 "member"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "timesheet-view": {
             "screen": "timesheet-view",
@@ -375,7 +375,7 @@
             "when": "one week as its manager sees it: the entries with rates, approve or reject, the timeline",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "team-time": {
             "screen": "team-time",
@@ -387,7 +387,7 @@
                 "department"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "missing-time": {
             "screen": "missing-time",
@@ -398,7 +398,7 @@
                 "week"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "written-off": {
             "screen": "written-off",
@@ -411,7 +411,7 @@
                 "engagement"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "expense-list": {
             "screen": "expense-list",
@@ -424,7 +424,7 @@
                 "member"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "expense-add": {
             "screen": "expense-add",
@@ -436,7 +436,7 @@
                 "date"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "expense-view": {
             "screen": "expense-view",
@@ -445,7 +445,7 @@
             "when": "one expense: the receipt, the money, the status and reasons, approve or reject, the timeline",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "expense-edit": {
             "screen": "expense-edit",
@@ -454,7 +454,7 @@
             "when": "to change a draft or rejected expense",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "expense-approvals": {
             "screen": "expense-approvals",
@@ -466,7 +466,7 @@
                 "missing_receipt"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "reimbursements": {
             "screen": "reimbursements",
@@ -477,7 +477,7 @@
                 "member"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "company-card": {
             "screen": "company-card",
@@ -489,7 +489,7 @@
                 "to"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "usage-list": {
             "screen": "usage-list",
@@ -505,7 +505,7 @@
                 "status"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "usage-add": {
             "screen": "usage-add",
@@ -516,7 +516,7 @@
                 "engagement"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "usage-view": {
             "screen": "usage-view",
@@ -525,7 +525,7 @@
             "when": "one charge: quantity, cost, pricing, billable, its source (import, schedule, statement line), approve or void, the timeline",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "usage-edit": {
             "screen": "usage-edit",
@@ -534,7 +534,7 @@
             "when": "to change a draft charge",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "usage-import": {
             "screen": "usage-import",
@@ -546,7 +546,7 @@
                 "engagement"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "os-statement": {
             "screen": "os-statement",
@@ -557,7 +557,7 @@
                 "period"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "allocation-rule-list": {
             "screen": "allocation-rule-list",
@@ -566,7 +566,7 @@
             "when": "the rules that place the OS statement on engagements",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "allocation-rule-add": {
             "screen": "allocation-rule-add",
@@ -577,7 +577,7 @@
                 "engagement"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "allocation-rule-edit": {
             "screen": "allocation-rule-edit",
@@ -586,7 +586,7 @@
             "when": "to change a rule",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "schedule-list": {
             "screen": "schedule-list",
@@ -597,7 +597,7 @@
                 "engagement"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "schedule-add": {
             "screen": "schedule-add",
@@ -608,7 +608,7 @@
                 "engagement"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "schedule-edit": {
             "screen": "schedule-edit",
@@ -617,7 +617,7 @@
             "when": "to change a schedule",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "unbilled": {
             "screen": "unbilled",
@@ -629,7 +629,7 @@
                 "client"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "unbilled-items": {
             "screen": "unbilled-items",
@@ -653,7 +653,7 @@
                 "overdue"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "invoice-add": {
             "screen": "invoice-add",
@@ -666,7 +666,7 @@
                 "to"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "invoice-view": {
             "screen": "invoice-view",
@@ -675,7 +675,7 @@
             "when": "one invoice: lines, the backing items, payments, credits, claims, the link, the client's preview, the actions by status, the timeline",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "invoice-edit": {
             "screen": "invoice-edit",
@@ -684,7 +684,7 @@
             "when": "the draft's lines editor: regroup, add a fixed or adjustment line, discount, tax; the items listed and removable",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "invoice-preview": {
             "screen": "invoice-preview",
@@ -702,7 +702,7 @@
             "when": "the engagements whose billing date has passed and the accepted milestones not yet invoiced",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "credit-note-list": {
             "screen": "credit-note-list",
@@ -714,7 +714,7 @@
                 "status"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "credit-note-add": {
             "screen": "credit-note-add",
@@ -725,7 +725,7 @@
                 "invoice"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "credit-note-view": {
             "screen": "credit-note-view",
@@ -734,7 +734,7 @@
             "when": "one credit note: lines, applications, issue, apply, void",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "credit-note-edit": {
             "screen": "credit-note-edit",
@@ -743,7 +743,7 @@
             "when": "the draft's lines",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "payment-list": {
             "screen": "payment-list",
@@ -756,7 +756,7 @@
                 "to"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "claims": {
             "screen": "claims",
@@ -765,7 +765,7 @@
             "when": "what clients said on the link and billing has not decided",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "ar-aging": {
             "screen": "ar-aging",
@@ -776,7 +776,7 @@
                 "as_of"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "reports": {
             "screen": "reports",
@@ -785,7 +785,7 @@
             "when": "the reports as cards: utilization, realization, unbilled, revenue, margin, budget burn, AI pass-through, expense report, missing time, who owes us",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "report": {
             "screen": "report",
@@ -802,7 +802,7 @@
                 "by"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "exports": {
             "screen": "exports",
@@ -814,7 +814,7 @@
                 "to"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         }
     },
     "actions": {
@@ -853,7 +853,7 @@
             "approval": null,
             "log_event": "prefs.save",
             "who": "own",
-            "built": false
+            "built": true
         },
         "notification_read": {
             "action": "notification_read",
@@ -872,7 +872,7 @@
             "approval": null,
             "log_event": "notification.read",
             "who": "own",
-            "built": false
+            "built": true
         },
         "token_mint": {
             "action": "token_mint",
@@ -897,7 +897,7 @@
             "approval": null,
             "log_event": "token.mint",
             "who": "own",
-            "built": false
+            "built": true
         },
         "token_revoke": {
             "action": "token_revoke",
@@ -916,7 +916,7 @@
             "approval": null,
             "log_event": "token.revoke",
             "who": "own",
-            "built": false
+            "built": true
         },
         "settings_save": {
             "action": "settings_save",

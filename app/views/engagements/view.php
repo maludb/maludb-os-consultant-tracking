@@ -69,6 +69,7 @@ $moveForm = static function (string $verb, string $label, string $cls = 'btn-lig
     <?php elseif ($tab === 'staffing'): ?><?= view('engagements/staffing.php', ['e' => $e, 'may' => $may, 'here' => $here, 'editing' => request_integer('staffing')]) ?>
     <?php elseif ($tab === 'rates'): ?><?= view('engagements/rates.php', ['e' => $e, 'may' => $may, 'here' => $here]) ?>
     <?php elseif ($tab === 'milestones'): ?><?= view('engagements/milestones.php', ['e' => $e, 'may' => $may, 'here' => $here, 'editing' => request_integer('milestone'), 'accepting' => request_integer('accept'), 'tz' => $tz]) ?>
+    <?php elseif ($tab === 'invoices'): ?><?= view('engagements/invoices.php', ['e' => $e, 'invoices' => $invoices, 'wip' => $wip, 'here' => $here, 'may' => $may]) ?>
     <?php elseif ($tab === 'timeline'): ?><?= view('shared/timeline.php', ['rows' => $timeline, 'tz' => $tz, 'prefix' => 'engagement']) ?>
     <?php else: ?>
     <div class="card" id="engagement-tab-<?= e($tab) ?>-coming"><div class="card-body text-muted"><?= ['time' => 'The hours logged on this engagement, by week and person, appear here (slice 3).', 'expenses' => 'The expenses charged to this engagement appear here (slice 4).', 'usage' => 'The hosting and model-usage charges on this engagement appear here (slice 5).', 'invoices' => 'The invoices of this engagement, with what is unbilled, appear here (slice 6).'][$tab] ?></div></div>

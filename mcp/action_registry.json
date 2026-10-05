@@ -1,6 +1,6 @@
 {
     "generated_from": "docs/consultant-tracking-action-manifest.md",
-    "generated_at": "2026-10-05T12:33:47+00:00",
+    "generated_at": "2026-10-05T14:30:26+00:00",
     "screens": {
         "dashboard": {
             "screen": "dashboard",
@@ -628,8 +628,8 @@
                 "as_of",
                 "client"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "unbilled-items": {
             "screen": "unbilled-items",
@@ -637,7 +637,7 @@
             "section": "Billing (slice 6)",
             "when": "the items behind one engagement's WIP",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "invoice-list": {
@@ -652,8 +652,8 @@
                 "status",
                 "overdue"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "invoice-add": {
             "screen": "invoice-add",
@@ -665,8 +665,8 @@
                 "from",
                 "to"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "invoice-view": {
             "screen": "invoice-view",
@@ -674,8 +674,8 @@
             "section": "Billing (slice 6)",
             "when": "one invoice: lines, the backing items, payments, credits, claims, the link, the client's preview, the actions by status, the timeline",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "invoice-edit": {
             "screen": "invoice-edit",
@@ -683,8 +683,8 @@
             "section": "Billing (slice 6)",
             "when": "the draft's lines editor: regroup, add a fixed or adjustment line, discount, tax; the items listed and removable",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "invoice-preview": {
             "screen": "invoice-preview",
@@ -692,7 +692,7 @@
             "section": "Billing (slice 6)",
             "when": "the invoice as the client will see it on the link",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "due-to-draft": {
@@ -701,8 +701,8 @@
             "section": "Billing (slice 6)",
             "when": "the engagements whose billing date has passed and the accepted milestones not yet invoiced",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "credit-note-list": {
             "screen": "credit-note-list",
@@ -713,8 +713,8 @@
                 "client",
                 "status"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "credit-note-add": {
             "screen": "credit-note-add",
@@ -724,8 +724,8 @@
             "params": [
                 "invoice"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "credit-note-view": {
             "screen": "credit-note-view",
@@ -733,8 +733,8 @@
             "section": "Billing (slice 6)",
             "when": "one credit note: lines, applications, issue, apply, void",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "credit-note-edit": {
             "screen": "credit-note-edit",
@@ -742,8 +742,8 @@
             "section": "Billing (slice 6)",
             "when": "the draft's lines",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "payment-list": {
             "screen": "payment-list",
@@ -755,8 +755,8 @@
                 "from",
                 "to"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "claims": {
             "screen": "claims",
@@ -764,8 +764,8 @@
             "section": "Billing (slice 6)",
             "when": "what clients said on the link and billing has not decided",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "ar-aging": {
             "screen": "ar-aging",
@@ -775,8 +775,8 @@
             "params": [
                 "as_of"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "reports": {
             "screen": "reports",
@@ -3906,7 +3906,7 @@
             "approval": null,
             "log_event": "invoice.draft",
             "who": "draft",
-            "built": false
+            "built": true
         },
         "invoice_update": {
             "action": "invoice_update",
@@ -3985,7 +3985,7 @@
             "approval": null,
             "log_event": "invoice.update",
             "who": "draft",
-            "built": false,
+            "built": true,
             "partial": true
         },
         "invoice_add_unbilled": {
@@ -4011,7 +4011,7 @@
             "approval": null,
             "log_event": "invoice.add_unbilled",
             "who": "draft",
-            "built": false
+            "built": true
         },
         "invoice_line_save": {
             "action": "invoice_line_save",
@@ -4078,7 +4078,7 @@
             "approval": null,
             "log_event": "invoice.line_save",
             "who": "draft",
-            "built": false
+            "built": true
         },
         "invoice_line_remove": {
             "action": "invoice_line_remove",
@@ -4097,7 +4097,7 @@
             "approval": null,
             "log_event": "invoice.line_remove",
             "who": "draft",
-            "built": false
+            "built": true
         },
         "invoice_item_remove": {
             "action": "invoice_item_remove",
@@ -4116,7 +4116,7 @@
             "approval": null,
             "log_event": "invoice.item_remove",
             "who": "draft",
-            "built": false
+            "built": true
         },
         "invoice_delete": {
             "action": "invoice_delete",
@@ -4135,7 +4135,7 @@
             "approval": "deletion",
             "log_event": "invoice.delete",
             "who": "draft",
-            "built": false
+            "built": true
         },
         "invoice_issue": {
             "action": "invoice_issue",
@@ -4160,7 +4160,7 @@
             "approval": "money_out",
             "log_event": "invoice.issue",
             "who": "billing",
-            "built": false
+            "built": true
         },
         "invoice_send": {
             "action": "invoice_send",
@@ -4191,7 +4191,7 @@
             "approval": "external_send",
             "log_event": "invoice.send",
             "who": "billing",
-            "built": false
+            "built": true
         },
         "invoice_remind": {
             "action": "invoice_remind",
@@ -4216,7 +4216,7 @@
             "approval": "external_send",
             "log_event": "invoice.remind",
             "who": "billing",
-            "built": false
+            "built": true
         },
         "invoice_void": {
             "action": "invoice_void",
@@ -4241,7 +4241,7 @@
             "approval": "money_out",
             "log_event": "invoice.void",
             "who": "billing",
-            "built": false
+            "built": true
         },
         "invoice_write_off": {
             "action": "invoice_write_off",
@@ -4266,7 +4266,7 @@
             "approval": "money_out",
             "log_event": "invoice.write_off",
             "who": "billing",
-            "built": false
+            "built": true
         },
         "invoice_external_ref_set": {
             "action": "invoice_external_ref_set",
@@ -4291,7 +4291,7 @@
             "approval": null,
             "log_event": "invoice.external_ref",
             "who": "billing",
-            "built": false
+            "built": true
         },
         "secure_link_rotate": {
             "action": "secure_link_rotate",
@@ -4312,7 +4312,7 @@
             "approval": null,
             "log_event": "invoice.secure_link_rotate",
             "who": "billing",
-            "built": false
+            "built": true
         },
         "payment_record": {
             "action": "payment_record",
@@ -4355,7 +4355,7 @@
             "approval": "money_out",
             "log_event": "payment.record",
             "who": "billing",
-            "built": false
+            "built": true
         },
         "payment_void": {
             "action": "payment_void",
@@ -4380,7 +4380,7 @@
             "approval": "money_out",
             "log_event": "payment.void",
             "who": "billing",
-            "built": false
+            "built": true
         },
         "payment_claim_confirm": {
             "action": "payment_claim_confirm",
@@ -4405,7 +4405,7 @@
             "approval": "money_out",
             "log_event": "payment_claim.confirm",
             "who": "billing",
-            "built": false
+            "built": true
         },
         "payment_claim_dismiss": {
             "action": "payment_claim_dismiss",
@@ -4430,7 +4430,7 @@
             "approval": "other",
             "log_event": "payment_claim.dismiss",
             "who": "billing",
-            "built": false
+            "built": true
         },
         "credit_note_draft": {
             "action": "credit_note_draft",
@@ -4473,7 +4473,7 @@
             "approval": null,
             "log_event": "credit_note.draft",
             "who": "billing",
-            "built": false
+            "built": true
         },
         "credit_note_line_save": {
             "action": "credit_note_line_save",
@@ -4528,7 +4528,7 @@
             "approval": null,
             "log_event": "credit_note.line_save",
             "who": "billing",
-            "built": false
+            "built": true
         },
         "credit_note_delete": {
             "action": "credit_note_delete",
@@ -4547,7 +4547,7 @@
             "approval": "deletion",
             "log_event": "credit_note.delete",
             "who": "billing",
-            "built": false
+            "built": true
         },
         "credit_note_issue": {
             "action": "credit_note_issue",
@@ -4566,7 +4566,7 @@
             "approval": "money_out",
             "log_event": "credit_note.issue",
             "who": "billing",
-            "built": false
+            "built": true
         },
         "credit_note_apply": {
             "action": "credit_note_apply",
@@ -4597,7 +4597,7 @@
             "approval": "money_out",
             "log_event": "credit_note.apply",
             "who": "billing",
-            "built": false
+            "built": true
         },
         "credit_note_unapply": {
             "action": "credit_note_unapply",
@@ -4622,7 +4622,7 @@
             "approval": "money_out",
             "log_event": "credit_note.unapply",
             "who": "billing",
-            "built": false
+            "built": true
         },
         "credit_note_void": {
             "action": "credit_note_void",
@@ -4647,7 +4647,7 @@
             "approval": "money_out",
             "log_event": "credit_note.void",
             "who": "billing",
-            "built": false
+            "built": true
         },
         "export_download": {
             "action": "export_download",

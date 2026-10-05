@@ -1,0 +1,126 @@
+<?php
+/** Proof — the client's door (spec "Proof", 3): the page with the backing detail (hours by day and person with client-visible notes, the receipt served through /i/…/attachment/, usage, no cost, no internal note, no rate card name); print; a dead/unknown token → the one page; the claim form (CSRF, rate limit) → payment_claims, billing told; invoice.view with actor_client_id and source portal; rotating kills the old link. */
+require __DIR__ . '/lib.php';
+$w = billing_world(); $acme = $w['acme']; $client = $w['client'];
+$bea = as_member(28); $marco = as_member(27); $owner = as_member(1);
+$d = (int) one("SELECT id FROM invoices WHERE number = 'INV-00001'");
+$d > 0 or exit(fwrite(STDERR, "run issue.php first\n") ?: 2);
+q("UPDATE ct_settings SET firm_name = 'SMOKE Consulting Ltd', firm_address = '1 Test Street', invoice_footer = 'SMOKE footer: thank you' WHERE id = 1");
+q("UPDATE invoices SET internal_note = 'SMOKE secret internal note' WHERE id = :i", ['i' => $d]);
+q("UPDATE clients SET legal_name = 'SMOKE Acme Incorporated', billing_address = '9 Client Road' WHERE id = :c", ['c' => $client]);
+bill_contact($client, 'ap@acme.example.invalid');
+act($bea, '/invoices/external-ref.php', ['invoice' => $d, 'external_ref' => 'LEDGER-SECRET-77']);
+
+echo "1. Send: the link travels in the outbox body\n";
+[$c, $b] = act($bea, '/invoices/send.php', ['invoice' => $d]);
+$row = outbox('invoice', $d);
+$tok = token_in((string) ($row[0]['body'] ?? ''));
+ok($c === 200 && count($row) === 1 && strlen($tok) === 48 && $row[0]['to_email'] === 'ap@acme.example.invalid', 'invoice_send: one outbox row for the contact who receives invoices, a 48-hex link in the body');
+$page = visitor('/i/' . $tok, jar());
+
+echo "2. The page\n";
+$h = $page['body'];
+ok($page['code'] === 200 && str_contains($h, 'id="secure-invoice"') && str_contains($h, 'INV-00001') && str_contains($h, 'SMOKE Consulting Ltd') && str_contains($h, 'SMOKE Acme Incorporated') && str_contains($h, '9 Client Road') && str_contains($h, 'SMOKE footer'), 'no session: the invoice, the firm, the client\'s legal name and address, the footer');
+ok(preg_match_all('/class="secure-time-row"/', $h) === 4 && str_contains($h, 'SMOKE work 26 day 0') && str_contains($h, 'Priya') && preg_match_all('/class="secure-expense-row"/', $h) === 2 && preg_match_all('/class="secure-usage-row"/', $h) === 3, 'the backing detail: four time entries by day and person with the client-visible notes, two expenses, three usage charges');
+ok(str_contains($h, 'id="secure-invoice-total">2,359.00 USD') && str_contains($h, 'id="secure-invoice-balance">2,359.00 USD') && str_contains($h, 'PO-2026-17'), 'the total, the balance due (2,359.00 USD) and the PO');
+$hotel = (int) one("SELECT id FROM attachments WHERE record_type = 'expense' AND record_id = :x", ['x' => $w['expenses'][0]]);
+ok(str_contains($h, '/i/' . $tok . '/attachment/' . $hotel) && !str_contains($h, '/attachments/'), 'the hotel receipt is a thumbnail link served through /i/{token}/attachment/ (never the staff door)');
+ok(!str_contains($h, 'SMOKE secret internal note') && !str_contains($h, 'LEDGER-SECRET-77') && !str_contains($h, 'SMOKE Standard') && !preg_match('/cost/i', $h) && !str_contains($h, '70.00') && !str_contains($h, 'rate card'), 'never an internal note, the ledger\'s reference, a rate card\'s name or a cost');
+ok(!str_contains($h, 'SMOKE Beta') && !preg_match('#/invoices/#', $h), 'nor another client, nor a link into the staff screens');
+ok(str_contains($h, 'id="claim-form"') && str_contains($h, 'name="csrf_token"') && str_contains($h, 'id="claim-submit-btn"') && str_contains($h, 'id="secure-print-btn"'), 'the claim form (with the anonymous session\'s CSRF token) and Print');
+ok(str_contains($page['headers'], 'no-store') && stripos($page['headers'], 'X-Robots-Tag: noindex') !== false && stripos($page['headers'], 'Referrer-Policy: no-referrer') !== false, 'not cached, not indexed, no referrer');
+
+echo "3. The view is counted, logged as the client, billing told\n";
+$i = inv($d);
+$link = q('SELECT view_count, last_used_at FROM invoice_links_secure WHERE invoice_id = :i AND rotated_at IS NULL', ['i' => $d])[0];
+ok($i['viewed_at'] !== null && $i['status'] === 'viewed' && $link['view_count'] >= 1 && $link['last_used_at'] !== null, 'the invoice is stamped viewed (status viewed); the link counted the view');
+$log = q("SELECT * FROM activity_log WHERE action = 'invoice.view' AND invoice_id = :i ORDER BY id", ['i' => $d]);
+ok(count($log) === 1 && $log[0]['source'] === 'portal' && (int) $log[0]['actor_client_id'] === $client && $log[0]['actor_member_id'] === null && (int) $log[0]['engagement_id'] === $acme && !str_contains(json_encode($log[0]), $tok) && $log[0]['route'] === 'GET /i/{token}', 'invoice.view: source portal, actor_client_id the client, no member, the route logged as GET /i/{token} — the token nowhere in the row');
+$told = array_column(q("SELECT member_id FROM notifications WHERE kind = 'invoice_viewed' AND record_id = :i ORDER BY member_id", ['i' => $d]), 'member_id');
+ok($told === [1, 28], 'billing is told once (the super-admin and Bea): invoice_viewed');
+visitor('/i/' . $tok);
+ok((int) one("SELECT count(*) FROM notifications WHERE kind = 'invoice_viewed' AND record_id = :i", ['i' => $d]) === 2 && (int) one("SELECT count(*) FROM activity_log WHERE action = 'invoice.view' AND invoice_id = :i", ['i' => $d]) === 2, 'a second visit is logged again but tells nobody again');
+
+echo "4. The receipt, the print page\n";
+$r = visitor('/i/' . $tok . '/attachment/' . $hotel);
+ok($r['code'] === 200 && preg_match('/^Content-Type: image\/jpeg/mi', $r['headers']) === 1 && str_starts_with($r['body'], "\xFF\xD8"), 'the shared receipt is served as the JPEG it is');
+$taxi = (int) (one("SELECT id FROM attachments WHERE record_type = 'expense' AND record_id = :x", ['x' => $w['expenses'][1]]) ?: 0);
+ok($taxi === 0 && visitor('/i/' . $tok . '/attachment/999999')['code'] === 404, 'an attachment that is not there: the one refusal page');
+$ev = (int) (one("SELECT id FROM attachments WHERE record_type <> 'expense' LIMIT 1") ?: 0);
+q("INSERT INTO attachments (record_type, record_id, filename, mime_type, byte_size, sha256, storage_path, client_visible) VALUES ('engagement', :e, 'sow.pdf', 'application/pdf', 3, 'x', 'attachments/none', true)", ['e' => $acme]);
+$sow = (int) one("SELECT max(id) FROM attachments");
+ok(visitor('/i/' . $tok . '/attachment/' . $sow)['code'] === 404, 'another record\'s file, even marked client_visible, is refused: only an expense billed on THIS invoice');
+q("UPDATE attachments SET client_visible = false WHERE id = :a", ['a' => $hotel]);
+ok(visitor('/i/' . $tok . '/attachment/' . $hotel)['code'] === 404, 'a receipt the engagement does not share (client_visible off) is refused');
+q("UPDATE attachments SET client_visible = true WHERE id = :a", ['a' => $hotel]);
+$r = visitor('/i/' . $tok . '/print');
+ok($r['code'] === 200 && str_contains($r['body'], 'id="print-now-btn"') && str_contains($r['body'], '@media print') && str_contains($r['body'], 'INV-00001') && !str_contains($r['body'], 'id="claim-form"') && !str_contains($r['body'], 'app-tabbar'), 'print: the same invoice, a print stylesheet, no chrome, no claim form');
+
+echo "5. A dead or unknown link: one page, no reason\n";
+$unknown = visitor('/i/' . str_repeat('ab', 24));
+ok($unknown['code'] === 404 && str_contains($unknown['body'], 'This link has expired.') && str_contains($unknown['body'], 'Ask the firm for a new one.'), 'an unknown token: "This link has expired. Ask the firm for a new one."');
+q("UPDATE invoice_links_secure SET expires_at = now() - interval '1 day' WHERE invoice_id = :i AND rotated_at IS NULL", ['i' => $d]);
+$expired = visitor('/i/' . $tok);
+q("UPDATE invoice_links_secure SET expires_at = NULL WHERE invoice_id = :i AND rotated_at IS NULL", ['i' => $d]);
+ok($expired['code'] === 404 && $expired['body'] === $unknown['body'], 'an expired link answers the very same page as an unknown one (byte for byte)');
+ok(visitor('/i/' . str_repeat('ab', 24) . '/print')['body'] === $unknown['body'] && visitor('/i/' . str_repeat('ab', 24) . '/attachment/1')['body'] === $unknown['body'], 'print and the receipt door answer it too');
+ok(req('GET', '/i/' . $tok . '/claim')['code'] === 404, 'GET on the claim door: the one page (404), never a form');
+
+echo "6. \"I paid this\": CSRF, validation, rate limit\n";
+$jar = jar();
+$first = visitor('/i/' . $tok, $jar);
+preg_match('/name="csrf_token" value="([a-f0-9]+)"/', $first['body'], $m);
+$csrf = $m[1] ?? '';
+$claim = static fn (array $f, ?string $token = null, ?string $j = null): array => req('POST', '/i/' . ($token ?? $tok) . '/claim', ['jar' => $j ?? $jar, 'form' => $f]);
+$n0 = (int) one('SELECT count(*) FROM payment_claims');
+$r = $claim(['claimed_on' => date('Y-m-d'), 'method' => 'transfer']);
+ok($r['code'] === 403 && (int) one('SELECT count(*) FROM payment_claims') === $n0, 'a POST with no CSRF token: refused 403, nothing stored');
+$r = $claim(['csrf_token' => 'nope', 'claimed_on' => date('Y-m-d'), 'method' => 'transfer'], null, $jar);
+ok($r['code'] === 403 && (int) one('SELECT count(*) FROM payment_claims') === $n0, 'a wrong CSRF token: 403');
+$r = $claim(['csrf_token' => $csrf, 'method' => 'transfer', 'claimed_on' => '']);
+ok($r['code'] === 422 && str_contains($r['body'], 'id="claim-error"') && str_contains($r['body'], 'the day you paid') && (int) one('SELECT count(*) FROM payment_claims') === $n0, 'no date: the page again with the sentence, 422');
+$r = $claim(['csrf_token' => $csrf, 'method' => 'barter', 'claimed_on' => date('Y-m-d')]);
+ok($r['code'] === 422 && (int) one('SELECT count(*) FROM payment_claims') === $n0, 'a method that is not one: 422');
+$r = $claim(['csrf_token' => $csrf, 'method' => 'transfer', 'claimed_on' => date('Y-m-d', time() + 86400 * 3)]);
+ok($r['code'] === 422, 'a date in the future: 422');
+$r = $claim(['csrf_token' => $csrf, 'method' => 'transfer', 'claimed_on' => date('Y-m-d'), 'amount' => '12x']);
+ok($r['code'] === 422, 'an amount that is not an amount: 422');
+$since = last_activity_id();
+$r = $claim(['csrf_token' => $csrf, 'claimed_on' => date('Y-m-d'), 'method' => 'transfer', 'reference' => 'SMOKE-WIRE-9', 'amount' => '1,000.00', 'note' => str_repeat('n', 260)]);
+ok($r['code'] === 303 && $r['location'] === '/i/' . $tok . '?thanks=1', 'the claim is accepted: redirected to the page with the thanks (303)');
+$k = q('SELECT * FROM payment_claims ORDER BY id DESC LIMIT 1')[0];
+ok((int) $k['invoice_id'] === $d && $k['status'] === 'submitted' && $k['claimed_on'] === date('Y-m-d') && $k['method'] === 'transfer' && $k['reference'] === 'SMOKE-WIRE-9' && $k['amount'] === '1000.00' && strlen((string) $k['note']) === 200 && $k['ip_address'] === '127.0.0.1' && $k['payment_id'] === null, 'payment_claims: submitted, the date, method, reference, 1,000.00, the note cut at 200 characters, the address; no payment made');
+$firstClaim = (int) $k['id'];
+ok((int) one("SELECT count(*) FROM invoice_payments WHERE invoice_id = :i", ['i' => $d]) === 0 && inv($d)['amount_paid'] === '0.00', 'a claim is never money: nothing paid yet');
+$log = activity('payment_claim.submit', $since);
+$after = json_decode((string) $log[0]['after'], true);
+ok(count($log) === 1 && $log[0]['source'] === 'portal' && (int) $log[0]['actor_client_id'] === $client && $log[0]['actor_member_id'] === null && (int) $log[0]['invoice_id'] === $d && $after['amount'] === '1000.00' && $after['currency'] === 'USD' && $after['method'] === 'transfer', 'payment_claim.submit: portal, actor_client_id, invoice_id, amount and currency');
+ok(array_column(q("SELECT member_id FROM notifications WHERE kind = 'claim_submitted' AND record_id = :k ORDER BY member_id", ['k' => $firstClaim]), 'member_id') === [1, 28], 'billing is told (claim_submitted)');
+$after = visitor(trim($r['location']), $jar);
+ok($after['code'] === 200 && str_contains($after['body'], 'id="claim-thanks"') && str_contains($after['body'], 'we will confirm when it shows'), 'the page says "Thank you — we will confirm when it shows."');
+ok(str_contains(visitor('/i/' . $tok, $jar)['body'], 'id="claim-waiting"'), 'and, opened again, that a note of payment awaits confirmation');
+for ($n = 2; $n <= 5; $n++) {
+    $r = $claim(['csrf_token' => $csrf, 'claimed_on' => '2026-10-02', 'method' => 'card', 'reference' => 'SMOKE-RATE-' . $n]);
+}
+ok($r['code'] === 303 && (int) one('SELECT count(*) FROM payment_claims WHERE invoice_id = :i', ['i' => $d]) === 5, 'five claims in an hour are taken');
+$r = $claim(['csrf_token' => $csrf, 'claimed_on' => '2026-10-02', 'method' => 'card', 'reference' => 'SMOKE-RATE-6']);
+ok($r['code'] === 429 && (int) one('SELECT count(*) FROM payment_claims WHERE invoice_id = :i', ['i' => $d]) === 5 && str_contains($r['headers'], 'Retry-After'), 'the sixth: 429, nothing stored (5 a link an hour)');
+q('DELETE FROM payment_claims WHERE invoice_id = :i AND id <> :k', ['i' => $d, 'k' => $firstClaim]);
+
+echo "7. Rotating kills the old link\n";
+$since = last_activity_id();
+[$c, $b] = act($bea, '/invoices/secure-link.php', ['invoice' => $d]);
+ok($c === 200 && !str_contains(json_encode($b), $tok) && (int) one('SELECT count(*) FROM invoice_links_secure WHERE invoice_id = :i', ['i' => $d]) === 3 && (int) one('SELECT count(*) FROM invoice_links_secure WHERE invoice_id = :i AND rotated_at IS NULL', ['i' => $d]) === 1, 'secure_link_rotate: a new link made (three in all: issue, send, rotate), every old one dated, one live; the answer carries no token');
+$r = visitor('/i/' . $tok);
+ok($r['code'] === 404 && $r['body'] === $unknown['body'], 'the old link now answers the one page');
+ok(visitor('/i/' . $tok . '/attachment/' . $hotel)['code'] === 404 && $claim(['csrf_token' => $csrf, 'claimed_on' => '2026-10-02', 'method' => 'card'])['code'] === 404, 'its receipt door and its claim door are dead too');
+$log = activity('invoice.secure_link_rotate', $since);
+ok(count($log) === 1 && (int) $log[0]['invoice_id'] === $d && !str_contains(json_encode($log[0]), $tok), 'invoice.secure_link_rotate logged, no token in it');
+ok((int) one("SELECT count(*) FROM activity_log WHERE route ~ '[a-f0-9]{48}' OR (COALESCE(before::text, '') || COALESCE(after::text, '')) ~ '[a-f0-9]{48}'") === 0, 'no row of the activity log holds a link anywhere — not in a payload, not in the route (GET /i/{token})');
+[$c, $d2] = screen($bea, '/invoices/' . $d);
+ok($c === 200 && $d2['invoice']['link']['state'] === 'live' && count($d2['invoice']['claims']) === 1 && $d2['invoice']['open_claims'] === 1, 'the invoice screen: a live link (the new one), the one claim, an open-claims chip');
+[$c, $b] = act($marco, '/invoices/secure-link.php', ['invoice' => $d]);
+ok($c === 403, 'a Manager may not rotate: 403');
+$r = page($bea, '/billing/claims');
+ok($r['code'] === 200 && str_contains($r['body'], 'id="claim-' . $firstClaim . '-confirm-btn"') && str_contains($r['body'], 'SMOKE-WIRE-9'), 'the claims inbox shows it with Confirm and Dismiss');
+finish();

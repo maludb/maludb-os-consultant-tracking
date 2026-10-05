@@ -1,0 +1,22 @@
+<?php /** Draft an invoice (screen `invoice-add`). Data: engagements, prefill, selected, from, to, here */ ?>
+<?= view('shared/header.php', ['id' => 'invoice-form', 'title' => 'Draft an invoice', 'crumbs' => [['Home', '/'], ['Invoices', '/invoices/'], ['Draft', null]], 'back' => back_link() ?? ['/invoices/', 'invoices']]) ?>
+<div class="main-content" id="invoice-form-content">
+    <form method="post" action="/invoices/save.php" hx-post="/invoices/save.php" hx-target="#flash" class="card" id="invoice-form"><div class="card-body"><div class="row g-3">
+        <?= csrf_field() ?>
+        <div class="col-12"><label class="form-label" for="invoice-form-field-engagement">Engagement</label>
+            <select name="engagement" id="invoice-form-field-engagement" class="form-select btn-touch" required><option value="">Choose the engagement</option>
+            <?php foreach ($engagements as $e): ?><option value="<?= (int) $e['engagement_id'] ?>" <?= $prefill === (int) $e['engagement_id'] ? 'selected' : '' ?>><?= e($e['number'] . ' · ' . $e['name'] . ' (' . $e['client_name'] . ', ' . $e['currency'] . ')') ?></option><?php endforeach; ?></select>
+            <div class="form-text">One engagement an invoice. The client and the currency are the engagement's; the PO is its PO unless you type one.</div></div>
+        <div class="col-6 col-md-3"><label class="form-label" for="invoice-form-field-period-start">Period from</label><input type="date" name="period_start" id="invoice-form-field-period-start" class="form-control btn-touch" value="<?= e((string) $from) ?>"></div>
+        <div class="col-6 col-md-3"><label class="form-label" for="invoice-form-field-period-end">Period to</label><input type="date" name="period_end" id="invoice-form-field-period-end" class="form-control btn-touch" value="<?= e((string) $to) ?>"></div>
+        <div class="col-6 col-md-3"><label class="form-label" for="invoice-form-field-issue-date">Issue date</label><input type="date" name="issue_date" id="invoice-form-field-issue-date" class="form-control btn-touch" value="<?= e(date('Y-m-d')) ?>"></div>
+        <div class="col-6 col-md-3"><label class="form-label" for="invoice-form-field-due-date">Due date</label><input type="date" name="due_date" id="invoice-form-field-due-date" class="form-control btn-touch" value=""><div class="form-text">Empty: the client's terms from the issue date.</div></div>
+        <div class="col-12 col-md-6"><label class="form-label" for="invoice-form-field-po">PO number</label><input type="text" name="po_number" id="invoice-form-field-po" class="form-control btn-touch" maxlength="200" value="<?= e((string) ($selected['po_number'] ?? '')) ?>" placeholder="The engagement's, when empty"></div>
+        <div class="col-12"><label class="form-label" for="invoice-form-field-memo">Memo to the client</label><textarea name="memo" id="invoice-form-field-memo" class="form-control" rows="2" maxlength="4000"></textarea></div>
+        <div class="col-12"><label class="form-label" for="invoice-form-field-terms">Terms</label><textarea name="terms_text" id="invoice-form-field-terms" class="form-control" rows="2" maxlength="4000"></textarea></div>
+        <div class="col-12"><label class="form-label" for="invoice-form-field-note">Internal note (never shown to the client)</label><textarea name="internal_note" id="invoice-form-field-note" class="form-control" rows="2" maxlength="4000"></textarea></div>
+        <div class="col-12"><input type="hidden" name="add_unbilled" value="no"><label class="d-flex align-items-center gap-2" for="invoice-form-field-add"><input type="checkbox" class="form-check-input mt-0" name="add_unbilled" value="yes" id="invoice-form-field-add" checked>Add the unbilled items — approved, billable work, grouped as the engagement says</label></div>
+        <div class="col-12 col-md-4"><label class="form-label" for="invoice-form-field-through">…up to (a date)</label><input type="date" name="through" id="invoice-form-field-through" class="form-control btn-touch" value="<?= e((string) $to) ?>"><div class="form-text">Empty: the end of the period, else today.</div></div>
+        <div class="col-12 d-grid d-md-flex gap-2"><button type="submit" class="btn btn-primary btn-touch" id="invoice-form-save-btn">Draft the invoice</button><?= hx_link('/invoices/', 'Cancel', 'btn btn-light btn-touch', 'id="invoice-form-cancel-btn"') ?></div>
+    </div></div></form>
+</div>

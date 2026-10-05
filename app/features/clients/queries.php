@@ -10,7 +10,7 @@ const CLIENT_SELECT = 'SELECT c.client_id, c.name, c.legal_name, c.code, c.email
        c.default_rate_card_id, r.name AS rate_card_name, c.member_id, c.notes, c.archived_at, c.created_at, c.updated_at, c.active_engagements,
        (SELECT count(*) FROM engagements e WHERE e.client_id = c.client_id) AS engagement_count,
        (SELECT count(*) FROM client_contacts k WHERE k.client_id = c.client_id AND k.archived_at IS NULL) AS contact_count,
-       (SELECT COALESCE(sum(i.balance_due), 0) FROM invoices i WHERE i.client_id = c.client_id AND i.status IN (\'issued\', \'sent\', \'partially_paid\', \'overdue\')) AS open_balance
+       (SELECT COALESCE(sum(i.balance_due), 0) FROM invoices i WHERE i.client_id = c.client_id AND i.status IN (\'issued\', \'sent\', \'viewed\', \'partially_paid\')) AS open_balance
   FROM mcp_clients c LEFT JOIN rate_cards r ON r.id = c.default_rate_card_id';
 
 function client_cast(array $c): array

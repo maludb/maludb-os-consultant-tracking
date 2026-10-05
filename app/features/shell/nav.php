@@ -28,12 +28,12 @@ function nav_groups(): array
             ['budgets',      '/usage/budgets',       'feather-trending-up',   'Budgets',           'engagements.manage'],
         ],
         'Billing' => [
-            ['unbilled',     '/billing/unbilled',    'feather-layers',        'Unbilled',          'invoices.draft'],
-            ['invoices',     '/invoices/',           'feather-file-text',     'Invoices',          'invoices.draft'],
+            ['unbilled',     '/billing/unbilled',    'feather-layers',        'Unbilled',          'invoices.draft|reports.view'],
+            ['invoices',     '/invoices/',           'feather-file-text',     'Invoices',          'invoices.draft|reports.view'],
             ['credit-notes', '/credit-notes/',       'feather-corner-up-left','Credit notes',      'billing.write'],
             ['payments',     '/payments/',           'feather-download',      'Payments',          'billing.write'],
             ['claims',       '/billing/claims',      'feather-inbox',         'Payment claims',    'billing.write'],
-            ['ar-aging',     '/reports/ar-aging',    'feather-clock',         'Who owes us',       'billing.write|reports.view'],
+            ['ar-aging',     '/reports/ar-aging',    'feather-clock',         'Who owes us',       'receivables.view'],
             ['reimbursements','/expenses/reimbursements','feather-repeat',    'Reimbursements',    'billing.write'],
         ],
         'Reports' => [

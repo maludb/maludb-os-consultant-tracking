@@ -1,0 +1,7 @@
+<?php /** Confirm (an amount) / Dismiss for a waiting claim. Data: k (a claim), cur, here, balance (the invoice's) */ $kid = (int) $k['claim_id']; $amt = $k['amount'] ?? $balance; ?>
+<div class="d-flex flex-wrap gap-2" id="claim-<?= $kid ?>-actions">
+    <form method="post" action="/billing/claims/confirm.php" hx-post="/billing/claims/confirm.php" hx-target="#flash" hx-confirm="Confirm this payment?" class="d-flex gap-1"><?= csrf_field() ?><input type="hidden" name="claim" value="<?= $kid ?>"><input type="hidden" name="return_to" value="<?= e($here) ?>">
+        <input type="text" inputmode="decimal" name="amount" class="form-control btn-touch" style="max-width: 130px" value="<?= e((string) $amt) ?>" aria-label="Amount to confirm" id="claim-<?= $kid ?>-amount"><button type="submit" class="btn btn-primary btn-touch" id="claim-<?= $kid ?>-confirm-btn">Confirm</button></form>
+    <form method="post" action="/billing/claims/dismiss.php" hx-post="/billing/claims/dismiss.php" hx-target="#flash" hx-confirm="Dismiss this claim?" class="d-flex gap-1"><?= csrf_field() ?><input type="hidden" name="claim" value="<?= $kid ?>"><input type="hidden" name="return_to" value="<?= e($here) ?>">
+        <input type="text" name="reason" class="form-control btn-touch" placeholder="Why (optional)" maxlength="1000" id="claim-<?= $kid ?>-reason"><button type="submit" class="btn btn-light btn-touch" id="claim-<?= $kid ?>-dismiss-btn">Dismiss</button></form>
+</div>

@@ -36,8 +36,14 @@ function home_summary(PDO $pdo, int $memberId): array
         $approvals = ['weeks' => has_right('time.approve') ? array_slice(timesheets_pending($pdo, $memberId), 0, 8) : [], 'expenses' => has_right('expenses.approve') ? array_slice(expenses_pending($pdo, $memberId), 0, 8) : null,
                       'usage' => has_right('usage.approve') ? usage_pending($pdo, 8) : null];
     }
+    $billing = null;
+    if (has_right('invoices.draft') || has_right('billing.write') || has_right('reports.view')) {                      // slice 6: WIP, drafts to issue, due to draft, who owes us, claims waiting
+        require_once dirname(__DIR__) . '/invoices/queries.php';
+        require_once dirname(__DIR__) . '/payments/queries.php';
+        $billing = billing_summary($pdo);
+    }
     return [
-        'my_week' => $myWeek, 'timer' => $timer, 'my_expenses' => $myExpenses, 'approvals' => $approvals, 'budget_alerts' => $alerts, 'billing' => null, 'clerk_note' => null,
+        'my_week' => $myWeek, 'timer' => $timer, 'my_expenses' => $myExpenses, 'approvals' => $approvals, 'budget_alerts' => $alerts, 'billing' => $billing, 'clerk_note' => null,
         'may' => [
             'time' => has_right('time.write'), 'expenses' => has_right('expenses.write'),
             'approve' => has_right('time.approve') || has_right('expenses.approve') || has_right('usage.approve'),

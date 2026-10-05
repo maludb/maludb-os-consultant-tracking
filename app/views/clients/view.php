@@ -25,7 +25,7 @@
                 </dl>
                 <div class="d-flex flex-wrap gap-2 mt-3">
                     <?php if ($may['engagements'] && $c['archived_at'] === null): ?><?= hx_link(with_back('/engagements/new?client=' . $id, $here), 'New engagement', 'btn btn-light btn-touch', 'id="client-view-engagement-btn"') ?><?php endif; ?>
-                    <?php if ($may['billing']): ?><?= hx_link(with_back('/clients/' . $id . '/statement', $here), 'Statement', 'btn btn-light btn-touch', 'id="client-view-statement-btn"') ?><?php endif; ?>
+                    <?php if ($may['statement']): ?><?= hx_link(with_back('/clients/' . $id . '/statement', $here), 'Statement', 'btn btn-light btn-touch', 'id="client-view-statement-btn"') ?><?php endif; ?>
                 </div>
                 <?php if ($may['manage']): ?>
                     <?php if ($c['archived_at'] === null): ?>
@@ -46,7 +46,10 @@
                 <div class="list-group list-group-flush"><?php foreach ($engagements as $e): ?><div class="list-group-item d-flex justify-content-between align-items-center" id="client-engagement-<?= (int) $e['engagement_id'] ?>"><span><?= hx_link(with_back('/engagements/' . (int) $e['engagement_id'], $here), e($e['number'] . ' · ' . $e['name'])) ?> <span class="text-muted fs-12"><?= e($e['kind'] === 'fixed_bid' ? 'Fixed bid' : 'T&M') ?><?= $e['manager_name'] ? ' · ' . e($e['manager_name']) : '' ?></span></span><span class="badge bg-soft-<?= $e['status'] === 'active' ? 'success text-success' : ($e['status'] === 'closed' ? 'secondary text-secondary' : 'warning text-warning') ?>"><?= e($e['status']) ?></span></div><?php endforeach; ?></div><?php endif; ?>
             </div>
             <?php if ($may['billing']): ?>
-            <div class="card mb-3" id="client-view-invoices"><div class="card-header"><h5 class="card-title mb-0">Open invoices</h5></div><div class="card-body text-muted" id="client-view-invoices-empty">Nothing open<?= (float) $c['open_balance'] > 0 ? '' : '' ?>. Slice 6 lists the invoices here.</div></div>
+            <div class="card mb-3" id="client-view-invoices"><div class="card-header"><h5 class="card-title mb-0">Open invoices</h5><?= hx_link(with_back('/invoices/?client=' . $id, $here), 'All', 'fs-12', 'id="client-view-invoices-all"') ?></div>
+                <?php if ($openInvoices === []): ?><div class="card-body text-muted" id="client-view-invoices-empty">Nothing open.</div><?php else: ?>
+                <div class="list-group list-group-flush"><?php foreach ($openInvoices as $oi): ?><div class="list-group-item d-flex justify-content-between align-items-center gap-2 fs-12" id="client-invoice-<?= (int) $oi['invoice_id'] ?>"><span><?= hx_link(with_back('/invoices/' . (int) $oi['invoice_id'], $here), e((string) $oi['number'])) ?> <span class="text-muted">· <?= e($oi['engagement_number']) ?> · due <?= e(format_date($oi['due_date'])) ?></span> <?= view('invoices/partials/chips.php', ['i' => $oi, 'id' => 'client-invoice-' . (int) $oi['invoice_id']]) ?></span><strong><?= e(fmt_money($oi['balance_due'], $oi['currency'])) ?></strong></div><?php endforeach; ?></div><?php endif; ?>
+            </div>
             <?php endif; ?>
             <?= view('shared/attachments.php', ['type' => 'client', 'id' => $id, 'attachments' => $attachments, 'may' => ['attach' => $may['attach'], 'delete' => $may['attach']], 'here' => $here, 'prefix' => 'client']) ?>
             <?= view('shared/notes.php', ['type' => 'client', 'id' => $id, 'notes' => $notes, 'may' => ['note' => true, 'admin' => $may['delete']], 'here' => $here, 'tz' => $tz, 'prefix' => 'client', 'me' => (int) current_member_id()]) ?>

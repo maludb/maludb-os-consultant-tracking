@@ -1,0 +1,112 @@
+<?php
+/** Proof — payments and claims (spec "Proof", 4): the claim confirmed → partially paid; an overpayment refused; a second payment → paid (paid_at); void an invoice with payments refused; void a payment with a reason → the invoice reopens to partially paid; payment.record carries amount and currency; a dismissed claim is a decision with no money. */
+require __DIR__ . '/lib.php';
+$w = billing_world(); $acme = $w['acme']; $client = $w['client'];
+$bea = as_member(28); $marco = as_member(27); $ann = as_member(29); $owner = as_member(1);
+$d = (int) one("SELECT id FROM invoices WHERE number = 'INV-00001'");
+$claim = (int) one("SELECT id FROM payment_claims WHERE invoice_id = :i AND status = 'submitted' ORDER BY id LIMIT 1", ['i' => $d]);
+$d > 0 && $claim > 0 or exit(fwrite(STDERR, "run door.php first\n") ?: 2);
+
+echo "1. The claim confirmed\n";
+[$c, $b] = act($marco, '/billing/claims/confirm.php', ['claim' => $claim]);
+ok($c === 403 && msg($b) === 'You may not issue, send and settle invoices.', 'a Manager may not confirm a claim: 403');
+$since = last_activity_id();
+[$c, $b] = act($bea, '/billing/claims/confirm.php', ['claim' => $claim]);
+$i = inv($d); $k = q('SELECT * FROM payment_claims WHERE id = :k', ['k' => $claim])[0];
+$p = q('SELECT * FROM invoice_payments WHERE invoice_id = :i', ['i' => $d]);
+ok($c === 200 && $b['status'] === 'partially_paid' && $b['amount'] === '1000.00' && $i['status'] === 'partially_paid' && $i['amount_paid'] === '1000.00' && $i['balance_due'] === '1359.00', 'payment_claim_confirm: the claim\'s 1,000.00 becomes a payment — partially paid, 1,359.00 owed');
+ok(count($p) === 1 && $p[0]['source'] === 'claim' && $p[0]['method'] === 'transfer' && $p[0]['reference'] === 'SMOKE-WIRE-9' && $p[0]['paid_on'] === date('Y-m-d') && (int) $p[0]['recorded_by'] === 28 && $p[0]['currency'] === 'USD' && $p[0]['status'] === 'recorded', 'a payment with source claim, the claim\'s date, method and reference, recorded by Bea, in the invoice\'s currency');
+ok($k['status'] === 'confirmed' && (int) $k['payment_id'] === (int) $p[0]['id'] && (int) $k['decided_by'] === 28 && $k['decided_at'] !== null, 'the claim is confirmed, tied to its payment, decided by Bea');
+$log = activity('payment_claim.confirm', $since);
+$after = json_decode((string) $log[0]['after'], true);
+ok(count($log) === 1 && (int) $log[0]['invoice_id'] === $d && (int) $log[0]['engagement_id'] === $acme && (int) $log[0]['client_id'] === $client && $after['amount'] === '1000.00' && $after['currency'] === 'USD' && $after['payment_id'] === (int) $p[0]['id'], 'payment_claim.confirm logged: invoice_id, engagement_id, client_id, amount and currency, the payment');
+[$c, $b] = act($bea, '/billing/claims/confirm.php', ['claim' => $claim]);
+ok($c === 422 && msg($b) === 'The claim is already confirmed', 'confirming again: the verb\'s words');
+[$c, $dd] = screen($bea, '/billing/claims');
+ok($c === 200 && $dd['claims'] === [], 'the inbox is empty now');
+
+echo "2. An overpayment is refused; a second payment settles it\n";
+[$c, $b] = act($bea, '/payments/save.php', ['invoice' => $d, 'amount' => '2000.00', 'method' => 'transfer']);
+ok($c === 422 && msg($b) === 'Invoice INV-00001 is owed 1359.00; recording 2000.00 would overpay it', 'payment_record 2,000.00: "Invoice INV-00001 is owed 1359.00; recording 2000.00 would overpay it"');
+ok(inv($d)['amount_paid'] === '1000.00' && (int) one('SELECT count(*) FROM invoice_payments WHERE invoice_id = :i', ['i' => $d]) === 1, 'nothing was recorded');
+foreach ([['amount' => '0'], ['amount' => '-5'], ['amount' => '12x'], ['method' => 'barter', 'amount' => '5'], ['amount' => '5', 'paid_on' => 'soon']] as $bad) {
+    [$c, $b] = act($bea, '/payments/save.php', ['invoice' => $d] + $bad);
+    ok($c === 422 && fields($b) !== [], 'a bad payment ' . json_encode($bad) . ': 422 naming a field (' . implode(',', array_keys(fields($b))) . ')');
+}
+[$c, $b] = act($marco, '/payments/save.php', ['invoice' => $d, 'amount' => '5']);
+ok($c === 403, 'a Manager records no payment: 403');
+[$c, $b] = act($ann, '/payments/save.php', ['invoice' => $d, 'amount' => '5']);
+ok($c === 403, 'Finance reads, never writes: 403');
+$since = last_activity_id();
+[$c, $b] = act($bea, '/payments/save.php', ['invoice' => $d, 'amount' => '1,359.00', 'method' => 'cheque', 'reference' => 'SMOKE-CHQ-1', 'paid_on' => date('Y-m-d')]);
+$pid2 = (int) ($b['payment_id'] ?? 0);
+$i = inv($d);
+ok($c === 200 && $b['status'] === 'paid' && $i['status'] === 'paid' && $i['amount_paid'] === '2359.00' && $i['balance_due'] === '0.00' && $i['paid_at'] !== null, 'payment_record 1,359.00: paid, nothing owed, paid_at stamped (derived by the database, never typed)');
+$log = activity('payment.record', $since);
+$after = json_decode((string) $log[0]['after'], true);
+ok(count($log) === 1 && (int) $log[0]['invoice_id'] === $d && (int) $log[0]['engagement_id'] === $acme && $log[0]['entity_type'] === 'payment' && (int) $log[0]['entity_id'] === $pid2 && $after['amount'] === '1359.00' && $after['currency'] === 'USD' && $after['method'] === 'cheque' && $after['reference'] === 'SMOKE-CHQ-1' && $after['source'] === 'manual', 'payment.record carries amount and currency, method, reference and source');
+$told = q("SELECT member_id, kind FROM notifications WHERE kind = 'invoice_paid' AND record_id = :i ORDER BY member_id", ['i' => $d]);
+ok(array_column($told, 'member_id') === [1, 27], 'a paid invoice tells billing (not Bea, who did it) and the engagement\'s manager (invoice_paid)');
+[$c, $b] = act($bea, '/payments/save.php', ['invoice' => $d, 'amount' => '1']);
+ok($c === 422 && str_contains(msg($b), 'is paid and takes no payment'), 'a paid invoice takes no more: "…is paid and takes no payment"');
+
+echo "3. Void: an invoice with payments refused; a payment voided with a reason\n";
+[$c, $b] = act($bea, '/invoices/void.php', ['invoice' => $d, 'reason' => 'SMOKE mistake']);
+ok($c === 422 && str_contains(msg($b), 'has payments or credits applied; void or unapply them first'), 'invoice_void with payments: "Invoice INV-00001 has payments or credits applied; void or unapply them first"');
+[$c, $b] = act($bea, '/payments/void.php', ['payment' => $pid2]);
+ok($c === 422 && isset(fields($b)['reason']), 'payment_void without a reason: 422 on the field');
+[$c, $b] = act($marco, '/payments/void.php', ['payment' => $pid2, 'reason' => 'x']);
+ok($c === 403, 'a Manager: 403');
+$since = last_activity_id();
+[$c, $b] = act($bea, '/payments/void.php', ['payment' => $pid2, 'reason' => 'SMOKE the cheque bounced']);
+$i = inv($d); $pv = q('SELECT * FROM invoice_payments WHERE id = :p', ['p' => $pid2])[0];
+ok($c === 200 && $b['status'] === 'partially_paid' && $i['status'] === 'partially_paid' && $i['amount_paid'] === '1000.00' && $i['balance_due'] === '1359.00' && $i['paid_at'] === null && $pv['status'] === 'void' && $pv['void_reason'] === 'SMOKE the cheque bounced' && (int) $pv['voided_by'] === 28 && $pv['voided_at'] !== null, 'payment_void: the invoice reopens to partially paid (paid_at cleared), the payment kept with its reason');
+$log = activity('payment.void', $since);
+$after = json_decode((string) $log[0]['after'], true);
+ok(count($log) === 1 && $after['amount'] === '1359.00' && $after['currency'] === 'USD' && $after['reason'] === 'SMOKE the cheque bounced' && (int) $log[0]['invoice_id'] === $d, 'payment.void logged with amount, currency and the reason');
+[$c, $b] = act($bea, '/payments/void.php', ['payment' => $pid2, 'reason' => 'again']);
+ok($c === 422 && msg($b) === 'That payment is already void.', 'voiding it again: refused in words');
+ok(str_contains(refused('DELETE FROM invoice_payments WHERE id = :p', ['p' => $pid2]), 'A payment is never deleted; void it') && str_contains(refused('UPDATE invoice_payments SET amount = 5 WHERE id = :p', ['p' => $pid2]), 'A void payment cannot change'), 'a payment is never deleted and a void one never changes (the triggers)');
+[$c, $b] = act($bea, '/payments/save.php', ['invoice' => $d, 'amount' => '1359.00', 'method' => 'transfer', 'reference' => 'SMOKE-WIRE-2', 'paid_on' => date('Y-m-d')]);
+ok($c === 200 && $b['status'] === 'paid' && inv($d)['amount_paid'] === '2359.00', 'the money arrives by transfer: paid again');
+
+echo "4. The payments screen\n";
+[$c, $dd] = screen($bea, '/payments/?client=' . $client);
+$by = array_column($dd['payments'], null, 'payment_id');
+ok($c === 200 && count($dd['payments']) === 3 && $dd['totals'] === ['USD' => '2359.00'] && count(array_filter($dd['payments'], static fn ($p) => $p['status'] === 'void')) === 1 && count(array_filter($dd['payments'], static fn ($p) => $p['source'] === 'claim')) === 1, 'the list: three payments (one claim-sourced, one void), recorded total 2,359.00 USD');
+$r = page($bea, '/payments/');
+ok($r['code'] === 200 && str_contains($r['body'], 'id="payment-' . $pid2 . '-void-badge"') && str_contains($r['body'], 'SMOKE-WIRE-2') && str_contains($r['body'], 'id="payment-list-totals"'), 'the page renders: the void one marked, the totals');
+[$c, $dd] = screen($bea, '/payments/?from=' . date('Y-m-d', time() + 86400));
+ok($c === 200 && $dd['payments'] === [], 'filtered by date: nothing recorded from tomorrow');
+[$c, $dd] = screen($bea, '/payments/?from=' . date('Y-m-d') . '&to=' . date('Y-m-d'));
+ok($c === 200 && count($dd['payments']) === 3, 'filtered to today: the three');
+[$c, $dd] = screen($marco, '/payments/');
+ok($c === 403, 'a Manager has no payments screen: 403');
+
+echo "5. A dismissed claim is a decision, with no money\n";
+q("INSERT INTO payment_claims (invoice_id, claimed_on, method, reference, amount, note) VALUES (:i, current_date, 'card', 'SMOKE-DISMISS', 50, 'twice')", ['i' => $d]);
+$k2 = (int) one('SELECT max(id) FROM payment_claims');
+$since = last_activity_id();
+[$c, $b] = act($marco, '/billing/claims/dismiss.php', ['claim' => $k2]);
+ok($c === 403, 'a Manager may not dismiss: 403');
+[$c, $b] = act($bea, '/billing/claims/dismiss.php', ['claim' => $k2, 'reason' => 'SMOKE a duplicate of the cheque']);
+$k = q('SELECT * FROM payment_claims WHERE id = :k', ['k' => $k2])[0];
+ok($c === 200 && $k['status'] === 'dismissed' && (int) $k['decided_by'] === 28 && $k['payment_id'] === null && (int) one('SELECT count(*) FROM invoice_payments WHERE invoice_id = :i', ['i' => $d]) === 3, 'payment_claim_dismiss: dismissed, decided by Bea, no payment made');
+$log = activity('payment_claim.dismiss', $since);
+ok(count($log) === 1 && json_decode((string) $log[0]['after'], true)['reason'] === 'SMOKE a duplicate of the cheque' && (int) $log[0]['invoice_id'] === $d, 'payment_claim.dismiss logged with the reason');
+[$c, $b] = act($bea, '/billing/claims/dismiss.php', ['claim' => $k2]);
+ok($c === 422 && msg($b) === 'The claim is already dismissed', 'dismissing again: "The claim is already dismissed"');
+[$c, $b] = act($bea, '/billing/claims/confirm.php', ['claim' => $k2]);
+ok($c === 422 && msg($b) === 'The claim is already dismissed', 'and a dismissed claim cannot be confirmed');
+[$c, $dd] = screen($bea, '/billing/claims?status=all');
+ok($c === 200 && count($dd['claims']) === 2 && array_column($dd['claims'], 'status') === ['dismissed', 'confirmed'], 'the claims screen with every status lists both decisions, newest first');
+
+echo "6. The ledger's name for it\n";
+$since = last_activity_id();
+[$c, $b] = act($bea, '/invoices/external-ref.php', ['invoice' => $d, 'external_ref' => 'GL-INV-1']);
+ok($c === 200 && inv($d)['external_ref'] === 'GL-INV-1', 'invoice_external_ref_set');
+$log = activity('invoice.external_ref', $since);
+ok(count($log) === 1 && json_decode((string) $log[0]['before'], true)['external_ref'] === 'LEDGER-SECRET-77' && json_decode((string) $log[0]['after'], true)['external_ref'] === 'GL-INV-1', 'invoice.external_ref logged: before and after');
+[$c, $b] = act($marco, '/invoices/external-ref.php', ['invoice' => $d, 'external_ref' => 'x']);
+ok($c === 403, 'a Manager: 403');
+finish();

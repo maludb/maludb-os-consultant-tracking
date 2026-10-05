@@ -118,6 +118,9 @@ function is_ct_admin(): bool
 function has_right(string $right): bool
 {
     static $cache = [];
+    if ($right === 'receivables.view') {                 // what clients owe, firm-wide (the aging, the statements): Billing, or a reader of every engagement — never a Manager, whose reports.view is their own engagements' (db/014's ct_ar_aging is not scoped by engagement)
+        return $cache[$right] ??= db_bool(db(), "SELECT ct_has_right('billing.write') OR (ct_has_right('reports.view') AND ct_sees_all())");
+    }
     if ($right === 'cost.table') {                       // the cost-rate TABLE: cost.view across every engagement (the admin, Billing, Finance — never a Manager, whose cost.view is their own margin)
         return $cache[$right] ??= db_bool(db(), "SELECT ct_has_right('cost.view') AND ct_sees_all()");
     }
@@ -204,6 +207,7 @@ const RIGHT_WORDS = [
     'reports.view' => 'see reports', 'clients.manage' => 'manage clients', 'rate_cards.manage' => 'manage rate cards',
     'billing.write' => 'issue, send and settle invoices', 'exports.download' => 'download exports', 'settings.manage' => 'change the settings',
     'cost.table' => "see the cost-rate table; it is the admin's, Billing's and Finance's",
+    'receivables.view' => "see what clients owe across the firm; it is Billing's and Finance's",
 ];
 
 /** A right, with the sentence a person reads when they lack it. */

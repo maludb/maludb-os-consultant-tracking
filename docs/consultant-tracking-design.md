@@ -611,7 +611,7 @@ skipping a whole line; (f) **the margin bills approved hours only**; written-off
 today's open invoices** bucketed by the date asked — a historical aging is Extended; (h) retainers are refused by the guard
 (`kind = 'retainer'` admitted by the CHECK) until their spec lands.
 
-**2026-10-05 — Phase 1 WRITTEN, awaiting the owner's approval (the checkpoint before any PHP).** `docs/consultant-tracking-mcp-tool-surface.md`
+**2026-10-05 — Phase 1 WRITTEN and APPROVED by the owner the same day (the checkpoint before any PHP).** `docs/consultant-tracking-mcp-tool-surface.md`
 (43 named records tools + `records_search` + `app_roles`, six of them the shares; 6 activity tools; the coverage table of §7; the log-payload
 rules; the resolution table; the six share documents `os.ct-*/1` and the G1 read), `docs/consultant-tracking-action-manifest.md` (78 screens,
 108 actions, 57 with an approval category — exactly `maludb-os.json` `approvals[]`, checked), `mcp/action_registry.json` (built clean,
@@ -619,5 +619,4 @@ rules; the resolution table; the six share documents `os.ct-*/1` and the G1 read
 (1), `engagements` (2), **`time-core` (3 — THE EXEMPLAR)**, `expenses-receipts` (4), `usage-and-os-statement` (5), `invoicing` (6), `reports` (7),
 `worker-doors-shares` (8), `home-admin-tokens` (9) — each with screens, rules, files, query-function signatures, handlers, manifest entries, log
 events, notifications, vocabulary, out of scope, the proof checklist, and "Open questions" EMPTY. The installer's `plan` now maps every approval
-category to its log event through the registry. **Next**: the owner approves Phase 1 as a whole; then Phase 2 (`sso-shell`), slices 1–2, and
-slice 3 — time — the exemplar; the handoff to Sonnet 5.5 follows it.
+category to its log event through the registry. **Next**: Phase 2 (`sso-shell`), slices 1–2, and slice 3 — time — the exemplar; the handoff to Sonnet 5.5 follows it.

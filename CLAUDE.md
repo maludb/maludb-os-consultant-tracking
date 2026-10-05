@@ -68,18 +68,18 @@ AI usage and hosting pass-through, invoices) and **is not the books**: the accou
   installed application; the installer's `plan` (`php /var/www/bin/app_install.php plan /srv/apps/consultant_tracking`) runs
   at the end of every phase.
 
-## Build order and the handoff (decided 2026-10-04)
+## Build order and the handoff (decided 2026-10-04, division revised 2026-10-05 — design D16)
 
-The plan is the planning-class model's whole part (design §13.16). **A worker model (Sonnet 5.5) builds everything from it**,
-in this order, stopping and escalating on any ambiguity rather than improvising — a question the design does not answer is
-written into the slice spec's "Open questions" for the owner, never guessed.
+The same division of labour General Ledger uses: a **planning-class model** builds what the database enforces, the specs and
+the exemplar; a **worker model (Sonnet 5.5)** replicates every other slice from a spec, stopping and escalating on any ambiguity
+rather than improvising. The handoff is a clean checkpoint with everything a worker needs in this repository — never mid-slice.
 
-0. **§15 is filled** (2026-10-04, D1–D16 — every recommendation taken). Build to it; a decision is never relitigated.
+**Before the handoff (planning-class model):**
 1. **K17** in the kernel (`/var/www`): a migration seeding the `consultant_tracking` catalog row (Sales & Service / `other` /
-   `feather-briefcase` / `high`), on the pattern of db/167 (`gl`). Commit there in the kernel's message style.
+   `feather-briefcase` / `high`), on the pattern of db/167 (`gl`).
 2. **Phase 0, second half**: `db/001`–`0NN` — the mirror and roles (copied from Help Desk, prefix `ct_`), settings and the
-   seeds (§6), clients, rates, engagements, time, expenses, usage, invoicing, documents, talking, agents, tokens — with the
-   referee rules as triggers; the nine report functions; `ct_has_right()`, `ct_can_see_engagement()`; the `mcp_*` views;
+   seeds (design §6), clients, rates, engagements, time, expenses, usage, invoicing, documents, talking, agents, tokens — with
+   the referee rules as triggers; the nine report functions; `ct_has_right()`, `ct_can_see_engagement()`; the `mcp_*` views;
    `db/proof/phase0_proof.sql` on a scratch database (the cases of design §10, phase 0); the kit copied from Help Desk and
    proven without a kernel (`tests/phase0/run.sh`); `maludb-os.json` (§14 — the six `shares[]`, the one `reads[]`, every port
    env, the approvals of §5); `os/{expert,biller}.md`; the seven skills; `deploy/` with the vhost allow-list and `ROOT_STEPS.sh`
@@ -91,18 +91,27 @@ written into the slice spec's "Open questions" for the owner, never guessed.
    design §10, each in the shape of `/srv/apps/helpdesk/docs/build-specs/tickets-core.md` (screens, files, query-function
    signatures, handlers, manifest entries, log events, notifications, status vocabulary, out of scope, proof, "Open questions"
    EMPTY). **The owner approves Phase 1 as a whole before any PHP.**
-4. **Phase 2** (`sso-shell`), then **slice 1** (clients, rates and settings — the CRUD pattern), **slice 2** (engagements), then
-   **slice 3, time — THE EXEMPLAR**: build it with the most care, prove it at 375 and 1280 (`tests/phase3/slice3/run.sh`), and
-   stop for the owner's look before slice 4. Every later slice copies its shape.
-5. **Slices 4 → 9** in order, one at a time, each from its spec: screens + handlers + `log_activity()` + manifest entries +
-   the tools' query functions, proven on a scratch database, the spec's "Built and proven" and design §16 updated, one commit
-   per slice.
-6. **Phase 4**: the two MCP servers over the same query functions (`mcp/records_server.py`, `mcp/activity_server.py`, tool
-   modules `mcp/ct_*.py`, own `mcp/venv`), `app_roles` and the six `shares[]` admitted to the kernel's token, the registry
-   wrapper `deploy/kernel-registry-consultant_tracking.json`, the agents' grants and the Clerk's duty — Help Desk's
-   `tests/phase4/run.sh` is the pattern (the gate, the tools, the registry, the hook).
-7. **Phase 5** with the owner: ports pinned, `apply` (root — the owner runs it; the classifier refuses it), DNS and TLS for
-   `consulting.<domain>`, the MaluMail key, the hires, the first rate card and client, the end-to-end proof of design §10.
+4. **Phase 2** (`sso-shell`), **slice 1** (clients, rates and settings — the CRUD pattern) and **slice 2** (engagements).
+5. **Slice 3, time — THE EXEMPLAR**: the phone-first week grid, entries, the timer, submit/approve/reject/reopen, locking, the
+   rate and cost snapshots, write-off, team time, missing time, utilization, the timeline; its proof suite
+   `tests/phase3/slice3/run.sh` green at 375 and 1280. This is what every later slice copies.
+
+**The handoff point** = the commit after slice 3 with design §16 saying "exemplar built; slices 4–9 open to workers".
+
+**After the handoff (worker model — Sonnet 5.5):** slices 4 → 9 in order, one at a time, each on the exemplar's pattern
+from its spec: screens + handlers + `log_activity()` + manifest entries + the tools' query functions, proven on a scratch
+database, the spec's "Built and proven" and design §16 updated, one commit per slice. Then **Phase 4** (the two MCP servers
+over the same query functions — `mcp/records_server.py`, `mcp/activity_server.py`, tool modules `mcp/ct_*.py`, own `mcp/venv`;
+`app_roles` and the six `shares[]` admitted to the kernel's token; the registry wrapper
+`deploy/kernel-registry-consultant_tracking.json`; the agents' grants and the Clerk's duty — Help Desk's `tests/phase4/run.sh`
+is the pattern), and **Phase 5** with the owner (ports pinned, `apply` — root, the owner runs it —, DNS and TLS for
+`consulting.<domain>`, the MaluMail key, the hires, the first rate card and client, the end-to-end proof of design §10).
+
+**A worker's rules:** read this file, design §3 (rights), §5 (what pauses), §6 (the tables — never modify a migration, add
+one), §15 (D1–D16) and the slice's spec before touching a file; reads through `mcp_*` views, writes to base tables after the
+gate; the database's refusal is shown as a field error, never re-implemented in PHP; money events carry `amount` and
+`currency` in `after`; a cost rate never appears in a payload; a question the spec does not answer stops the slice and is
+written into the spec's "Open questions" for the owner — never guessed.
 
 ## Environment facts
 - Install path `/srv/apps/consultant_tracking`; database `subello_consultant_tracking` on the office's PostgreSQL 17 (roles
@@ -114,5 +123,5 @@ written into the slice spec's "Open questions" for the owner, never guessed.
 - Kernel items this application waits on (design §12): K17 catalog seed (first), K18 the people rule, K19 a cost tag on runs,
   K16/K8 wake-an-agent; siblings: G1 (General Ledger's `invoice_receipts` share and source import), H2 (HR pays
   reimbursements), P1 (Projects' `projects_list`).
-- **State (2026-10-04): the plan APPROVED (§15 D1–D16); the repository created; handed to the worker model.** Nothing else
-  exists. Next: K17 in the kernel, then Phase 0's second half (step 2 above).
+- **State (2026-10-05): the plan APPROVED (§15 D1–D16, D16 revised to the GL division); the repository created; the planning
+  model is building toward the handoff.** Next: K17 in the kernel, then Phase 0's second half (step 2 above).

@@ -569,14 +569,14 @@ Every recommendation of §13 was taken, in one sitting, the same day the plan wa
 | D13 | **Numbering**: `ENG-0001` at creation; `INV-00001` and `CN-00001` gapless on issue; `EXP-000001` and `USG-000001` at creation; prefixes are settings | `document_sequences`; `ct_settings` |
 | D14 | **K17–K19, G1, H2, P1 approved**, each built in its own repository; **K17 first**; K18 and K19 Extended | §12 |
 | D15 | **Ports pinned before `apply`**: `APP_INTERNAL_PORT=8185`, `MCP_RECORDS_PORT=8831`, `MCP_ACTIVITY_PORT=8832`, all three in `env.required` | §14; `config/.env`; `deploy/ROOT_STEPS.sh` |
-| D16 | **Sonnet 5.5 builds everything from this plan** — K17, Phase 0's second half, Phase 1 for the owner's approval, Phases 2–5 — with **time (slice 3) built and shown to the owner first** as the exemplar every later slice copies | `CLAUDE.md` "Build order and the handoff" |
+| D16 | **The General Ledger division, decided 2026-10-05** (overturning the 2026-10-04 answer at the owner's word): a **planning-class model** builds K17, Phase 0's second half with its proof, Phase 1 for the owner's approval, Phase 2, slices 1–2 and **slice 3 (time) — the exemplar**; a **worker model (Sonnet 5.5)** builds slices 4–9, Phase 4 and Phase 5 from the specs. The handoff point is the commit after slice 3 with §16 saying so | `CLAUDE.md` "Build order and the handoff" |
 
 ## 16. State
 
 **2026-10-04 — the plan approved.** The plan written (this document); the repository `maludb/maludb-os-consultant-tracking`
 created private in the org and cloned to `/srv/apps/consultant_tracking`; the owner answered all sixteen questions of §13 the
-same day, every recommendation taken (§15, D1–D16). Nothing else exists yet. **Handed to the worker model (Sonnet 5.5).** Next,
-in the order of `CLAUDE.md`: **K17** (the catalog seed) in the kernel; **Phase 0's second half** — the schema `db/001`–`0NN` and
+same day, every recommendation taken (§15, D1–D16); **2026-10-05 D16 revised**: the planning model builds through the exemplar,
+the worker takes slices 4–9 and Phases 4–5. Nothing else exists yet. Next, in the order of `CLAUDE.md`: **K17** (the catalog seed) in the kernel; **Phase 0's second half** — the schema `db/001`–`0NN` and
 its proof on a scratch database, the kit from Help Desk, `maludb-os.json`, `os/{expert,biller}.md`, the seven skills, `deploy/`
 with `ROOT_STEPS.sh` pinning 8185/8831/8832; then **Phase 1** (the tool surface, the manifest, the ten specs) as the checkpoint
-before any PHP; then Phase 2, slices 1–2, and **slice 3 — time — shown to the owner before slice 4**.
+before any PHP; then Phase 2, slices 1–2, and **slice 3 — time — the exemplar; the handoff to Sonnet 5.5 follows it**.

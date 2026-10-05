@@ -83,6 +83,7 @@ require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/directory.php';
 require_once __DIR__ . '/mail.php';
 require_once __DIR__ . '/features/shell/nav.php';
+require_once __DIR__ . '/views/shared/money.php';
 
 // A JSON caller (the kernel's actions server, an approval replay) never receives PHP's own
 // error output — a 500 it can parse instead of an HTML fragment.

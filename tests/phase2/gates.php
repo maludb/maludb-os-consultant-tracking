@@ -17,8 +17,8 @@ $matrix = [
     '/time/approvals' => 'manager billing admin', '/expenses/approvals' => 'manager billing admin', '/usage/' => 'manager billing admin', '/usage/os' => 'manager billing admin',
     '/usage/budgets' => 'manager billing admin', '/billing/unbilled' => 'manager billing admin', '/invoices/' => 'manager billing admin', '/settings/allocation-rules/' => 'manager billing admin',
     '/settings/schedules/' => 'manager billing admin', '/reports/ar-aging' => 'manager billing finance admin', '/exports' => 'billing finance admin',
-    '/credit-notes/' => 'billing admin', '/payments/' => 'billing admin', '/billing/claims' => 'billing admin', '/expenses/reimbursements' => 'billing admin', '/settings/rate-cards/' => 'billing admin',
-    '/settings/general' => 'admin', '/settings/numbering' => 'admin', '/settings/roles/' => 'admin', '/settings/cost-rates/' => 'admin', '/settings/capacity/' => 'admin',
+    '/credit-notes/' => 'billing admin', '/payments/' => 'billing admin', '/billing/claims' => 'billing admin', '/expenses/reimbursements' => 'billing admin', '/settings/rate-cards/' => 'manager billing finance admin',
+    '/settings/general' => 'admin', '/settings/numbering' => 'admin', '/settings/roles/' => 'admin', '/settings/cost-rates/' => 'billing finance admin', '/settings/capacity/' => 'admin',
     '/settings/activity-types/' => 'admin', '/settings/categories/' => 'admin', '/settings/providers/' => 'admin', '/settings/tax-rates/' => 'admin', '/settings/agents' => 'admin', '/settings/connections' => 'admin',
 ];
 [$jUser, ] = sign_on(26);
@@ -45,7 +45,7 @@ $menu = fn (string $j): array => (preg_match_all('/id="nav-([a-z-]+)"/', page($j
 $groups = fn (string $j): array => (preg_match_all('/nxl-caption"><label>([^<]+)</', page($j, '/')['body'], $m) ? $m[1] : []);
 ok($groups($jUser) === ['Work', 'Reports', 'Settings', 'Me'] && !in_array('time-approvals', $menu($jUser), true) && in_array('timesheet', $menu($jUser), true) && in_array('reports', $menu($jUser), true) && !in_array('exports', $menu($jUser), true) && in_array('my-settings', $menu($jUser), true), 'a Consultant sees Work, Reports (their own utilization), Settings (My settings) and Me: ' . implode(', ', $groups($jUser)));
 ok($groups($jManager) === ['Work', 'Manage', 'Billing', 'Reports', 'Settings', 'Me'] && in_array('time-approvals', $menu($jManager), true) && in_array('unbilled', $menu($jManager), true) && !in_array('general', $menu($jManager), true) && !in_array('credit-notes', $menu($jManager), true), 'a Manager sees Manage and Billing (Unbilled, Invoices) but no credit notes and no firm settings');
-ok(in_array('rate-cards', $menu($jBilling), true) && in_array('credit-notes', $menu($jBilling), true) && !in_array('general', $menu($jBilling), true) && !in_array('cost-rates', $menu($jBilling), true), 'Billing sees Rate cards and Credit notes, not the firm\'s settings or the cost rates');
+ok(in_array('rate-cards', $menu($jBilling), true) && in_array('credit-notes', $menu($jBilling), true) && !in_array('general', $menu($jBilling), true) && in_array('cost-rates', $menu($jBilling), true) && !in_array('cost-rates', $menu($jManager), true), 'Billing sees Rate cards, Credit notes and the cost-rate table (cost.table), not the firm\'s settings; a Manager never the table');
 ok($groups($jFinance) === ['Work', 'Billing', 'Reports', 'Settings', 'Me'] && in_array('exports', $menu($jFinance), true) && in_array('ar-aging', $menu($jFinance), true) && !in_array('timesheet', $menu($jFinance), true) && !in_array('time-approvals', $menu($jFinance), true), 'Finance (external) sees Engagements, Who owes us, Reports and Exports — no timesheet, no Manage');
 ok(in_array('general', $menu($jAdmin), true) && in_array('cost-rates', $menu($jAdmin), true) && in_array('agents', $menu($jAdmin), true), 'an admin sees every settings item');
 $r = page(jar(), '/time/');

@@ -136,3 +136,93 @@ function revoke_token(PDO $pdo, int $memberId, int $tokenId): bool
     $st->execute(['id' => $tokenId, 'm' => $memberId]);
     return $st->fetchColumn() !== false;
 }
+
+// ---- the firm's settings and the numbering (slice 1) --------------------------------------------------------------------------------
+
+const SETTINGS_TEXT = ['firm_name' => 200, 'firm_address' => 500, 'firm_tax_id' => 60, 'invoice_footer' => 1000];
+const TIME_GROUPINGS = ['by_person' => 'By person', 'by_role' => 'By consulting role', 'by_activity' => 'By activity', 'by_day' => 'By day', 'single_line' => 'One line'];
+const HOURS_INCREMENTS = ['0.05', '0.10', '0.25', '0.50', '1.00'];
+const SEQUENCE_KINDS = ['engagement' => 'Engagements', 'invoice' => 'Invoices', 'credit_note' => 'Credit notes', 'expense' => 'Expenses', 'usage_charge' => 'Usage charges'];
+const DOW = [1 => 'Monday', 2 => 'Tuesday', 3 => 'Wednesday', 4 => 'Thursday', 5 => 'Friday', 6 => 'Saturday', 0 => 'Sunday'];
+
+/** The one settings row, typed. */
+function find_settings(PDO $pdo): array
+{
+    $s = $pdo->query('SELECT * FROM ct_settings WHERE id = 1')->fetch();
+    foreach (['week_start_dow', 'default_terms_days', 'link_lifetime_days', 'ai_budget_threshold_pct', 'morning_note_member_id', 'missing_time_nudge_dow'] as $k) {
+        $s[$k] = $s[$k] === null ? null : (int) $s[$k];
+    }
+    foreach (['share_receipts_default', 'ai_statement_poll'] as $k) {
+        $s[$k] = (bool) $s[$k];
+    }
+    foreach (['hours_increment', 'max_hours_per_day', 'receipt_threshold', 'default_markup_pct', 'capacity_hours_per_week'] as $k) {
+        $s[$k] = number_format((float) $s[$k], 2, '.', '');
+    }
+    $s['reminder_days'] = pg_int_array($s['reminder_days']);
+    $s['budget_thresholds_pct'] = pg_int_array($s['budget_thresholds_pct']);
+    unset($s['id']);
+    return $s;
+}
+
+/** Save the keys given; answers ['before' => …, 'after' => …] of what changed (nothing changed: both empty). */
+function save_settings(PDO $pdo, array $fields, int $by): array
+{
+    $before = find_settings($pdo);
+    $after = array_intersect_key($fields, $before) + $before;
+    $norm = static function (array $s): array {
+        foreach (['hours_increment', 'max_hours_per_day', 'receipt_threshold', 'default_markup_pct', 'capacity_hours_per_week'] as $k) {
+            $s[$k] = number_format((float) $s[$k], 2, '.', '');
+        }
+        unset($s['updated_at']);
+        return $s;
+    };
+    $d = ct_diff($norm($before), $norm($after));
+    if ($d['after'] === []) {
+        return $d;
+    }
+    $sets = [];
+    $args = [];
+    foreach ($d['after'] as $k => $v) {
+        $sets[] = $k . ' = ' . (in_array($k, ['reminder_days', 'budget_thresholds_pct'], true) ? 'CAST(:' . $k . ' AS integer[])' : ':' . $k);
+        $args[$k] = is_bool($v) ? ($v ? 't' : 'f') : (is_array($v) ? pg_array_literal($v) : $v);
+    }
+    $pdo->prepare('UPDATE ct_settings SET ' . implode(', ', $sets) . ' WHERE id = 1')->execute($args);
+    return $d;
+}
+
+function present_settings(array $s): array
+{
+    return $s + ['updated_at' => json_ts($s['updated_at'] ?? null)];
+}
+
+/** The five sequences, with a preview of the next number and the highest number issued (the floor the next value may not go below). */
+function find_numbering(PDO $pdo): array
+{
+    $rows = $pdo->query('SELECT kind, prefix, next_value, padding FROM document_sequences ORDER BY array_position(ARRAY[\'engagement\', \'invoice\', \'credit_note\', \'expense\', \'usage_charge\'], kind)')->fetchAll();
+    $issued = [
+        'engagement' => (int) one_value($pdo, "SELECT max(substring(number FROM '[0-9]+$')::bigint) FROM engagements WHERE number ~ '[0-9]+$'"),
+        'invoice' => (int) one_value($pdo, "SELECT max(substring(number FROM '[0-9]+$')::bigint) FROM invoices WHERE number IS NOT NULL AND number ~ '[0-9]+$'"),
+        'credit_note' => (int) one_value($pdo, "SELECT max(substring(number FROM '[0-9]+$')::bigint) FROM credit_notes WHERE number IS NOT NULL AND number ~ '[0-9]+$'"),
+        'expense' => (int) one_value($pdo, "SELECT max(substring(number FROM '[0-9]+$')::bigint) FROM expenses WHERE number ~ '[0-9]+$'"),
+        'usage_charge' => (int) one_value($pdo, "SELECT max(substring(number FROM '[0-9]+$')::bigint) FROM usage_charges WHERE number ~ '[0-9]+$'"),
+    ];
+    return array_map(static fn (array $r): array => ['kind' => $r['kind'], 'label' => SEQUENCE_KINDS[$r['kind']] ?? $r['kind'], 'prefix' => $r['prefix'], 'next_value' => (int) $r['next_value'], 'padding' => (int) $r['padding'],
+        'preview' => $r['prefix'] . str_pad((string) $r['next_value'], (int) $r['padding'], '0', STR_PAD_LEFT), 'highest_issued' => $issued[$r['kind']] ?? 0], $rows);
+}
+
+/** Change a sequence's prefix, next value or padding. The next value never goes below the highest issued + 1. Answers the diff. */
+function save_numbering(PDO $pdo, string $kind, array $fields, int $by): array
+{
+    $rows = array_column(find_numbering($pdo), null, 'kind');
+    $cur = $rows[$kind] ?? throw new DomainException('Not found.');
+    $before = ['prefix' => $cur['prefix'], 'next_value' => $cur['next_value'], 'padding' => $cur['padding']];
+    $after = array_intersect_key($fields, $before) + $before;
+    if ($after['next_value'] <= $cur['highest_issued']) {
+        throw new DomainException('The next number cannot go below ' . ($cur['highest_issued'] + 1) . ': ' . $cur['prefix'] . str_pad((string) $cur['highest_issued'], $cur['padding'], '0', STR_PAD_LEFT) . ' is already issued.');
+    }
+    $d = ct_diff($before, $after);
+    if ($d['after'] !== []) {
+        $pdo->prepare('UPDATE document_sequences SET prefix = :p, next_value = :n, padding = :pad, updated_at = now() WHERE kind = :k')->execute(['p' => $after['prefix'], 'n' => $after['next_value'], 'pad' => $after['padding'], 'k' => $kind]);
+    }
+    return $d;
+}

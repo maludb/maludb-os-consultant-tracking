@@ -44,7 +44,7 @@ function nav_groups(): array
             ['general',      '/settings/general',    'feather-sliders',       'Settings',          'settings.manage'],
             ['roles',        '/settings/roles/',     'feather-award',         'Consulting roles',  'settings.manage'],
             ['rate-cards',   '/settings/rate-cards/','feather-tag',           'Rate cards',        'rate_cards.manage'],
-            ['cost-rates',   '/settings/cost-rates/','feather-lock',          'Cost rates',        'settings.manage'],
+            ['cost-rates',   '/settings/cost-rates/','feather-lock',          'Cost rates',        'cost.table'],
             ['capacity',     '/settings/capacity/',  'feather-battery',       'Capacity',          'settings.manage'],
             ['activity-types','/settings/activity-types/','feather-list',     'Activity types',    'settings.manage'],
             ['categories',   '/settings/categories/','feather-folder',        'Expense categories','settings.manage'],

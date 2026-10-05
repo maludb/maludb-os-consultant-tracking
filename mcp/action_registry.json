@@ -1,6 +1,6 @@
 {
     "generated_from": "docs/consultant-tracking-action-manifest.md",
-    "generated_at": "2026-10-05T08:45:43+00:00",
+    "generated_at": "2026-10-05T09:15:39+00:00",
     "screens": {
         "dashboard": {
             "screen": "dashboard",
@@ -57,8 +57,8 @@
             "section": "Home, settings and tokens (Phase 2 and slice 9)",
             "when": "the firm's settings: currency, week start, increment, receipt threshold, markup default, terms, grouping, link lifetime, reminders, thresholds, capacity default, the morning-note recipient",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "numbering": {
             "screen": "numbering",
@@ -66,8 +66,8 @@
             "section": "Home, settings and tokens (Phase 2 and slice 9)",
             "when": "the prefixes and next numbers (ENG, INV, CN, EXP, USG)",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "agents": {
             "screen": "agents",
@@ -96,8 +96,8 @@
                 "q",
                 "archived"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "client-add": {
             "screen": "client-add",
@@ -105,8 +105,8 @@
             "section": "Clients, rates and the vocabulary (slice 1)",
             "when": "to add a client",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "client-view": {
             "screen": "client-view",
@@ -114,8 +114,8 @@
             "section": "Clients, rates and the vocabulary (slice 1)",
             "when": "one client: contacts, engagements, open invoices, the statement, the claims, documents, the timeline",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "client-edit": {
             "screen": "client-edit",
@@ -123,8 +123,8 @@
             "section": "Clients, rates and the vocabulary (slice 1)",
             "when": "to change a client's details, terms, currency, PO rule, default rate card",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "client-statement": {
             "screen": "client-statement",
@@ -135,7 +135,7 @@
                 "from",
                 "to"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "role-list": {
@@ -144,8 +144,8 @@
             "section": "Clients, rates and the vocabulary (slice 1)",
             "when": "the consulting roles (titles a rate is priced by)",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "rate-card-list": {
             "screen": "rate-card-list",
@@ -153,8 +153,8 @@
             "section": "Clients, rates and the vocabulary (slice 1)",
             "when": "the rate cards as cards",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "rate-card-add": {
             "screen": "rate-card-add",
@@ -164,8 +164,8 @@
             "params": [
                 "copy_of"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "rate-card-view": {
             "screen": "rate-card-view",
@@ -173,8 +173,8 @@
             "section": "Clients, rates and the vocabulary (slice 1)",
             "when": "one card: the rate per consulting role, the engagements using it",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "rate-card-edit": {
             "screen": "rate-card-edit",
@@ -182,8 +182,8 @@
             "section": "Clients, rates and the vocabulary (slice 1)",
             "when": "to rename a card or change its effective date",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "cost-rate-list": {
             "screen": "cost-rate-list",
@@ -191,8 +191,8 @@
             "section": "Clients, rates and the vocabulary (slice 1)",
             "when": "every person's cost rate by date range (admin, Finance)",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "capacity-list": {
             "screen": "capacity-list",
@@ -200,8 +200,8 @@
             "section": "Clients, rates and the vocabulary (slice 1)",
             "when": "every person's capacity by date range",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "activity-type-list": {
             "screen": "activity-type-list",
@@ -209,8 +209,8 @@
             "section": "Clients, rates and the vocabulary (slice 1)",
             "when": "the activity types and their billable default",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "category-list": {
             "screen": "category-list",
@@ -218,8 +218,8 @@
             "section": "Clients, rates and the vocabulary (slice 1)",
             "when": "the expense categories with receipt and markup overrides",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "provider-list": {
             "screen": "provider-list",
@@ -227,8 +227,8 @@
             "section": "Clients, rates and the vocabulary (slice 1)",
             "when": "the usage providers and their saved CSV mappings",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "tax-rate-list": {
             "screen": "tax-rate-list",
@@ -236,8 +236,8 @@
             "section": "Clients, rates and the vocabulary (slice 1)",
             "when": "the tax rates",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "engagement-list": {
             "screen": "engagement-list",
@@ -1057,7 +1057,7 @@
             "approval": "other",
             "log_event": "settings.save",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "numbering_save": {
             "action": "numbering_save",
@@ -1094,7 +1094,7 @@
             "approval": "other",
             "log_event": "numbering.save",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "client_save": {
             "action": "client_save",
@@ -1179,7 +1179,7 @@
             "approval": null,
             "log_event": "client.create",
             "who": "clients",
-            "built": false
+            "built": true
         },
         "client_update": {
             "action": "client_update",
@@ -1270,7 +1270,7 @@
             "approval": null,
             "log_event": "client.update",
             "who": "clients",
-            "built": false,
+            "built": true,
             "partial": true
         },
         "client_archive": {
@@ -1290,7 +1290,7 @@
             "approval": null,
             "log_event": "client.archive",
             "who": "clients",
-            "built": false
+            "built": true
         },
         "client_restore": {
             "action": "client_restore",
@@ -1309,7 +1309,7 @@
             "approval": null,
             "log_event": "client.restore",
             "who": "clients",
-            "built": false
+            "built": true
         },
         "client_delete": {
             "action": "client_delete",
@@ -1328,7 +1328,7 @@
             "approval": "deletion",
             "log_event": "client.delete",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "client_contact_save": {
             "action": "client_contact_save",
@@ -1389,7 +1389,7 @@
             "approval": null,
             "log_event": "client_contact.save",
             "who": "clients",
-            "built": false
+            "built": true
         },
         "client_contact_remove": {
             "action": "client_contact_remove",
@@ -1408,7 +1408,7 @@
             "approval": null,
             "log_event": "client_contact.remove",
             "who": "clients",
-            "built": false
+            "built": true
         },
         "statement_send": {
             "action": "statement_send",
@@ -1445,7 +1445,7 @@
             "approval": "external_send",
             "log_event": "client.statement_send",
             "who": "billing",
-            "built": false
+            "built": true
         },
         "consulting_role_save": {
             "action": "consulting_role_save",
@@ -1488,7 +1488,7 @@
             "approval": "other",
             "log_event": "consulting_role.save",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "consulting_role_archive": {
             "action": "consulting_role_archive",
@@ -1507,7 +1507,7 @@
             "approval": "other",
             "log_event": "consulting_role.archive",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "rate_card_save": {
             "action": "rate_card_save",
@@ -1556,7 +1556,7 @@
             "approval": "other",
             "log_event": "rate_card.save",
             "who": "cards",
-            "built": false
+            "built": true
         },
         "rate_card_rate_save": {
             "action": "rate_card_rate_save",
@@ -1587,7 +1587,7 @@
             "approval": "other",
             "log_event": "rate_card.rate",
             "who": "cards",
-            "built": false
+            "built": true
         },
         "rate_card_archive": {
             "action": "rate_card_archive",
@@ -1606,7 +1606,7 @@
             "approval": "other",
             "log_event": "rate_card.archive",
             "who": "cards",
-            "built": false
+            "built": true
         },
         "rate_card_delete": {
             "action": "rate_card_delete",
@@ -1625,7 +1625,7 @@
             "approval": "deletion",
             "log_event": "rate_card.delete",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "cost_rate_save": {
             "action": "cost_rate_save",
@@ -1674,7 +1674,7 @@
             "approval": "other",
             "log_event": "cost_rate.save",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "cost_rate_end": {
             "action": "cost_rate_end",
@@ -1699,7 +1699,7 @@
             "approval": "other",
             "log_event": "cost_rate.end",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "capacity_save": {
             "action": "capacity_save",
@@ -1742,7 +1742,7 @@
             "approval": "other",
             "log_event": "capacity.save",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "activity_type_save": {
             "action": "activity_type_save",
@@ -1785,7 +1785,7 @@
             "approval": "other",
             "log_event": "activity_type.save",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "activity_type_archive": {
             "action": "activity_type_archive",
@@ -1804,7 +1804,7 @@
             "approval": "other",
             "log_event": "activity_type.archive",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "expense_category_save": {
             "action": "expense_category_save",
@@ -1859,7 +1859,7 @@
             "approval": "other",
             "log_event": "expense_category.save",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "expense_category_archive": {
             "action": "expense_category_archive",
@@ -1878,7 +1878,7 @@
             "approval": "other",
             "log_event": "expense_category.archive",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "usage_provider_save": {
             "action": "usage_provider_save",
@@ -1921,7 +1921,7 @@
             "approval": "other",
             "log_event": "usage_provider.save",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "tax_rate_save": {
             "action": "tax_rate_save",
@@ -1958,7 +1958,7 @@
             "approval": "other",
             "log_event": "tax_rate.save",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "tax_rate_archive": {
             "action": "tax_rate_archive",
@@ -1977,7 +1977,7 @@
             "approval": "other",
             "log_event": "tax_rate.archive",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "engagement_save": {
             "action": "engagement_save",
@@ -2767,7 +2767,7 @@
             "approval": null,
             "log_event": "attachment.add",
             "who": "the record's writer",
-            "built": false
+            "built": true
         },
         "attachment_delete": {
             "action": "attachment_delete",
@@ -2786,7 +2786,7 @@
             "approval": "deletion",
             "log_event": "attachment.delete",
             "who": "the record's manager",
-            "built": false
+            "built": true
         },
         "note_add": {
             "action": "note_add",
@@ -2817,7 +2817,7 @@
             "approval": null,
             "log_event": "note.add",
             "who": "the record's viewer",
-            "built": false
+            "built": true
         },
         "note_delete": {
             "action": "note_delete",
@@ -2836,7 +2836,7 @@
             "approval": "deletion",
             "log_event": "note.delete",
             "who": "own or admin",
-            "built": false
+            "built": true
         },
         "time_entry_save": {
             "action": "time_entry_save",

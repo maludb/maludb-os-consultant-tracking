@@ -50,3 +50,12 @@ function db_message(Throwable $e, string $fallback): string
     $text = trim((string) (preg_split('/\R|CONTEXT:/', substr($text, $at + 6))[0] ?? ''));
     return $text === '' ? $fallback : $text;
 }
+
+/** The first column of the first row, or null. */
+function one_value(PDO $pdo, string $sql, array $args = []): mixed
+{
+    $st = $pdo->prepare($sql);
+    $st->execute($args);
+    $v = $st->fetchColumn();
+    return $v === false ? null : $v;
+}

@@ -17,6 +17,17 @@ function find_my_activity(PDO $pdo, int $memberId, int $page, array $filters = [
             $keyed = true;
         }
     }
+    if (($filters['entity_type'] ?? null) !== null) {
+        $where[] = 'entity_type = :etype AND entity_id = :eid';
+        $args['etype'] = (string) $filters['entity_type'];
+        $args['eid'] = (int) $filters['entity_id'];
+        $keyed = true;
+    }
+    if (($filters['client'] ?? null) !== null) {
+        $where[] = 'client_id = :client';
+        $args['client'] = (int) $filters['client'];
+        $keyed = true;
+    }
     if (!$keyed && ($filters['own'] ?? true)) {
         $where[] = 'actor_member_id = :member';
         $args['member'] = $memberId;
@@ -36,6 +47,22 @@ function find_my_activity(PDO $pdo, int $memberId, int $page, array $filters = [
     $st->execute($args);
     $rows = $st->fetchAll();
     return ['rows' => array_slice($rows, 0, ACTIVITY_PAGE), 'more' => count($rows) > ACTIVITY_PAGE];
+}
+
+/** A record's trail (the view decides who sees it): by its key column where it has one (client, engagement, invoice, timesheet), else by entity. */
+function find_record_activity(PDO $pdo, string $type, int $id, int $limit = 30): array
+{
+    $f = match ($type) { 'client' => ['client' => $id], 'engagement' => ['engagement' => $id], 'invoice' => ['invoice' => $id], 'timesheet' => ['timesheet' => $id], default => ['entity_type' => $type, 'entity_id' => $id] };
+    return array_slice(find_my_activity($pdo, 0, 1, $f)['rows'], 0, $limit);
+}
+
+/** A row's JSON: the actor, the sentence, the keys. */
+function present_activity_row(array $r): array
+{
+    return ['activity_id' => (int) $r['activity_id'], 'occurred_at' => json_ts($r['occurred_at']), 'actor' => ['member_id' => $r['actor_member_id'] === null ? null : (int) $r['actor_member_id'], 'display_name' => $r['actor_name'], 'kind' => $r['actor_kind']],
+            'source' => $r['source'], 'action' => $r['action'], 'sentence' => activity_sentence($r), 'entity_type' => $r['entity_type'], 'entity_id' => $r['entity_id'] === null ? null : (int) $r['entity_id'],
+            'engagement_id' => $r['engagement_id'] === null ? null : (int) $r['engagement_id'], 'client_id' => $r['client_id'] === null ? null : (int) $r['client_id'],
+            'invoice_id' => $r['invoice_id'] === null ? null : (int) $r['invoice_id'], 'timesheet_id' => $r['timesheet_id'] === null ? null : (int) $r['timesheet_id'], 'agent_run_id' => $r['agent_run_id'] === null ? null : (int) $r['agent_run_id']];
 }
 
 /** The record a row concerns, as a link: [url, label] or null. */

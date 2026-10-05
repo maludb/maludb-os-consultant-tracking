@@ -170,7 +170,7 @@ function ct_done(string $did, ?int $recordId, string $land, string $event = '', 
 {
     emit_action_status(true, ['did' => $did, 'record_id' => $recordId, 'refresh' => $event] + $extra);
     if (wants_json()) {
-        respond_saved(['did' => $did, 'record_id' => $recordId, 'location' => $land] + $extra);
+        respond_saved(['did' => $did, 'record_id' => $recordId, 'location' => $land, 'refresh' => $event] + $extra);
     }
     saved_go($land, $event);
 }

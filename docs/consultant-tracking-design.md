@@ -624,4 +624,9 @@ the sidebar by right in five groups; the role badge; the bell; the command bar t
 My settings (`prefs_save`), Tokens (`token_mint`, `token_revoke`), Notifications (`notification_read`), Activity (own rows, a record's by key), own sign-out, the web
 manifest, the design-system assets, 57 placeholders that name their slice; `tests/phase2/run.sh` — **247 checks green**; the installer's `plan` clean. One rule learned:
 **Finance holds the `finance` role alone** (the `user` role carries `time.write`/`expenses.write`; an external reader is never granted it) — §3 amended.
-**Next**: slices 1–2, then slice 3 — time — the exemplar; the handoff to Sonnet 5.5 follows it.
+**2026-10-05 — Slice 1 BUILT and proven** (`docs/build-specs/clients-rates-settings.md`): clients and contacts, rate cards with rates in place, the cost-rate
+table (`cost.table` = cost.view across every engagement: the admin, Billing, Finance), capacity, the five vocabulary tables (one view, one handler body), the firm's
+settings and the numbering, the generic documents and notes doors (`/engagements/attachments/*`, `/engagements/notes/*`, the file at `/attachments/{id}`) and the
+shared record partials; `tests/phase3/slice1/run.sh` — **259 checks green**; the registry reads 23 screens and 34 actions built.
+**Next**: slice 2 (engagements), then slice 3 — time — the exemplar; the handoff to Sonnet 5.5 follows it.
+

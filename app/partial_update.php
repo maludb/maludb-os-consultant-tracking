@@ -10,11 +10,14 @@ declare(strict_types=1);
 /** endpoint → [table, the form's id field, read view, the view's id column] */
 const PARTIAL_UPDATE_TARGETS = [
     // Each slice adds its own save endpoints here (the manifest's `any field of`): the table, the form's id field, the read view, its id column.
-    '/customers/save.php'       => ['customers', 'customer', 'mcp_customers', 'customer_id'],
-    '/vendors/save.php'         => ['vendors', 'vendor', 'mcp_vendors', 'vendor_id'],
-    '/settings/accounts/save.php' => ['accounts', 'account', 'mcp_accounts', 'account_id'],
-    '/settings/items/save.php'  => ['items', 'item', 'mcp_items', 'item_id'],
-    '/settings/banks/save.php'  => ['bank_accounts', 'bank_account', 'mcp_bank_accounts', 'bank_account_id'],
+    '/clients/save.php'              => ['clients', 'client', 'mcp_clients', 'client_id'],
+    '/clients/contacts/save.php'     => ['client_contacts', 'contact', 'mcp_client_contacts', 'contact_id'],
+    '/settings/rate-cards/save.php'  => ['rate_cards', 'rate_card', 'mcp_rate_cards', 'rate_card_id'],
+    '/settings/roles/save.php'       => ['consulting_roles', 'role', 'mcp_consulting_roles', 'consulting_role_id'],
+    '/settings/activity-types/save.php' => ['activity_types', 'activity', 'mcp_activity_types', 'activity_type_id'],
+    '/settings/categories/save.php'  => ['expense_categories', 'category', 'mcp_expense_categories', 'category_id'],
+    '/settings/providers/save.php'   => ['usage_providers', 'provider', 'mcp_usage_providers', 'provider_id'],
+    '/settings/tax-rates/save.php'   => ['tax_rates', 'tax_rate', 'mcp_tax_rates', 'tax_rate_id'],
 ];
 
 function partial_update_prefill(PDO $pdo): void

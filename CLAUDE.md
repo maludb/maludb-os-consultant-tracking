@@ -129,12 +129,14 @@ written into the spec's "Open questions" for the owner — never guessed.
   the installer's `plan` clean. The decisions taken while building are design §16 (a–h) — rules, not questions. **Phase 1 WRITTEN 2026-10-05** —
   `docs/consultant-tracking-mcp-tool-surface.md`, `docs/consultant-tracking-action-manifest.md` (78 screens, 108 actions, 57 approvals = `maludb-os.json`),
   `mcp/action_registry.json` (`--check` OK), the ten specs in `docs/build-specs/` — **APPROVED by the owner 2026-10-05. Phase 2 BUILT and PROVEN 2026-10-05** (`tests/phase2/run.sh`, 247 checks; the fakes on 8302/8303/8306,
-  the app on 8301, browser proofs with Playwright from `/var/www/web/node_modules`). Then slices 1–2 (`sso-shell`), slices 1–2, slice 3 (time, the exemplar), the handoff.
+  the app on 8301, browser proofs with Playwright from `/var/www/web/node_modules`). **Slice 1 BUILT and PROVEN 2026-10-05** (`tests/phase3/slice1/run.sh`, 259 checks;
+  the scratch database `ct_dev3`). Then slice 2 (`sso-shell`), slices 1–2, slice 3 (time, the exemplar), the handoff.
 - The proofs: `tests/setup_dev.sh` builds the scratch database `ct_dev` and writes `$CT_DEV_ENV` (`/tmp/ct-dev.env`); `tests/phase0/run.sh`
   is the regression (the schema proof, then the kit on `php -S :8307` with `tests/dev_router.php`); `bin/directory_sync.php --from-file
   bin/dev_directory.json` applies the fixture (Owner 1, Priya 26, Marco 27, Bea 28, Ann 29, Dana 30). **Never put a `config/.env` here
   before the installer's `apply`** except the three-line port pin of `deploy/ROOT_STEPS.sh` step 0.
-- Finance holds the `finance` role ALONE (never `user`, which logs time). The shell's menu table is `app/features/shell/nav.php` (five groups: Work, Manage, Billing, Reports, Settings; the phone's tabs Home,
+- Finance holds the `finance` role ALONE (never `user`, which logs time). `cost.table` is a derived right (`has_right()`): cost.view AND every engagement — the admin, Billing, Finance read the cost-rate table; a Manager never.
+- Documents and notes on any record go through the generic doors `/engagements/attachments/*` and `/engagements/notes/*` (`record_type` + `record`; `record_writable()` is the rule) and the shared partials `app/views/shared/{attachments,notes,timeline}.php`; a file is served at `/attachments/{id}` through the gate. The shell's menu table is `app/features/shell/nav.php` (five groups: Work, Manage, Billing, Reports, Settings; the phone's tabs Home,
   Time, Expenses, Engagements). `app/activity.php` takes `engagement_id`, `client_id`, `invoice_id`, `timesheet_id` (and `actor_client_id`
   for the public door) on every row. `app/auth.php` has `require_can_see_engagement()` / `require_can_manage_engagement()` over the SQL
   rules. `PARTIAL_UPDATE_TARGETS` is empty until the manifest names the `*_update` handlers. The writer's verbs are SQL functions

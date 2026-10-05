@@ -44,7 +44,7 @@ function billing_write(PDO $pdo, string $sql, array $args): PDOStatement
  * Draft an invoice for an engagement. $f: period_start, period_end, issue_date (today), due_date (the client's terms, else the settings'), po_number (the engagement's when empty — the guard's), memo, terms_text, internal_note.
  * With $addUnbilled the approved unbilled items are pulled through the engagement's grouping up to $through (today). Answers ['id', 'counts' => the verb's row | null].
  */
-function create_invoice(PDO $pdo, int $engagementId, array $f, int $by, bool $addUnbilled, ?string $through): array
+function create_invoice(PDO $pdo, int $engagementId, array $f, ?int $by, bool $addUnbilled, ?string $through): array
 {
     $e = $pdo->prepare('SELECT e.client_id, COALESCE(c.terms_days, (SELECT default_terms_days FROM ct_settings WHERE id = 1)) AS terms FROM engagements e JOIN clients c ON c.id = e.client_id WHERE e.id = :e');
     $e->execute(['e' => $engagementId]);
@@ -84,7 +84,7 @@ function update_invoice(PDO $pdo, int $id, array $f, int $by): array
 }
 
 /** Pull the engagement's approved, billable, unbilled items onto a draft: [time_lines, time_entries_billed, time_no_rate, expense_lines, usage_lines, milestone_lines]. */
-function add_unbilled(PDO $pdo, int $invoiceId, int $by, ?string $through): array
+function add_unbilled(PDO $pdo, int $invoiceId, ?int $by, ?string $through): array
 {
     $r = billing_verb($pdo, 'SELECT * FROM ct_invoice_add_unbilled(:i, :by, COALESCE(CAST(:t AS date), current_date))', ['i' => $invoiceId, 'by' => $by, 't' => $through]);
     $out = [];
@@ -147,7 +147,7 @@ function share_invoice_receipts(PDO $pdo, int $invoiceId): int
 }
 
 /** Mint a fresh secure link (the old one dies) and answer the raw token — once. */
-function rotate_secure_link(PDO $pdo, int $invoiceId, int $by): string
+function rotate_secure_link(PDO $pdo, int $invoiceId, ?int $by): string
 {
     $r = billing_verb($pdo, 'SELECT ct_secure_link_mint(:i) AS t', ['i' => $invoiceId]);
     return (string) $r['t'];
@@ -170,7 +170,7 @@ function write_off_invoice(PDO $pdo, int $id, int $by, string $reason): array
 }
 
 /** What the ledger calls the invoice. Answers [before, after]. */
-function set_external_ref(PDO $pdo, int $id, ?string $ref, int $by): array
+function set_external_ref(PDO $pdo, int $id, ?string $ref, ?int $by): array
 {
     $before = one_value($pdo, 'SELECT external_ref FROM invoices WHERE id = :i', ['i' => $id]);
     billing_write($pdo, 'UPDATE invoices SET external_ref = :r WHERE id = :i', ['r' => $ref, 'i' => $id]);
@@ -181,7 +181,7 @@ function set_external_ref(PDO $pdo, int $id, ?string $ref, int $by): array
  * Mark an issued invoice sent and queue one mail per recipient with a FRESH secure link (the raw token exists only at mint time, so a send makes its own and the previous link dies).
  * $recipients: [email => name|null]. Answers ['invoice' => row, 'queued' => n, 'recipients' => n]; refuses when there is nobody to send to.
  */
-function send_invoice(PDO $pdo, int $id, int $by, ?string $toEmail, ?string $message, string $kind = 'invoice'): array
+function send_invoice(PDO $pdo, int $id, ?int $by, ?string $toEmail, ?string $message, string $kind = 'invoice'): array
 {
     $inv = $pdo->prepare('SELECT i.*, c.name AS client_name, g.name AS engagement_name FROM invoices i JOIN clients c ON c.id = i.client_id JOIN engagements g ON g.id = i.engagement_id WHERE i.id = :i');
     $inv->execute(['i' => $id]);

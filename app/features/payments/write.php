@@ -4,7 +4,7 @@ declare(strict_types=1);
 /** Writes of payments and claims (slice 6): a payment is an INSERT the guard referees (the invoice's currency, an open invoice, never an overpayment); a void is an UPDATE; a claim is confirmed by the verb. Paid is derived by the database. */
 
 /** Record a payment against an open invoice: $f paid_on, amount, method, reference. The currency is the invoice's. Answers the payment id. */
-function record_payment(PDO $pdo, int $invoiceId, array $f, int $by, string $source = 'manual'): int
+function record_payment(PDO $pdo, int $invoiceId, array $f, ?int $by, string $source = 'manual'): int
 {
     $cur = one_value($pdo, 'SELECT currency FROM invoices WHERE id = :i', ['i' => $invoiceId]);
     if ($cur === null) {

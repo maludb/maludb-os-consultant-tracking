@@ -42,12 +42,25 @@ function home_summary(PDO $pdo, int $memberId): array
         require_once dirname(__DIR__) . '/payments/queries.php';
         $billing = billing_summary($pdo);
     }
+    $clerk = has_right('billing.write') ? find_clerk_note($pdo) : null;                // slice 8: the Billing Clerk's latest morning note (Billing's, never a Manager's)
     return [
-        'my_week' => $myWeek, 'timer' => $timer, 'my_expenses' => $myExpenses, 'approvals' => $approvals, 'budget_alerts' => $alerts, 'billing' => $billing, 'clerk_note' => null,
+        'my_week' => $myWeek, 'timer' => $timer, 'my_expenses' => $myExpenses, 'approvals' => $approvals, 'budget_alerts' => $alerts, 'billing' => $billing, 'clerk_note' => $clerk,
         'may' => [
             'time' => has_right('time.write'), 'expenses' => has_right('expenses.write'),
             'approve' => has_right('time.approve') || has_right('expenses.approve') || has_right('usage.approve'),
-            'manage' => has_right('engagements.manage'), 'billing' => has_right('invoices.draft') || has_right('billing.write') || has_right('reports.view'), 'reports' => has_right('reports.view'),
+            'manage' => has_right('engagements.manage'), 'clerk' => has_right('billing.write'), 'billing' => has_right('invoices.draft') || has_right('billing.write') || has_right('reports.view'), 'reports' => has_right('reports.view'),
         ],
     ];
+}
+
+/** The latest morning note left for anyone (slice 8, `morning_note_send`): [notification_id, title, body, created_at, for_name] or null. Read from the notices themselves; only Billing's home asks. */
+function find_clerk_note(PDO $pdo): ?array
+{
+    $r = $pdo->query("SELECT n.id AS notification_id, n.title, n.body, n.created_at, m.display_name AS for_name FROM notifications n JOIN members m ON m.id = n.member_id WHERE n.kind = 'morning_note' ORDER BY n.id DESC LIMIT 1")->fetch();
+    return $r === false ? null : ['notification_id' => (int) $r['notification_id'], 'title' => $r['title'], 'body' => (string) $r['body'], 'created_at' => $r['created_at'], 'for_name' => $r['for_name']];
+}
+
+function present_clerk_note(?array $n): ?array
+{
+    return $n === null ? null : ['notification_id' => $n['notification_id'], 'title' => $n['title'], 'body' => $n['body'], 'created_at' => json_ts($n['created_at']), 'for' => $n['for_name']];
 }

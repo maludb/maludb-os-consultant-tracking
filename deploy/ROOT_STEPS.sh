@@ -47,3 +47,13 @@ echo "   - the first rate card, the cost rates, the first client and engagement 
 echo "   - the Billing Clerk's duty (0 7 * * *) in Agent HR until the installer reads agents[].duty"
 echo "   - the connections a super-admin approves (bin/app_connection.php): the ledger reading invoices_issued …, HR reading reimbursements_approved;"
 echo "     G1 (the ledger's invoice_receipts share), H2 (HR pays reimbursements), P1 (Projects' list) in their own repositories"
+
+# ------------------------------------------------------------------------------------------------------------------
+# 4. The worker (slice 8, 2026-10-05) — ROOT. consultant_tracking-worker.service/.timer (deploy/) run `php bin/worker.php` every minute
+#    as www-data (the outbox: email through MaluMail, texts through the kernel's K6; Monday's nudges; cadence drafts; the AI statement poll;
+#    schedules; budgets; reminders; the K7 reads of gl.invoice_receipts and hr.reimbursements_paid; claims; link expiry; dispatch retries).
+#    The installer's apply renders and enables the units it finds in deploy/; if it does not, by hand:
+echo "== 4. The worker timer (ROOT)"
+echo "   sudo systemctl enable --now consultant_tracking-worker.timer      # after apply rendered {{APP_DIR}} in the units"
+echo "   php $APP/bin/worker.php --steps=send     # one pass of one step, as www-data, to see it work (needs MALUMAIL_API_KEY for mail)"
+echo "   The K7 reads answer 403 no_connection (logged once a day, nothing changed) until a super-admin approves the connections: bin/app_connection.php"

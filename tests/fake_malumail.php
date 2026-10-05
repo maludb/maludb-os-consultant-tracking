@@ -2,7 +2,7 @@
 /**
  * A FAKE MaluMail for the slice 7 proofs — `php -S 127.0.0.1:8294 tests/fake_malumail.php`: /mcp answers the mailbox MCP's list_messages, read_message and mark_message over the
  * messages the proofs put in $FAKE_MALUMAIL_STATE (JSON: {"mailboxes": {"<address>": {"<uid>": {headers, text, html, parts, attachments, flags, refuse_read}}}}); /v1/send logs each
- * body to $FAKE_MALUMAIL_LOG and answers as the address asks ("suppressed" → 400 all rejected, "rejected" → 200 with a rejection, "flaky" → 502, else 200 accepted with a message_id).
+ * body to $FAKE_MALUMAIL_LOG and answers as the address asks ("suppressed" → 400 all rejected, "rejected" → 200 with a rejection, "flaky" → 502 always, "flakyonce" → 502 once then accepted, else 200 accepted with a message_id).
  */
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $stateFile = (string) getenv('FAKE_MALUMAIL_STATE');
@@ -15,7 +15,8 @@ if ($path === '/v1/send' && ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
     file_put_contents((string) getenv('FAKE_MALUMAIL_LOG'), json_encode($in) . "\n", FILE_APPEND);
     $to = (string) ($in['to'] ?? '');
     if (str_contains($to, 'suppressed')) { http_response_code(400); echo json_encode(['error' => 'No deliverable recipients.', 'rejected' => [['email' => $to, 'reason' => 'suppressed:bounce']]]); exit; }
-    if (str_contains($to, 'flaky')) { http_response_code(502); echo '{"error":"relay refused"}'; exit; }
+    if (str_contains($to, 'flakyonce') && substr_count((string) @file_get_contents((string) getenv('FAKE_MALUMAIL_LOG')), '"to":"' . $to . '"') <= 1) { http_response_code(502); echo '{"error":"relay refused once"}'; exit; }     // refuses the first attempt, accepts the next
+    if (str_contains($to, 'flaky') && !str_contains($to, 'flakyonce')) { http_response_code(502); echo '{"error":"relay refused"}'; exit; }
     if (str_contains($to, 'rejected')) { echo json_encode(['status' => 'sent', 'accepted' => [], 'rejected' => [['email' => $to, 'reason' => 'invalid_address']], 'message_id' => null]); exit; }
     echo json_encode(['status' => 'sent', 'accepted' => [$to], 'rejected' => [], 'message_id' => '<mm-' . $n . '@fake.malumail>']); exit;
 }

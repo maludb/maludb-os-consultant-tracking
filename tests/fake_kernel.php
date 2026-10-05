@@ -8,8 +8,10 @@
  *   GET  /api/v1/ledger/periods.php     → A5, from state.ledger: no ?period= answers os.ledger-periods/1 (state.ledger.periods — the months and their status); ?period=YYYY-MM answers
  *                                         state.ledger.docs[<period>] (an os.ledger-period/1 document, as the kernel sends it), a 422 for a month it has none of; state.ledger.mode = down answers 503;
  *                                         every request is appended to "<state file>.ledger" (the period asked, or "list")
- *   POST /api/v1/notify/sms.php         → K6, as state.sms says (mode = ok | no_sender | not_held | no_verified_phone | opted_out | rate_limited | server_error);
+ *   POST /api/v1/notify/sms.php         → K6, as state.sms says (mode = ok | no_sender | not_held | no_verified_phone | opted_out | rate_limited | server_error; members{<id>: mode} per person; 202 until a member has had 30 accepted, then 422 rate_limited);
  *                                         every request body is appended to "<state file>.sms" (one JSON line each)
+ *   POST /api/v1/apps/read.php         → K7, as state.reads[<provider>][<tool>] says ({mode: ok | no_connection | not_shared | provider_failed, result}; no entry = 403 no_connection, as a kernel with no connection approved);
+ *                                         every request is appended to "<state file>.reads" (one JSON line each: provider, tool, argument keys, the answer's status)
  * Every call needs Authorization: Bearer $OS_APPLICATION_TOKEN (else 401), like the real one. Never a real kernel.
  */
 $state = json_decode((string) @file_get_contents((string) getenv('FAKE_KERNEL_STATE')), true) ?: [];
@@ -31,6 +33,11 @@ switch ($path) {
         $log = (string) getenv('FAKE_KERNEL_STATE') . '.sms';
         $member = (int) ($input['member_id'] ?? 0);
         $mode = $sms['members'][(string) $member] ?? ($sms['mode'] ?? 'ok');
+        if ($mode === 'ok') {                                                                         // the kernel's own limit: 30 accepted texts a member a day per application
+            $accepted = 0;
+            foreach (array_filter(explode("\n", (string) @file_get_contents($log))) as $line) { $x = json_decode($line, true); $accepted += (($x['member_id'] ?? 0) === $member && !empty($x['accepted'])) ? 1 : 0; }
+            if ($accepted >= 30) { $mode = 'rate_limited'; }
+        }
         if (($input['text'] ?? '') === '' || mb_strlen((string) ($input['text'] ?? '')) > 480) { $mode = 'invalid'; }
         file_put_contents($log, json_encode($input + ['accepted' => $mode === 'ok', 'mode' => $mode]) . "\n", FILE_APPEND);
         $refuse = static fn (string $code, int $status) => $out(['error' => ['code' => $code, 'message' => 'Refused: ' . $code]], $status);
@@ -39,6 +46,16 @@ switch ($path) {
             case 'no_sender':    $refuse('no_sender', 503);
             case 'server_error': $refuse('server_error', 500);
             default:             $refuse($mode, 422);
+        }
+    case '/api/v1/apps/read.php':
+        $entry = $state['reads'][(string) ($input['provider'] ?? '')][(string) ($input['tool'] ?? '')] ?? null;
+        $mode = $entry === null ? 'no_connection' : ($entry['mode'] ?? 'ok');
+        file_put_contents((string) getenv('FAKE_KERNEL_STATE') . '.reads', json_encode(['provider' => $input['provider'] ?? null, 'tool' => $input['tool'] ?? null, 'argument_keys' => array_keys((array) ($input['arguments'] ?? [])),
+            'arguments' => $input['arguments'] ?? null, 'mode' => $mode]) . "\n", FILE_APPEND);
+        switch ($mode) {
+            case 'ok':              $out(['result' => $entry['result'] ?? [], 'provider' => $input['provider'], 'tool' => $input['tool']]);
+            case 'provider_failed': $out(['error' => ['code' => 'provider_failed', 'message' => 'The provider did not answer.']], 502);
+            default:                $out(['error' => ['code' => $mode, 'message' => 'Refused: ' . $mode]], 403);
         }
     case '/api/v1/directory/changes.php':
         if (isset($_GET['since']) && isset($state['incremental'])) { $out($state['incremental']); }

@@ -1,6 +1,6 @@
 {
     "generated_from": "docs/consultant-tracking-action-manifest.md",
-    "generated_at": "2026-10-05T15:16:16+00:00",
+    "generated_at": "2026-10-05T16:29:33+00:00",
     "screens": {
         "dashboard": {
             "screen": "dashboard",
@@ -813,8 +813,8 @@
                 "from",
                 "to"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         }
     },
     "actions": {
@@ -4684,7 +4684,7 @@
             "approval": null,
             "log_event": "export.download",
             "who": "billing (exports.download)",
-            "built": false
+            "built": true
         },
         "morning_note_send": {
             "action": "morning_note_send",
@@ -4709,7 +4709,7 @@
             "approval": null,
             "log_event": "morning_note.send",
             "who": "billing or the Clerk",
-            "built": false
+            "built": true
         }
     }
 }

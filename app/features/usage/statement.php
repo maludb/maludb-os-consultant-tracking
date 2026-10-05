@@ -36,7 +36,7 @@ function kernel_ledger(?string $period = null): array
  * move until the close); a month already pulled and closed is left alone. With $period: that month, whatever it is (the database refuses a changed document for a month already allocated).
  * Answers the months touched: [{period, kernel_status, status, lines, document_hash, new, changed}].
  */
-function pull_ai_statements(PDO $pdo, ?string $period, int $by): array
+function pull_ai_statements(PDO $pdo, ?string $period, ?int $by): array
 {
     $docs = [];
     if ($period !== null) {
@@ -83,7 +83,7 @@ function pull_ai_statements(PDO $pdo, ?string $period, int $by): array
  * Allocate a CLOSED month by the rules valid in it (the verb; an open month is refused in its own words). Answers ['made' => how many charges, 'summary' => per provider and currency (the statement's total,
  * what is allocated, the remainder), 'charges' => the month's charges, 'kept' => approved charges the allocation left as they were].
  */
-function allocate_ai_statement(PDO $pdo, int $statementId, int $by): array
+function allocate_ai_statement(PDO $pdo, int $statementId, ?int $by): array
 {
     $kept = (int) one_value($pdo, "SELECT count(*) FROM usage_charges WHERE statement_id = :s AND status = 'approved'", ['s' => $statementId]);
     $row = usage_verb($pdo, 'SELECT ct_ai_statement_allocate(:s, :by) AS made', ['s' => $statementId, 'by' => $by]);

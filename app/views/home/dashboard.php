@@ -25,7 +25,11 @@ $coming = static fn (string $id, string $icon, string $title, string $text, stri
             <?php endif; ?>
             <?php if ($may['billing']): ?>
                 <?= $s['billing'] === null ? $coming('home-billing', 'feather-file-text', 'Billing', 'Unbilled work, drafts to issue, invoices due to draft, who owes us and the OS statement appear here.', 'slices 5–7') : view('home/partials/billing.php', ['b' => $s['billing'], 'tz' => $tz]) ?>
-                <?= $s['clerk_note'] === null ? $coming('home-clerk-note', 'feather-cpu', 'The Billing Clerk\'s morning note', 'What the Clerk drafted, allocated and found appears here each morning.', 'slice 8') : view('home/partials/clerk-note.php', ['note' => $s['clerk_note'], 'tz' => $tz]) ?>
+                <?php if ($may['clerk']): ?>
+                <?= $s['clerk_note'] === null
+                    ? '<div class="card mb-3" id="home-clerk-note"><div class="card-body"><div class="empty-state" id="home-clerk-note-empty"><span class="avatar-text avatar-lg rounded"><i class="feather-cpu"></i></span><div><div class="fw-semibold">The Billing Clerk\'s morning note</div><div class="fs-12 text-muted">What the Clerk drafted, allocated and found is left here each morning. None yet.</div></div></div></div></div>'
+                    : view('home/partials/clerk-note.php', ['note' => $s['clerk_note'], 'tz' => $tz]) ?>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
     </div>

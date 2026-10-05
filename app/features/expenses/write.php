@@ -123,7 +123,7 @@ function reject_expense(PDO $pdo, int $id, int $by, string $reason): array
 }
 
 /** Mark each expense reimbursed with one reference (the verb refuses one that is not approved, not personal, or already paid). Answers how many it changed. */
-function mark_reimbursed(PDO $pdo, array $ids, int $by, ?string $reference): int
+function mark_reimbursed(PDO $pdo, array $ids, ?int $by, ?string $reference): int
 {
     $n = 0;
     foreach ($ids as $id) {

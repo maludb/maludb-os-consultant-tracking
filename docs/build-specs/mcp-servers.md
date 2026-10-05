@@ -67,3 +67,5 @@ The servers run from a venv that already holds FastMCP, asyncpg, httpx and uvico
 - **The numbering prefixes** (`INV-`, `CN-`, `EXP-`…) are in `document_sequences`, which no view exposes; `ct_settings` leaves them out. Worth a view, or leave to the screen?
 - **`usage_charge` resolves among DRAFTS only** (`usage_pending`, as the surface says), so `usage_charge_void` by name cannot find an approved charge — the id works. Widen the resolver to every non-void charge the view admits?
 - **A person's read of a share is not logged as `share.read`** (only the kernel's is, per slice 8); Billing's own reads leave no trace but the exports page's `export.download`. Intended?
+
+**Resolved 2026-10-05 by the planning model** (question 4): the kernel's `usage_charge` entity now resolves through `usage_summary` (`q` alone), which lists every live charge with its status in the label and never a void one — so `usage_charge_void` finds an approved charge by name and `usage_charge_approve` a draft (`deploy/kernel-registry-consultant_tracking.json`, `mcp/ct_usage.py`; the registry and work-tool proofs cover it).

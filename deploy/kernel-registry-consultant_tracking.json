@@ -10,7 +10,7 @@
     "timesheet": {"tool": "timesheets_pending", "query_param": "q", "id_field": "timesheet_id", "label_field": "label", "params": ["timesheet", "week"]},
     "time_entry": {"tool": "my_timesheet", "query_param": "q", "id_field": "entry_id", "label_field": "label", "params": ["entry", "time_entry"]},
     "expense": {"tool": "my_expenses", "query_param": "q", "id_field": "expense_id", "label_field": "label", "params": ["expense"]},
-    "usage_charge": {"tool": "usage_pending", "query_param": "q", "id_field": "usage_charge_id", "label_field": "label", "params": ["charge", "usage_charge"]},
+    "usage_charge": {"tool": "usage_summary", "query_param": "q", "id_field": "usage_charge_id", "label_field": "label", "params": ["charge", "usage_charge"]},
     "invoice": {"tool": "find_invoices", "query_param": "q", "id_field": "invoice_id", "label_field": "label", "params": ["invoice"]},
     "credit_note": {"tool": "credit_notes_issued", "query_param": "q", "id_field": "credit_note_id", "label_field": "label", "params": ["credit_note"]},
     "payment_claim": {"tool": "payment_claims", "query_param": "q", "id_field": "claim_id", "label_field": "label", "params": ["claim"]},

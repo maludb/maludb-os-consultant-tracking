@@ -66,8 +66,9 @@ def register(mcp, fetch) -> None:
         `q` alone resolves a charge by number or words: a plain list (usage_charge_id, label). Needs usage.write or engagements.manage on a staffed engagement; Billing and Finance see all."""
         w = Where()
         match_words(w, params.q, "u.number", "u.description", "u.engagement_number")
-        if q_alone(params):
-            rows = await fetch(f"SELECT u.usage_charge_id, {USG_LABEL} AS label FROM mcp_usage_charges u WHERE {w.sql()} ORDER BY u.period_end DESC, u.usage_charge_id DESC LIMIT {lim(params.limit)}", *w.args)
+        if q_alone(params):                                   # the kernel's resolver for `usage_charge`: any live charge (a draft to approve, an approved one to void), never a void one
+            w.raw("u.status <> 'void'")
+            rows = await fetch(f"SELECT u.usage_charge_id, {USG_LABEL} || ' · ' || u.status AS label FROM mcp_usage_charges u WHERE {w.sql()} ORDER BY u.period_end DESC, u.usage_charge_id DESC LIMIT {lim(params.limit)}", *w.args)
             return plain(rows, "usage_charge_id", "label")
         try:
             f, t = day(params.from_, "from"), day(params.to, "to")

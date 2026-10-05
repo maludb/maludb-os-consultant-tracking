@@ -228,5 +228,5 @@ Every share answers a versioned document: `{"schema": "os.ct-<name>/1", "generat
 - The read this application makes: `gl.invoice_receipts` (G1) — rows `{external_ref (our number), received_on, amount, currency, method, reference}`; the worker records each as an `invoice_payments` row with `source = 'ledger'` once (by `reference` + `received_on`), never twice.
 
 ## Size
-Records: 43 named tools + `records_search` + `app_roles`, six of them shares; activity: 6. Every question of §7 has a tool; every
+Records: 46 named tools + `records_search` + `app_roles` = 48 (the table rows count 46; Phase 1's "43" was a miscount), six of them shares; activity: 6. Every question of §7 has a tool; every
 `find_*`/list tool with `q` answers the resolver's plain list.

@@ -80,7 +80,7 @@ Actions (base `/settings/`):
 | `notification_read` | `notifications/read.php` | notification (empty marks all) | — | | | `notification.read` | own |
 | `token_mint` | `tokens/mint.php` | **label**, scope (mcp or api) | token_revoke | | | `token.mint` | own |
 | `token_revoke` | `tokens/revoke.php` | **token** | — | ✔ | | `token.revoke` | own |
-| `settings_save` | `general.php` | any field of the settings (firm_name, firm_address, firm_tax_id, base_currency, timezone, week_start_dow, hours_increment, max_hours_per_day, receipt_threshold, default_markup_pct, default_terms_days, default_time_grouping, share_receipts_default, link_lifetime_days, reminder_days[], budget_thresholds_pct[], ai_budget_threshold_pct, capacity_hours_per_week, ai_statement_poll, morning_note_member, missing_time_nudge_dow, invoice_footer) | restore prior | | other | `settings.save` | admin |
+| `settings_save` | `general.php` | firm_name, firm_address, firm_tax_id, base_currency, timezone, week_start_dow, hours_increment, max_hours_per_day, receipt_threshold, default_markup_pct, default_terms_days, default_time_grouping, share_receipts_default, link_lifetime_days, reminder_days[], budget_thresholds_pct[], ai_budget_threshold_pct, capacity_hours_per_week, ai_statement_poll, morning_note_member, missing_time_nudge_dow, invoice_footer | restore prior | | other | `settings.save` | admin |
 | `numbering_save` | `numbering.php` | **kind** (engagement or invoice or credit_note or expense or usage_charge), prefix, next_value, padding | restore prior | ✔ | other | `numbering.save` | admin |
 
 ## Clients, rates and the vocabulary (slice 1)
@@ -169,7 +169,7 @@ Actions (base `/engagements/`):
 | `milestone_deliver` | `milestones/deliver.php` | **milestone**, note | restore prior | | | `milestone.deliver` | manage |
 | `milestone_accept` | `milestones/accept.php` | **milestone**, **acceptance_note** (who at the client accepted and how), accepted_by (a member; default the caller), file (multipart evidence) | — | ✔ | other | `milestone.accept` | manage |
 | `milestone_cancel` | `milestones/cancel.php` | **milestone**, **reason** | — | ✔ | | `milestone.cancel` | manage |
-| `milestone_delete` | `milestones/delete.php` | **milestone** (planned, never accepted) | — | ✔ | deletion | `milestone.delete` | manage |
+| `milestone_delete` | `milestones/delete.php` | **milestone** (planned and never accepted) | — | ✔ | deletion | `milestone.delete` | manage |
 | `budget_alert_write` | `/usage/budgets/check.php` | engagement (empty checks every active one) | — | | | `budget_alert.write` | manage or billing |
 | `budget_alert_acknowledge` | `/usage/budgets/acknowledge.php` | **alert** | — | | | `budget_alert.acknowledge` | manage |
 | `attachment_add` | `attachments/save.php` | **record_type** (client or engagement or milestone or expense or usage_charge or invoice or credit_note), **record** (its id), **file** (multipart), client_visible (yes or no) | attachment_delete | | | `attachment.add` | the record's writer |
@@ -199,12 +199,12 @@ Actions (base `/time/`):
 | `time_entry_save` | `entries/save.php` | **engagement**, **date**, **hours** (in the increment), activity (an activity type), billable (yes or no; the activity's default), note (client-visible), internal_note, member (a manager logging for someone), entry (to change an existing one) | time_entry_delete | | | `time_entry.save` | own or manage |
 | `time_entry_delete` | `entries/delete.php` | **entry** (a draft or rejected one) | — | ✔ | deletion | `time_entry.delete` | own or manage |
 | `timer_start` | `timer/start.php` | **engagement**, activity, note | timer_stop | | | `timer.start` | own |
-| `timer_stop` | `timer/stop.php` | — (the running timer becomes a draft entry rounded up to the increment) | — | | | `timer.stop` | own |
+| `timer_stop` | `timer/stop.php` | — | — | | | `timer.stop` | own |
 | `timesheet_submit` | `weeks/submit.php` | week (its Monday or a timesheet; this week by default), member (a manager submitting for someone) | timesheet_reopen | ✔ | | `timesheet.submit` | own or manage |
-| `timesheet_reopen` | `weeks/reopen.php` | **timesheet** (submitted, nothing approved yet) | timesheet_submit | | | `timesheet.reopen` | own or manage |
+| `timesheet_reopen` | `weeks/reopen.php` | **timesheet** (submitted and nothing approved yet) | timesheet_submit | | | `timesheet.reopen` | own or manage |
 | `timesheet_approve` | `weeks/approve.php` | **timesheet** (approves the entries on the engagements the approver manages) | — | ✔ | other | `timesheet.approve` | approve |
 | `timesheet_reject` | `weeks/reject.php` | **timesheet**, **reason** | — | ✔ | other | `timesheet.reject` | approve |
-| `time_entry_write_off` | `entries/write-off.php` | **entry** (approved, unbilled), **reason** | — | ✔ | money_out | `time_entry.write_off` | manage |
+| `time_entry_write_off` | `entries/write-off.php` | **entry** (approved and unbilled), **reason** | — | ✔ | money_out | `time_entry.write_off` | manage |
 | `timesheet_nudge_send` | `weeks/nudge.php` | **member**, week (last week by default) | — | ✔ | external_send | `timesheet.nudge` | approve or billing |
 
 ## Expenses and receipts (slice 4)
@@ -308,7 +308,7 @@ Actions (base `/invoices/`, credit notes under `/credit-notes/`, payments under 
 | `invoice_void` | `/invoices/void.php` | **invoice** (nothing paid or credited), **reason** | — | ✔ | money_out | `invoice.void` | billing |
 | `invoice_write_off` | `/invoices/write-off.php` | **invoice**, **reason** | — | ✔ | money_out | `invoice.write_off` | billing |
 | `invoice_external_ref_set` | `/invoices/external-ref.php` | **invoice**, **external_ref** (what the ledger calls it) | restore prior | | | `invoice.external_ref` | billing |
-| `secure_link_rotate` | `/invoices/secure-link.php` | **invoice** (a new link, the old one dead) | — | ✔ | | `invoice.secure_link_rotate` | billing |
+| `secure_link_rotate` | `/invoices/secure-link.php` | **invoice** (a new link and the old one dead) | — | ✔ | | `invoice.secure_link_rotate` | billing |
 | `payment_record` | `/payments/save.php` | **invoice**, **amount**, paid_on (today), method (transfer or card or cheque or cash or other), reference | payment_void | ✔ | money_out | `payment.record` | billing |
 | `payment_void` | `/payments/void.php` | **payment**, **reason** | — | ✔ | money_out | `payment.void` | billing |
 | `payment_claim_confirm` | `/billing/claims/confirm.php` | **claim**, amount (the claim's or the balance) | — | ✔ | money_out | `payment_claim.confirm` | billing |

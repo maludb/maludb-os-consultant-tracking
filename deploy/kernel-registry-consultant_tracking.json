@@ -2,7 +2,7 @@
   "schema": "maludb-os.registry/1",
   "app_key": "consultant_tracking",
   "name": "Consultant Tracking",
-  "note": "The installer (bin/app_install.php, step 'registry') writes mcp/registries/consultant_tracking.json in the kernel from this file's `resolve` block plus mcp/action_registry.json. Each resolve tool answers a plain LIST of rows carrying id_field and label_field when given `q` alone. The tools are the Phase 1 tool surface's names; Phase 4 builds them (mcp/records_server.py). A repeated param (entries, expenses, charges) is a list of ids, never resolved by name.",
+  "note": "The installer (bin/app_install.php, step 'registry') writes mcp/registries/consultant_tracking.json in the kernel from this file's `resolve` block plus mcp/action_registry.json. Each resolve tool answers a plain LIST of rows carrying id_field and label_field when given `q` alone. The tools are the Phase 1 tool surface's names, built in Phase 4 (mcp/records_server.py; tests/phase4/registry.php resolves every entity through the live server with the kernel's own loader and resolver). A repeated param (entries, expenses, charges) is a list of ids, never resolved by name.",
   "resolve": {
     "client": {"tool": "find_clients", "query_param": "q", "id_field": "client_id", "label_field": "name", "params": ["client"]},
     "engagement": {"tool": "find_engagements", "query_param": "q", "id_field": "engagement_id", "label_field": "label", "params": ["engagement"]},
@@ -22,7 +22,7 @@
     "allocation_rule": {"tool": "allocation_rules", "query_param": "q", "id_field": "rule_id", "label_field": "name", "params": ["rule", "allocation_rule"]},
     "recurring_charge": {"tool": "recurring_due", "query_param": "q", "id_field": "schedule_id", "label_field": "description", "params": ["schedule"]},
     "ai_statement": {"tool": "ai_statement_status", "query_param": "q", "id_field": "ai_statement_id", "label_field": "period", "params": ["statement", "ai_statement"]},
-    "member": {"tool": "find_members", "query_param": "q", "id_field": "member_id", "label_field": "display_name", "params": ["member", "to_member", "person", "manager"]},
+    "member": {"tool": "find_members", "query_param": "q", "id_field": "member_id", "label_field": "display_name", "params": ["member", "to_member", "person", "manager", "accepted_by", "morning_note_member"]},
     "department": {"tool": "find_departments", "query_param": "q", "id_field": "department_id", "label_field": "name", "params": ["department", "practice"]}
   }
 }

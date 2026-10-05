@@ -33,7 +33,11 @@ echo "   php $KERNEL/bin/app_install.php plan $APP --by <super-admin email> --do
 #    scope_kind none), the application token into config/.env, skills imported, approval policies, the installing
 #    super-admin's admin grant. --grant-standing-departments gives every standing department the Consultant role (key user) at
 #    write (D3: everyone logs time). --hire-agents hires the expert and the Billing Clerk (D11). Run it twice: the roles are read
-#    from app_roles only once the records MCP answers (Phase 4).
+#    from app_roles only once the records MCP answers (Phase 4, built: `mcp/records_server.py` answers `app_roles` to the kernel's token). The venv step (python3 -m venv
+#    mcp/venv, pip install -r mcp/requirements.txt) is the installer's; the two servers need nothing else of root. The shared tools' internal door
+#    (POST /api/v1/shares/read.php on APP_INTERNAL_PORT, signed with ACTIONS_RELAY_KEY — both written by apply) is loopback only: the vhost answers 404 for /api.
+#    The registry step composes mcp/registries/consultant_tracking.json in the kernel from deploy/kernel-registry-consultant_tracking.json (the resolve block,
+#    kept by hand: tests/phase4/registry.php resolves every entity through the live server) and mcp/action_registry.json (bin/build_action_registry.php).
 echo "== 2. apply (ROOT) — from Phase 2"
 echo "   sudo php $KERNEL/bin/app_install.php apply $APP --by <super-admin email> --domain subello.com --grant-standing-departments --hire-agents"
 

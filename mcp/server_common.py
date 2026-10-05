@@ -22,10 +22,10 @@ import db
 
 log = logging.getLogger("ct_mcp")
 
-# What the kernel's own token may reach: the roles catalogue (kernel db/145) and the tools shares[] declares (K7). Consultant Tracking
-# shares nothing in version 1 (maludb-os.json has no shares[]), so the kernel's token reaches app_roles alone.
-KERNEL_TOOLS = {"app_roles"}
-# A share that is the KERNEL's alone (a person or an agent never lists or calls it) goes here when one exists.
+# What the kernel's own token may reach: the roles catalogue (kernel db/145) and the six tools shares[] declares (K7) — nothing else.
+SHARES = {"invoices_issued", "credit_notes_issued", "expenses_by_category", "unbilled_summary", "reimbursements_approved", "engagement_list"}
+KERNEL_TOOLS = {"app_roles"} | SHARES
+# A share that is the KERNEL's alone (a person or an agent never lists or calls it) goes here when one exists. Ours are for people too (each has its right), so none.
 KERNEL_ONLY: set[str] = set()
 
 # run id -> (facts, fetched_at). A run's grants do not change while it runs; a short TTL bounds a mistake.
@@ -91,8 +91,8 @@ def install_grants(mcp: FastMCP, endpoint_name: str) -> None:
         if db.request_is_kernel.get():
             if name not in KERNEL_TOOLS:
                 raise ToolError(f"The kernel's token reaches {', '.join(sorted(KERNEL_TOOLS))} only.")
-            if name in KERNEL_ONLY and "params" not in arguments:
-                arguments = {"params": arguments}      # the kernel sends a share's arguments flat (from, to, scope_id)
+            if name != "app_roles" and "params" not in arguments:
+                arguments = {"params": arguments}      # the kernel sends a share's arguments flat (from, to, as_of …)
             return await mcp.call_tool(name, arguments)
         if name in KERNEL_ONLY:
             raise ToolError(f"'{name}' is for the Business OS kernel's own token only.")

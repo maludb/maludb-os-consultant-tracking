@@ -1,6 +1,6 @@
 {
     "generated_from": "docs/consultant-tracking-action-manifest.md",
-    "generated_at": "2026-10-05T17:37:36+00:00",
+    "generated_at": "2026-10-05T18:52:36+00:00",
     "screens": {
         "dashboard": {
             "screen": "dashboard",
@@ -924,8 +924,10 @@
             "endpoint": "/settings/general.php",
             "params": [
                 {
-                    "name": null,
-                    "note": "any field of the settings (firm_name"
+                    "name": "firm_name",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
                 },
                 {
                     "name": "firm_address",
@@ -1048,8 +1050,10 @@
                     "hint": ""
                 },
                 {
-                    "name": null,
-                    "note": "invoice_footer)"
+                    "name": "invoice_footer",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
                 }
             ],
             "undo": "restore prior",
@@ -2679,12 +2683,10 @@
             "endpoint": "/engagements/milestones/delete.php",
             "params": [
                 {
-                    "name": null,
-                    "note": "milestone (planned"
-                },
-                {
-                    "name": null,
-                    "note": "never accepted)"
+                    "name": "milestone",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "planned and never accepted"
                 }
             ],
             "undo": null,
@@ -2959,12 +2961,7 @@
             "action": "timer_stop",
             "section": "Time — THE EXEMPLAR (slice 3)",
             "endpoint": "/time/timer/stop.php",
-            "params": [
-                {
-                    "name": null,
-                    "note": "—"
-                }
-            ],
+            "params": [],
             "undo": null,
             "confirm": false,
             "approval": null,
@@ -3003,12 +3000,10 @@
             "endpoint": "/time/weeks/reopen.php",
             "params": [
                 {
-                    "name": null,
-                    "note": "timesheet (submitted"
-                },
-                {
-                    "name": null,
-                    "note": "nothing approved yet)"
+                    "name": "timesheet",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "submitted and nothing approved yet"
                 }
             ],
             "undo": "timesheet_submit",
@@ -3068,12 +3063,10 @@
             "endpoint": "/time/entries/write-off.php",
             "params": [
                 {
-                    "name": null,
-                    "note": "entry (approved"
-                },
-                {
-                    "name": null,
-                    "note": "unbilled)"
+                    "name": "entry",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "approved and unbilled"
                 },
                 {
                     "name": "reason",
@@ -4299,12 +4292,10 @@
             "endpoint": "/invoices/secure-link.php",
             "params": [
                 {
-                    "name": null,
-                    "note": "invoice (a new link"
-                },
-                {
-                    "name": null,
-                    "note": "the old one dead)"
+                    "name": "invoice",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a new link and the old one dead"
                 }
             ],
             "undo": null,

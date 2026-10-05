@@ -127,9 +127,6 @@ function has_right(string $right): bool
     if ($right === 'margin.view') {                      // the margin report: cost.view, and for a Manager at least one engagement of their own (ct_margin answers only those)
         return $cache[$right] ??= db_bool(db(), "SELECT ct_has_right('cost.view') AND (ct_sees_all() OR EXISTS (SELECT 1 FROM ct_managed_engagement_ids()))");
     }
-    if ($right === 'revenue.view') {                     // the revenue report: reports.view across every engagement (ct_revenue admits any reports.view holder to every invoice, so a Manager is kept out here — see the reports spec's open question)
-        return $cache[$right] ??= db_bool(db(), "SELECT ct_has_right('reports.view') AND ct_sees_all()");
-    }
     return $cache[$right] ??= db_bool(db(), 'SELECT ct_has_right(:r)', ['r' => $right]);
 }
 
@@ -214,7 +211,6 @@ const RIGHT_WORDS = [
     'billing.write' => 'issue, send and settle invoices', 'exports.download' => 'download exports', 'settings.manage' => 'change the settings',
     'cost.table' => "see the cost-rate table; it is the admin's, Billing's and Finance's",
     'margin.view' => "see margin; it needs cost visibility and an engagement of your own to cover",
-    'revenue.view' => "see revenue across the firm; it is Billing's and Finance's",
     'receivables.view' => "see what clients owe across the firm; it is Billing's and Finance's",
 ];
 

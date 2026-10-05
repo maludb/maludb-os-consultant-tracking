@@ -48,13 +48,12 @@ echo "3. Who sees\n";
 ok($c === 200 && same($d['totals'][0]['total'], 2779), 'Finance: the firm\'s revenue');
 [$c, $d] = report_json($bea, 'revenue', $p);
 ok($c === 200 && same($d['totals'][0]['total'], 2779), 'Billing: the same');
-$r = req('GET', '/reports/revenue?' . http_build_query($p), ['jar' => $marco, 'headers' => JSONH]);
-ok($r['code'] === 403 && str_contains($r['body'], "You may not see revenue across the firm; it is Billing's and Finance's."), 'a Manager is refused in words: 403 "…it is Billing\'s and Finance\'s."');
+[$c, $d] = report_json($marco, 'revenue', $p);
+ok($c === 200 && count($d['rows']) === 1 && same($d['totals'][0]['total'], 2479), 'a Manager sees the revenue of the engagements he may see: Acme\'s 2,479.00 only (db/018), never Bea\'s engagement');
 ok(req('GET', '/reports/revenue', ['jar' => $priya, 'headers' => JSONH])['code'] === 403, 'a Consultant: 403');
-// the function itself: this is why the page keeps a Manager out (spec "Open questions")
 pdo()->exec("SELECT set_config('app.member_id', '27', false)");
 $seen = (int) one("SELECT count(*) FROM ct_revenue(CAST(:f AS date), CAST(:t AS date), 'engagement')", ['f' => $p['from'], 't' => $p['to']]);
-ok($seen === 2, 'for the record: ct_revenue answers Marco BOTH invoices, including Bea\'s engagement he does not manage (db/014 admits any reports.view holder to every invoice) — the screen refuses him until the database scopes it');
+ok($seen === 1, 'the function itself answers Marco one engagement\'s invoices (db/018 scopes ct_revenue by ct_visible_engagement_ids)');
 pdo()->exec("SELECT set_config('app.member_id', '1', false)");
 
 echo "4. The page\n";

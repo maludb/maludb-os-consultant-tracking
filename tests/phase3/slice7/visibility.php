@@ -2,7 +2,7 @@
 /**
  * Proof — who sees what (spec "Proof", 3). The matrix of nine reports × six people, then each person's index and what the functions answer them:
  *   Priya and Dana (Consultants, reports.view_own): utilization — their own row alone — and nothing else (the other eight 403 in words; the index shows one card).
- *   Marco (Manager, reports.view and cost.view on his engagements): everything but revenue (the revenue screen is firm-wide: Billing's and Finance's); his engagement pickers hold his engagements only.
+ *   Marco (Manager, reports.view and cost.view on his engagements): everything, revenue scoped to his engagements (db/018); his engagement pickers hold his engagements only.
  *   Bea (Billing), Ann (Finance), the owner: everything — nine reports and the aging.
  */
 require __DIR__ . '/lib.php';
@@ -14,7 +14,7 @@ $expect = [
     'owner' => array_fill_keys($reports, 200), 'Bea' => array_fill_keys($reports, 200), 'Ann' => array_fill_keys($reports, 200),
     'Marco' => array_fill_keys($reports, 200), 'Priya' => array_fill_keys($reports, 403), 'Dana' => array_fill_keys($reports, 403),
 ];
-$expect['Marco']['revenue'] = 403; $expect['Priya']['utilization'] = 200; $expect['Dana']['utilization'] = 200;
+$expect['Priya']['utilization'] = 200; $expect['Dana']['utilization'] = 200;
 
 echo "1. The matrix (54 requests)\n";
 foreach ($who as $n => $jar) {
@@ -26,7 +26,7 @@ foreach ($who as $n => $jar) {
 echo "2. The index\n";
 $cards = static fn ($jar): array => array_column(screen($jar, '/reports/')[1]['reports'], 'key');
 ok($cards($priya) === ['utilization'] && $cards($dana) === ['utilization'], 'a Consultant: one card, utilization');
-ok($cards($marco) === ['utilization', 'realization', 'wip', 'margin', 'budget-burn', 'ai-passthrough', 'expenses', 'missing-time'], 'Marco: eight cards (no revenue, no aging)');
+ok($cards($marco) === ['utilization', 'realization', 'wip', 'revenue', 'margin', 'budget-burn', 'ai-passthrough', 'expenses', 'missing-time'], 'Marco: nine cards (revenue scoped to his engagements since db/018; no aging)');
 foreach (['owner' => $owner, 'Bea' => $bea, 'Ann' => $ann] as $n => $jar) {
     ok($cards($jar) === array_merge($reports, ['ar-aging']), "$n: the nine reports and who owes us");
 }
@@ -40,7 +40,6 @@ echo "3. The words of a refusal\n";
 $m = static fn ($jar, $path): string => (string) (json_decode(req('GET', $path, ['jar' => $jar, 'headers' => JSONH])['body'], true)['error']['message'] ?? '');
 ok($m($priya, '/reports/realization') === 'You may not see reports.' && $m($priya, '/reports/wip') === 'You may not see reports.' && $m($priya, '/reports/budget-burn') === 'You may not see reports.', 'Priya, any firm report: "You may not see reports."');
 ok($m($priya, '/reports/margin') === 'You may not see cost and margin.', 'margin: "You may not see cost and margin."');
-ok($m($marco, '/reports/revenue') === "You may not see revenue across the firm; it is Billing's and Finance's.", 'Marco, revenue: the right in words');
 ok(req('GET', '/reports/nonsense', ['jar' => $owner, 'headers' => JSONH])['code'] === 404 && req('GET', '/reports/Utilization', ['jar' => $owner, 'headers' => JSONH])['code'] === 404, 'a report not in the list (or in another case): 404');
 ok(req('GET', '/reports/utilization', ['jar' => jar(), 'headers' => JSONH])['code'] === 401, 'no session: 401');
 

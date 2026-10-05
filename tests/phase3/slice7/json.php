@@ -45,7 +45,7 @@ ok($c === 200 && count($b['data']['rows']) === 1 && $b['data']['rows'][0]['membe
 [$c, $b] = $get('/reports/revenue?' . http_build_query(whole()), $bTok);
 ok($c === 200 && same($b['data']['totals'][0]['total'], 2779), 'Bea\'s token: revenue');
 [$c, $b] = $get('/reports/revenue?' . http_build_query(whole()), $mTok);
-ok($c === 403, 'Marco\'s token: revenue 403');
+ok($c === 200 && same($b['data']['totals'][0]['total'], 2479), 'Marco\'s token: revenue scoped to his engagements, 2,479.00 (db/018)');
 
 echo "3. Logging and refusals\n";
 $since = last_activity_id();

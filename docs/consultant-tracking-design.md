@@ -648,6 +648,10 @@ the thumbnail beside the amount, reimbursements (ticks, one reference, atomic), 
 for slice 8; `tests/phase3/slice4/run.sh` — **223 checks green**; the registry reads 46 screens and 68 actions built; Phase 2's browser follows. Decisions in the spec; no open question.
 
 
+**2026-10-05 — db/018** (planning model): `ct_revenue()` admitted any `reports.view` holder to every invoice (slice 7's proofs). It is now scoped like every other
+report — `reports.view` across the engagements the caller may see — and the revenue screen opens to a Manager, scoped. Open to the owner from slice 7: `ct_utilization()`
+and `ct_missing_time()` answer a Manager every person, since people are not engagement-scoped in the design (§3) — kept as designed unless the owner wants a practice scope.
+
 **2026-10-05 — db/017** (planning model): `ct_ar_aging()` and `ct_client_statement()` admitted anyone with `reports.view` — a Manager could read every client's
 balances through the records MCP. Both now need `billing.write`, or `reports.view` across every engagement (Finance, the admin), the rule slice 6 gave the screens as
 `receivables.view`. Open to the owner from slice 6: whether Apache's access log should leave `/i/` out (a secure-link token lives 180 days after payment).

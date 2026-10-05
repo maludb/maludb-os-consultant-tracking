@@ -1,6 +1,6 @@
 {
     "generated_from": "docs/consultant-tracking-action-manifest.md",
-    "generated_at": "2026-10-05T14:36:39+00:00",
+    "generated_at": "2026-10-05T15:02:36+00:00",
     "screens": {
         "dashboard": {
             "screen": "dashboard",
@@ -784,8 +784,8 @@
             "section": "Reports (slice 7)",
             "when": "the reports as cards: utilization, realization, unbilled, revenue, margin, budget burn, AI pass-through, expense report, missing time, who owes us",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "report": {
             "screen": "report",
@@ -801,8 +801,8 @@
                 "department",
                 "by"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "exports": {
             "screen": "exports",

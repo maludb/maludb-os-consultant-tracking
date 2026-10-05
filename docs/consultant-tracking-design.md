@@ -640,5 +640,10 @@ the home's My week and Approvals waiting regions, the notices queued for slice 8
 and 62 actions built. **THE HANDOFF POINT IS REACHED**: slices 4–9, Phase 4 and Phase 5 are the worker model's (Sonnet 5.5), each replicating slice 3's files, ids, gates,
 flow and proof style from its spec.
 
+**2026-10-05 — Slice 4 (expenses and receipts) BUILT and proven by the worker model** (`docs/build-specs/expenses-receipts.md`): the camera-first form (receipt, live threshold and
+billable amount, Save / Save and submit all-or-nothing), my expenses as cards with the receipt / status / billed / reimbursed chips, the expense page with the receipt large, approvals with
+the thumbnail beside the amount, reimbursements (ticks, one reference, atomic), the company-card page, the home's My expenses and the expense lines of Approvals waiting, the notices queued
+for slice 8; `tests/phase3/slice4/run.sh` — **223 checks green**; the registry reads 46 screens and 68 actions built; Phase 2's browser follows. Decisions in the spec; no open question.
+
 
 

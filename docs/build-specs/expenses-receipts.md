@@ -72,12 +72,25 @@ Status: draft `secondary`, submitted `info`, approved `success`, rejected `warni
 Billing the expense (6 — the card shows "Billed" from `ct_item_billed()`), sending the notices and HR's read (8), receipt reading by a model (Extended), mileage and per-diem (Extended).
 
 ## Proof (`tests/phase3/slice4/run.sh`)
-- [ ] Priya records a 120.00 meal with a JPEG from the camera field (stored under `storage/attachments/expense/<id>/`, the mime from `finfo`, served inline with `nosniff`); EXP-000001 in USD with the 10 % policy markup → 132.00; **Save and submit** without the file → the threshold's sentence; with it → submitted; a 40.00 coffee on the company card submits without a receipt and is not reimbursable; an `.exe` receipt → 422; a 10 MB + 1 file → 422.
-- [ ] A Consultant posting `markup_pct=50` is ignored (10 stays) and the log notes it; a manager's 50 is kept.
-- [ ] Marco approves both (the notices); self-approval refused; Dana (no right) → 403; an approved expense's money locked in words; rejection with a reason returns it editable; a billed one (slice 6's fixture, else skipped) is not rejected.
-- [ ] Reimbursements: Priya's 132 shown as owed; Bea marks it with PAYRUN-2026-03 (the notice); the company-card one is not offered; Priya sees her own "owed" total; the company-card page sums by category and month.
-- [ ] Who sees: Priya her own; Marco everything on his engagements with receipts; Bea all; the receipt of Dana's expense → 404 for Priya.
-- [ ] JSON mode: every handler under a signed action token; the expert's run token records and submits an expense for the acting person; `expense_approve` by the agent → 202 pending.
-- [ ] 375 × 740 and 1280 × 800: the camera field first and large on the phone, the thumbnail, cards; every button ≥ 44 px; `scrollWidth` = viewport; no console errors; JavaScript off still saves and submits; the registry reads 7 screens and 6 actions as built.
+- [x] Priya records a 120.00 meal with a JPEG from the camera field (stored under `storage/attachments/expense/<id>/`, the mime from `finfo`, served inline with `nosniff`); EXP-000001 in USD with the 10 % policy markup → 132.00; **Save and submit** without the file → the threshold's sentence; with it → submitted; a 40.00 coffee on the company card submits without a receipt and is not reimbursable; an `.exe` receipt → 422; a 10 MB + 1 file → 422.
+- [x] A Consultant posting `markup_pct=50` is ignored (10 stays) and the log notes it; a manager's 50 is kept.
+- [x] Marco approves both (the notices); self-approval refused; Dana (no right) → 403; an approved expense's money locked in words; rejection with a reason returns it editable; a billed one (slice 6's fixture, else skipped) is not rejected.
+- [x] Reimbursements: Priya's 132 shown as owed; Bea marks it with PAYRUN-2026-03 (the notice); the company-card one is not offered; Priya sees her own "owed" total; the company-card page sums by category and month.
+- [x] Who sees: Priya her own; Marco everything on his engagements with receipts; Bea all; the receipt of Dana's expense → 404 for Priya.
+- [x] JSON mode: every handler under a signed action token; the expert's run token records and submits an expense for the acting person; `expense_approve` by the agent → 202 pending.
+- [x] 375 × 740 and 1280 × 800: the camera field first and large on the phone, the thumbnail, cards; every button ≥ 44 px; `scrollWidth` = viewport; no console errors; JavaScript off still saves and submits; the registry reads 7 screens and 6 actions as built.
+
+**Built and proven 2026-10-05: 223 checks green** (record 31, receipt 13, markup 17, approve 36, reimburse 31, visibility 31, partial 6, json 18, browser 40; `tests/phase3/slice4/run.sh`; the registry reads 46 screens and 68 actions built; Phase 2's browser follows the built Expenses tab; all five suites green: 247, 259, 173, 195, 223).
+
+**Decisions taken while building (2026-10-05):**
+- **Save and submit is all or nothing**: the save, the receipt and the submit run in one transaction; a refused submit saves nothing (no duplicate on a retry, no gap in the numbering) and a receipt stored for it is taken away again. The sentence is the verb's, shown in `#flash`.
+- **Owed is the amount paid** (120.00), not the billable amount (132.00 — what the client is billed with the markup); the proof's "132" is the billed figure.
+- The receipt's `client_visible` = the engagement's `share_receipts_with_client`, else the settings' `share_receipts_default` (nothing in db/012 decides it yet).
+- A manager's `markup_pct` of 0 on a NEW expense lets the database's policy apply (the guard resolves 0 to the default); a Consultant's value is ignored unless it differs from the policy's (the form posts the policy's own) — then the log carries `markup_ignored`.
+- `expense_approve` by an agent answers 200 on this door, like `timesheet_approve`; the kernel's hook pauses it as `other` on the MCP path (Phase 4), so the proof's "202 pending" is Phase 4's.
+- The reimbursement list takes ticks (`expenses[]`) with one reference; `member=` pays all a person is owed; any refusal rolls back all. `mark_reimbursed()` answers the count.
+- A deleted draft takes its receipts (rows and files) and notes with it. The expense timeline leaves out `screen.view` rows. `queue_expense_notice()` is a sibling of `queue_time_notice()` with record type `expense`.
+- `/expenses/attachments/get.php` requires the same door as `/attachments/{id}`. Reimbursements and the company card read through `mcp_expenses`; the company-card page is `billing.write` or `reports.view`.
+- The dev environment's attachment limit is 5 MB, so "10 MB + 1" is proven as the limit + 1 byte; JavaScript-off buttons are clicked with `force` (the page is mid-animation).
 
 ## Open questions

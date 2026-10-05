@@ -23,13 +23,19 @@ function home_summary(PDO $pdo, int $memberId): array
                    'rejection_reason' => $t['rejection_reason'] ?? null, 'last_week' => find_timesheet($pdo, $memberId, (string) one_value($pdo, 'SELECT CAST(:w AS date) - 7', ['w' => $ws]))];
         $timer = my_timer($pdo, $memberId);
     }
+    $myExpenses = null;
+    if (has_right('expenses.write')) {                                               // slice 4: what awaits a receipt, what is owed
+        require_once dirname(__DIR__) . '/expenses/queries.php';
+        $myExpenses = my_expenses_summary($pdo, $memberId);
+    }
     $approvals = null;
     if (has_right('time.approve') || has_right('expenses.approve') || has_right('usage.approve')) {   // slice 3 fills the weeks; 4 and 5 add theirs
         require_once dirname(__DIR__) . '/time/queries.php';
-        $approvals = ['weeks' => has_right('time.approve') ? array_slice(timesheets_pending($pdo, $memberId), 0, 8) : [], 'expenses' => null, 'usage' => null];
+        require_once dirname(__DIR__) . '/expenses/queries.php';
+        $approvals = ['weeks' => has_right('time.approve') ? array_slice(timesheets_pending($pdo, $memberId), 0, 8) : [], 'expenses' => has_right('expenses.approve') ? array_slice(expenses_pending($pdo, $memberId), 0, 8) : null, 'usage' => null];
     }
     return [
-        'my_week' => $myWeek, 'timer' => $timer, 'my_expenses' => null, 'approvals' => $approvals, 'budget_alerts' => $alerts, 'billing' => null, 'clerk_note' => null,
+        'my_week' => $myWeek, 'timer' => $timer, 'my_expenses' => $myExpenses, 'approvals' => $approvals, 'budget_alerts' => $alerts, 'billing' => null, 'clerk_note' => null,
         'may' => [
             'time' => has_right('time.write'), 'expenses' => has_right('expenses.write'),
             'approve' => has_right('time.approve') || has_right('expenses.approve') || has_right('usage.approve'),

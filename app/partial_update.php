@@ -15,6 +15,7 @@ const PARTIAL_UPDATE_TARGETS = [
     '/engagements/staffing/save.php' => ['engagement_members', 'staffing', 'mcp_engagement_members', 'staffing_id'],
     '/engagements/milestones/save.php' => ['milestones', 'milestone', 'mcp_milestones', 'milestone_id'],
     '/time/entries/save.php'         => ['time_entries', 'entry', 'mcp_time_entries', 'entry_id'],
+    '/expenses/save.php'             => ['expenses', 'expense', 'mcp_expenses', 'expense_id'],
     '/clients/contacts/save.php'     => ['client_contacts', 'contact', 'mcp_client_contacts', 'contact_id'],
     '/settings/rate-cards/save.php'  => ['rate_cards', 'rate_card', 'mcp_rate_cards', 'rate_card_id'],
     '/settings/roles/save.php'       => ['consulting_roles', 'role', 'mcp_consulting_roles', 'consulting_role_id'],

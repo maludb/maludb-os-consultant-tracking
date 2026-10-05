@@ -71,8 +71,8 @@ const groupsOf = async (page) => (await page.locator('.nxl-navbar .nxl-caption l
   await page.screenshot({ path: `${SHOTS}/phone-timesheet-placeholder.png` });
   await page.click('#tab-expenses');
   await page.waitForURL(BASE + '/expenses/');
-  await page.waitForSelector('#expenses-coming');
-  ok(true, 'the Expenses tab opens its placeholder (slice 4 builds it)');
+  await page.waitForSelector('#expense-list-content');           // slice 4 built it
+  ok(true, 'the Expenses tab opens My expenses (slice 4)');
   // More opens the sidebar with the groups the member's rights give
   await page.click('#tab-more');
   await page.waitForSelector('nav.nxl-navigation.mob-navigation-active');

@@ -1,6 +1,6 @@
 {
     "generated_from": "docs/consultant-tracking-action-manifest.md",
-    "generated_at": "2026-10-05T10:09:38+00:00",
+    "generated_at": "2026-10-05T11:22:03+00:00",
     "screens": {
         "dashboard": {
             "screen": "dashboard",
@@ -423,8 +423,8 @@
                 "engagement",
                 "member"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "expense-add": {
             "screen": "expense-add",
@@ -435,8 +435,8 @@
                 "engagement",
                 "date"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "expense-view": {
             "screen": "expense-view",
@@ -444,8 +444,8 @@
             "section": "Expenses and receipts (slice 4)",
             "when": "one expense: the receipt, the money, the status and reasons, approve or reject, the timeline",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "expense-edit": {
             "screen": "expense-edit",
@@ -453,8 +453,8 @@
             "section": "Expenses and receipts (slice 4)",
             "when": "to change a draft or rejected expense",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "expense-approvals": {
             "screen": "expense-approvals",
@@ -465,8 +465,8 @@
                 "engagement",
                 "missing_receipt"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "reimbursements": {
             "screen": "reimbursements",
@@ -476,8 +476,8 @@
             "params": [
                 "member"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "company-card": {
             "screen": "company-card",
@@ -488,8 +488,8 @@
                 "from",
                 "to"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "usage-list": {
             "screen": "usage-list",
@@ -3203,7 +3203,7 @@
             "approval": null,
             "log_event": "expense.save",
             "who": "own or manage",
-            "built": false
+            "built": true
         },
         "expense_delete": {
             "action": "expense_delete",
@@ -3222,7 +3222,7 @@
             "approval": "deletion",
             "log_event": "expense.delete",
             "who": "own or manage",
-            "built": false
+            "built": true
         },
         "expense_submit": {
             "action": "expense_submit",
@@ -3241,7 +3241,7 @@
             "approval": null,
             "log_event": "expense.submit",
             "who": "own or manage",
-            "built": false
+            "built": true
         },
         "expense_approve": {
             "action": "expense_approve",
@@ -3260,7 +3260,7 @@
             "approval": "other",
             "log_event": "expense.approve",
             "who": "approve",
-            "built": false
+            "built": true
         },
         "expense_reject": {
             "action": "expense_reject",
@@ -3285,7 +3285,7 @@
             "approval": "other",
             "log_event": "expense.reject",
             "who": "approve",
-            "built": false
+            "built": true
         },
         "expense_mark_reimbursed": {
             "action": "expense_mark_reimbursed",
@@ -3310,7 +3310,7 @@
             "approval": "other",
             "log_event": "expense.reimburse",
             "who": "billing",
-            "built": false
+            "built": true
         },
         "usage_charge_draft": {
             "action": "usage_charge_draft",

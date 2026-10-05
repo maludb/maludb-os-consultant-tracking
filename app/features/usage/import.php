@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * The provider's CSV usage export (slice 5): the columns mapped once per provider (saved on usage_providers.csv_mapping), a five-row preview with duplicates counted, then draft charges — one per row or
  * grouped by month. The file is not kept: the import row (name, counts, mapping) and its charges are the record. A cost is never written alone: the guard recomputes it from quantity × unit cost, so the
- * unit cost is set from the file's cost, and a row whose cost cannot be written exactly at six decimals of unit cost is refused in words (never a quiet change of the money).
+ * the file's cost is the fact written (db/016: the guard keeps a csv_import's cost_amount and derives the unit cost from it); a row is refused only when unreadable.
  */
 
 /** The mapping's fields: the column that holds each (case-insensitive), and the two fixed choices. */
@@ -165,7 +165,7 @@ function csv_preview(string $path, array $mapping, int $rows = 5): array
 
 /**
  * What the import would do, charge by charge, without writing: [{period_start, period_end, quantity, cost, unit_cost, description, rows, state: new|duplicate|refused, reason}]. A charge is a duplicate when a
- * non-void CSV charge of the same provider, period, quantity and cost exists (or an earlier line of this same file made it); refused when a row is unreadable or its cost cannot be written exactly.
+ * non-void CSV charge of the same provider, period, quantity and cost exists (or an earlier line of this same file made it); refused when a row is unreadable.
  */
 function csv_plan(PDO $pdo, int $providerId, string $providerName, string $path, array $mapping, bool $byMonth): array
 {
@@ -207,11 +207,7 @@ function csv_plan(PDO $pdo, int $providerId, string $providerName, string $path,
         }
         $item = ['period_start' => $g['period_start'], 'period_end' => $g['period_end'], 'quantity' => $q, 'cost' => $c, 'unit_cost' => '0', 'description' => mb_substr($desc, 0, 500), 'rows' => $g['rows'], 'state' => 'new', 'reason' => null];
         if ((float) $q > 0) {
-            $item['unit_cost'] = (string) one_value($pdo, 'SELECT round(CAST(:c AS numeric) / CAST(:q AS numeric), 6)', ['c' => $c, 'q' => $q]);
-            if ((string) one_value($pdo, 'SELECT round(CAST(:q AS numeric) * CAST(:u AS numeric), 2)', ['q' => $q, 'u' => $item['unit_cost']]) !== $c) {
-                $item['state'] = 'refused';
-                $item['reason'] = 'The cost ' . $c . ' of ' . $q . ' ' . $mapping['unit'] . ' on ' . $g['period_start'] . ' cannot be written exactly at six decimals of unit cost; enter it by hand.';
-            }
+            $item['unit_cost'] = (string) one_value($pdo, 'SELECT round(CAST(:c AS numeric) / CAST(:q AS numeric), 6)', ['c' => $c, 'q' => $q]);   // shown; the file's cost is what is written (db/016: the guard keeps a csv_import's cost_amount)
         } elseif ((float) $c > 0) {
             $item['state'] = 'refused';
             $item['reason'] = 'A cost of ' . $c . ' on ' . $g['period_start'] . ' has no quantity to price.';
@@ -253,7 +249,7 @@ function save_provider_mapping(PDO $pdo, int $providerId, array $mapping): void
 
 /**
  * Run an import: the import row, then a draft charge per new line of the plan (kind and unit from the mapping, the unit cost from the file's cost, source csv_import). Duplicates are skipped and counted;
- * an unreadable or unrepresentable line is refused and told in the import's detail. The file is not kept. Answers ['import_id', 'rows', 'inserted', 'skipped', 'refused', 'charge_ids', 'reasons'].
+ * an unreadable line is refused and told in the import's detail. The file is not kept. Answers ['import_id', 'rows', 'inserted', 'skipped', 'refused', 'charge_ids', 'reasons'].
  */
 function run_usage_import(PDO $pdo, int $providerId, int $engagementId, string $path, string $fileName, array $mapping, bool $groupByMonth, int $by): array
 {
@@ -279,8 +275,8 @@ function run_usage_import(PDO $pdo, int $providerId, int $engagementId, string $
     $importId = (int) $st->fetchColumn();
     $ids = [];
     $reasons = [];
-    $ins = $pdo->prepare("INSERT INTO usage_charges (engagement_id, kind, provider_id, description, period_start, period_end, quantity, unit, unit_cost, pricing, billable, currency, source, import_id, created_by)
-                          VALUES (:e, :k, :p, :d, :ps, :pe, :q, :u, :uc, 'cost', true, 'USD', 'csv_import', :i, :by) RETURNING id");
+    $ins = $pdo->prepare("INSERT INTO usage_charges (engagement_id, kind, provider_id, description, period_start, period_end, quantity, unit, unit_cost, cost_amount, pricing, billable, currency, source, import_id, created_by)
+                          VALUES (:e, :k, :p, :d, :ps, :pe, :q, :u, :uc, :c, 'cost', true, 'USD', 'csv_import', :i, :by) RETURNING id");
     try {
         foreach ($plan as $item) {
             if ($item['state'] === 'refused') {
@@ -291,7 +287,7 @@ function run_usage_import(PDO $pdo, int $providerId, int $engagementId, string $
                 continue;
             }
             $ins->execute(['e' => $engagementId, 'k' => $mapping['kind'], 'p' => $providerId, 'd' => $item['description'], 'ps' => $item['period_start'], 'pe' => $item['period_end'], 'q' => $item['quantity'],
-                           'u' => $mapping['unit'], 'uc' => $item['unit_cost'], 'i' => $importId, 'by' => $by]);
+                           'u' => $mapping['unit'], 'uc' => $item['unit_cost'], 'c' => $item['cost'], 'i' => $importId, 'by' => $by]);
             $ids[] = (int) $ins->fetchColumn();
         }
     } catch (PDOException $e) {

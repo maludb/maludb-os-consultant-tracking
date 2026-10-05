@@ -184,14 +184,7 @@ function save_schedule(PDO $pdo, ?int $id, array $f, int $by): int
 /** Run a due schedule: one draft charge for the period it covers and the next date (the verb). Answers the charge's row. */
 function run_schedule(PDO $pdo, int $id, int $by): array
 {
-    try {
-        return usage_verb($pdo, 'SELECT * FROM ct_recurring_charge_run(:s, :by)', ['s' => $id, 'by' => $by]);
-    } catch (PDOException $e) {
-        if ((string) $e->getCode() === '23514') {      // db/011: the last run of a schedule with an end date would move next_date past it, and the table's CHECK refuses (spec "Open questions")
-            throw new DomainException('This is the last run before the end date, and the database cannot yet move the next date past it. Move the end date out, or turn the schedule off; the owner is asked to relax that rule (see the slice 5 spec, Open questions).');
-        }
-        throw $e;
-    }
+    return usage_verb($pdo, 'SELECT * FROM ct_recurring_charge_run(:s, :by)', ['s' => $id, 'by' => $by]);   // the final run before an end date deactivates the schedule (db/016)
 }
 
 function delete_schedule(PDO $pdo, int $id, int $by): array

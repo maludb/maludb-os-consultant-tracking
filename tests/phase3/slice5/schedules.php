@@ -1,5 +1,5 @@
 <?php
-/** Proof — schedules (spec "Proof", 3): a monthly VM due twice runs twice (last month, this month) and refuses the third in the verb's words; the end date deactivates it; the pricing, the cadence arithmetic, who may, what is logged and who is told. */
+/** Proof — schedules (spec "Proof", 3): a monthly VM due twice runs twice (last month, this month) and refuses the third in the verb's words; the end date deactivates it on the final run; the pricing, the cadence arithmetic, who may, what is logged and who is told. */
 require __DIR__ . '/lib.php';
 [$acme, $beta] = usage_world();
 $priya = as_member(26); $marco = as_member(27); $bea = as_member(28); $dana = as_member(30);
@@ -90,8 +90,10 @@ $s2 = (int) ($b['record_id'] ?? 0);
 ok($c === 200 && $s2 > 0, 'a schedule due last month that ends at the end of last month');
 $since = last_activity_id();
 [$c, $b] = act($marco, '/settings/schedules/run.php', ['schedule' => $s2]);
-ok($c === 422 && str_contains(msg($b), 'last run before the end date') && (int) one('SELECT count(*) FROM usage_charges WHERE schedule_id = :s', ['s' => $s2]) === 0 && count(activity('recurring_charge.run', $since)) === 0 && (int) one('SELECT run_count FROM recurring_charges WHERE id = :s', ['s' => $s2]) === 0,
-    'OPEN QUESTION (db/011\'s CHECK end_date >= next_date refuses the verb\'s final move past the end): the last run is refused in words, nothing made, nothing logged (' . msg($b) . ')');
+ok($c === 200 && (int) one('SELECT count(*) FROM usage_charges WHERE schedule_id = :s', ['s' => $s2]) === 1 && count(activity('recurring_charge.run', $since)) === 1 && q('SELECT active, run_count FROM recurring_charges WHERE id = :s', ['s' => $s2])[0] === ['active' => false, 'run_count' => 1],
+    'the last run before the end date makes its charge and deactivates the schedule (db/016 relaxed the check)' . ($c === 200 ? '' : " (got $c " . msg($b) . ')'));
+[$c, $b] = act($marco, '/settings/schedules/run.php', ['schedule' => $s2]);
+ok($c === 422 && str_contains(msg($b), 'not active'), 'running it again: "The schedule is not active"');
 [$c, $b] = save_schedule_req($marco, ['description' => 'SMOKE Acme storage, far end', 'unit_cost' => '40', 'end_date' => $nextFirst]);
 $s3 = (int) $b['record_id'];
 [$c, $b] = act($marco, '/settings/schedules/run.php', ['schedule' => $s3]);

@@ -1,5 +1,5 @@
 <?php
-/** Proof — import (spec "Proof", 2): an Anthropic CSV of six rows mapped and previewed (the shipped mapping suggested), two duplicates skipped, four drafts at the exact cost; the mapping saved on the provider and prefilled next time; grouped by month; the file refused when it is not a CSV, a column is not mapped, a cost cannot be written exactly; the import deleted removes the drafts and keeps an approved one; nothing of the file is kept. */
+/** Proof — import (spec "Proof", 2): an Anthropic CSV of six rows mapped and previewed (the shipped mapping suggested), two duplicates skipped, four drafts at the exact cost; the mapping saved on the provider and prefilled next time; grouped by month; the file refused when it is not a CSV, a column is not mapped; the import deleted removes the drafts and keeps an approved one; nothing of the file is kept. */
 require __DIR__ . '/lib.php';
 [$acme, $beta] = usage_world();
 $priya = as_member(26); $marco = as_member(27); $bea = as_member(28);
@@ -92,9 +92,10 @@ $n = (int) one('SELECT count(*) FROM usage_imports');
 [$c, $b] = upload($marco, '/usage/import.php', ['provider' => 0, 'engagement' => $acme], 'file', csv_tmp($six), 'x.csv');
 ok($c === 422 && isset(fields($b)['provider']) && (int) one('SELECT count(*) FROM usage_imports') === $n, 'no provider: 422, field provider, nothing made');
 [$c, $b] = upload($marco, '/usage/import.php', ['provider' => $anthropic, 'engagement' => $acme], 'file', csv_tmp(['2026-12-01,m,1000000,3.00', 'not a date,m,5,1.00', '2026-12-03,m,abc,1.00', '2026-12-04,m,1234567,3.47']), 'messy.csv');
-ok($c === 200 && $b['inserted'] === 1 && $b['refused'] === 3 && $b['skipped'] === 0 && $b['rows'] === 4, 'a messy file: one good row made, three refused (a bad date, a bad quantity, a cost that cannot be written exactly)');
+ok($c === 200 && $b['inserted'] === 2 && $b['refused'] === 2 && $b['skipped'] === 0 && $b['rows'] === 4, 'a messy file: two good rows made (3.47 for 1,234,567 tokens is kept as the file says it — db/016), two refused (a bad date, a bad quantity)');
+ok((string) one("SELECT cost_amount FROM usage_charges WHERE quantity = 1234567 ORDER BY id DESC LIMIT 1") === '3.47' && (string) one("SELECT unit_cost FROM usage_charges WHERE quantity = 1234567 ORDER BY id DESC LIMIT 1") === '0.000003', 'the row carries the file\'s cost 3.47 and a derived unit cost');
 $ir = q('SELECT * FROM usage_imports WHERE id = :i', ['i' => (int) $b['import_id']])[0];
-ok(str_contains((string) $ir['detail'], 'Line 3: the date is not a day') && str_contains((string) $ir['detail'], 'the quantity is not a number') && str_contains((string) $ir['detail'], 'cannot be written exactly at six decimals') && (int) $ir['inserted'] === 1, 'the import row says why, line by line, in its detail');
+ok(str_contains((string) $ir['detail'], 'Line 3: the date is not a day') && str_contains((string) $ir['detail'], 'the quantity is not a number') && !str_contains((string) $ir['detail'], 'cannot be written exactly') && (int) $ir['inserted'] === 2, 'the import row says why, line by line, in its detail');
 [$c, $b] = upload($marco, '/usage/import.php', ['provider' => $anthropic, 'engagement' => $acme], 'file', csv_tmp([]), 'empty.csv');
 ok($c === 422 && str_contains(msg($b), 'no usage rows'), 'an empty file: 422 in words (' . msg($b) . ')');
 

@@ -633,6 +633,12 @@ staffed as principal), the record with tabs (Overview, Staffing, Rates, Mileston
 staffing with the EXCLUDE refused in words, role rates in place with each person's resolution, milestones delivered and accepted with evidence, the budgets screen and
 the alerts, the home's Budget alerts region; `tests/phase3/slice2/run.sh` — **173 checks green**; the registry reads 31 screens and 52 actions built. Two rules learned:
 a Manager opens an engagement for any live client (the view guards details, not names); an unseen engagement answers 404 on every handler.
-**Next**: slice 3 — time — the exemplar; the handoff to Sonnet 5.5 follows it.
+**2026-10-05 — Slice 3 (time, THE EXEMPLAR) BUILT and proven** (`docs/build-specs/time-core.md`): my week as a day list on a phone and a grid on a desktop, the
+timer bar, the entry form with the stepper and chips in the increment, submit / reopen, the manager's week view with the rate that will apply and the snapshot after
+approval (rate, source, role, cost), approve (partial by what the approver manages), reject with a reason, write-off, team time, missing time with Nudge, written off,
+the home's My week and Approvals waiting regions, the notices queued for slice 8; `tests/phase3/slice3/run.sh` — **195 checks green**; the registry reads 39 screens
+and 62 actions built. **THE HANDOFF POINT IS REACHED**: slices 4–9, Phase 4 and Phase 5 are the worker model's (Sonnet 5.5), each replicating slice 3's files, ids, gates,
+flow and proof style from its spec.
+
 
 

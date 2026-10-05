@@ -96,7 +96,8 @@ rather than improvising. The handoff is a clean checkpoint with everything a wor
    rate and cost snapshots, write-off, team time, missing time, utilization, the timeline; its proof suite
    `tests/phase3/slice3/run.sh` green at 375 and 1280. This is what every later slice copies.
 
-**The handoff point** = the commit after slice 3 with design §16 saying "exemplar built; slices 4–9 open to workers".
+**The handoff point** = the commit after slice 3 with design §16 saying "exemplar built; slices 4–9 open to workers". **REACHED 2026-10-05**: steps 1–5 are
+all built and proven (K17 db/168; Phase 0 171 + 15; Phase 1 approved; Phase 2 247; slice 1 259; slice 2 173; slice 3 195 checks) — the next commit on this repository is a worker's, slice 4 (`docs/build-specs/expenses-receipts.md`).
 
 **After the handoff (worker model — Sonnet 5.5):** slices 4 → 9 in order, one at a time, each on the exemplar's pattern
 from its spec: screens + handlers + `log_activity()` + manifest entries + the tools' query functions, proven on a scratch
@@ -130,12 +131,14 @@ written into the spec's "Open questions" for the owner — never guessed.
   `docs/consultant-tracking-mcp-tool-surface.md`, `docs/consultant-tracking-action-manifest.md` (78 screens, 108 actions, 57 approvals = `maludb-os.json`),
   `mcp/action_registry.json` (`--check` OK), the ten specs in `docs/build-specs/` — **APPROVED by the owner 2026-10-05. Phase 2 BUILT and PROVEN 2026-10-05** (`tests/phase2/run.sh`, 247 checks; the fakes on 8302/8303/8306,
   the app on 8301, browser proofs with Playwright from `/var/www/web/node_modules`). **Slice 1 BUILT and PROVEN 2026-10-05** (`tests/phase3/slice1/run.sh`, 259 checks;
-  the scratch database `ct_dev3`). **Slice 2 BUILT and PROVEN 2026-10-05** (`tests/phase3/slice2/run.sh`, 173 checks). Then slice 3 (`sso-shell`), slices 1–2, slice 3 (time, the exemplar), the handoff.
+  the scratch database `ct_dev3`). **Slice 2 BUILT and PROVEN 2026-10-05** (`tests/phase3/slice2/run.sh`, 173 checks). **Slice 3 — time, THE EXEMPLAR — BUILT and PROVEN 2026-10-05**
+  (`tests/phase3/slice3/run.sh`, 195 checks). **THE HANDOFF POINT IS REACHED**: slices 4–9, Phase 4 and Phase 5 are the worker model's, from their specs, replicating slice 3. Then slice 3 (`sso-shell`), slices 1–2, slice 3 (time, the exemplar), the handoff.
 - The proofs: `tests/setup_dev.sh` builds the scratch database `ct_dev` and writes `$CT_DEV_ENV` (`/tmp/ct-dev.env`); `tests/phase0/run.sh`
   is the regression (the schema proof, then the kit on `php -S :8307` with `tests/dev_router.php`); `bin/directory_sync.php --from-file
   bin/dev_directory.json` applies the fixture (Owner 1, Priya 26, Marco 27, Bea 28, Ann 29, Dana 30). **Never put a `config/.env` here
   before the installer's `apply`** except the three-line port pin of `deploy/ROOT_STEPS.sh` step 0.
 - Finance holds the `finance` role ALONE (never `user`, which logs time). `cost.table` is a derived right (`has_right()`): cost.view AND every engagement — the admin, Billing, Finance read the cost-rate table; a Manager never.
+- The exemplar for every later slice is slice 3 (`app/features/time/*`, `html/time/*`, `app/views/time/*`, `tests/phase3/slice3/*`): the verb inside `ct_guard()`, the view's row as the only source of a rate or a cost, the week's keys on every log row, `queue_time_notice()` for the notices, the proof style (a `time_world()` fixture, one file per rule, the browser last).
 - An engagement the caller may not see answers 404 on every handler (never 403); a Manager opens an engagement for any live client (the view guards the details, not the name).
 - Documents and notes on any record go through the generic doors `/engagements/attachments/*` and `/engagements/notes/*` (`record_type` + `record`; `record_writable()` is the rule) and the shared partials `app/views/shared/{attachments,notes,timeline}.php`; a file is served at `/attachments/{id}` through the gate. The shell's menu table is `app/features/shell/nav.php` (five groups: Work, Manage, Billing, Reports, Settings; the phone's tabs Home,
   Time, Expenses, Engagements). `app/activity.php` takes `engagement_id`, `client_id`, `invoice_id`, `timesheet_id` (and `actor_client_id`

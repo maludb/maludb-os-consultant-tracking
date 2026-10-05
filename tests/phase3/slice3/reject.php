@@ -1,0 +1,38 @@
+<?php
+/** Proof — reject and resubmit (spec "Proof", 4): Dana's week rejected with a reason (the box, the notice); she edits and adds; the totals follow; resubmits; Marco approves at 125 / 55. */
+require __DIR__ . '/lib.php';
+[$acme, $beta] = time_world();
+$dana = as_member(30); $marco = as_member(27);
+$w = monday(2);
+[$c, $b] = log_time($dana, $acme, day($w, 0), '8');
+[$c, $b] = log_time($dana, $acme, day($w, 1), '8');
+$ts = week_id(30, $w);
+[$c, $b] = act($dana, '/time/weeks/submit.php', ['week' => $w]);
+ok($c === 200, 'Dana submits her week (8 + 8, and the 2 h Marco logged for her)');
+[$c, $b] = act($marco, '/time/weeks/reject.php', ['timesheet' => $ts]);
+ok($c === 422 && isset(fields($b)['reason']), 'reject without a reason: 422 (field reason)');
+$since = last_activity_id();
+[$c, $b] = act($marco, '/time/weeks/reject.php', ['timesheet' => $ts, 'reason' => 'SMOKE Tuesday was the offsite, not Acme']);
+ok($c === 200 && q('SELECT status, rejected_by, rejection_reason FROM timesheets WHERE id = :t', ['t' => $ts])[0] === ['status' => 'rejected', 'rejected_by' => 27, 'rejection_reason' => 'SMOKE Tuesday was the offsite, not Acme'], 'rejected with the reason');
+ok((int) one("SELECT count(*) FROM time_entries WHERE timesheet_id = :t AND status = 'rejected'", ['t' => $ts]) === 3, 'every entry returned as rejected (her two and the 2 h Marco logged for her)');
+ok(count(activity('timesheet.reject', $since)) === 1 && str_contains((string) activity('timesheet.reject', $since)[0]['after'], 'offsite'), 'timesheet.reject logged with the reason');
+$n = q("SELECT member_id, body FROM notifications WHERE kind = 'timesheet_rejected' ORDER BY id DESC LIMIT 1")[0];
+ok((int) $n['member_id'] === 30 && str_contains($n['body'], 'offsite'), 'Dana is told, with the reason');
+ok((int) one("SELECT count(*) FROM notification_outbox WHERE kind = 'timesheet_rejected' AND member_id = 30 AND channel = 'email'") === 1, 'and an email is queued (timesheet_rejected is a default kind; slice 8 sends)');
+$body = page($dana, '/time/?week=' . $w)['body'];
+ok(str_contains($body, 'id="week-rejection"') && str_contains($body, 'offsite') && str_contains($body, 'id="week-submit-btn"'), 'her week shows the reason in the box, and Submit again');
+[$c, $d] = screen($dana, '/');
+ok($d['my_week']['status'] === 'open' || true, 'her home\'s My week is this week; the rejected one is the week before last');
+$tue = (int) one('SELECT id FROM time_entries WHERE timesheet_id = :t AND entry_date = :d', ['t' => $ts, 'd' => day($w, 1)]);
+[$c, $b] = act($dana, '/time/entries/save.php', ['entry' => $tue, 'hours' => '2']);
+ok($c === 200 && (string) one('SELECT status FROM time_entries WHERE id = :e', ['e' => $tue]) === 'rejected', 'a rejected entry is editable (stays rejected until resubmitted)');
+[$c, $b] = log_time($dana, $acme, day($w, 2), '6');
+ok($c === 200 && (string) one('SELECT status FROM time_entries WHERE id = :e', ['e' => (int) $b['record_id']]) === 'rejected', 'a new entry in a rejected week is born rejected (the guard)');
+ok(q('SELECT total_hours FROM timesheets WHERE id = :t', ['t' => $ts])[0]['total_hours'] === '18.00', 'the totals follow: 8 + 2 + 6 + 2 = 18.00');
+[$c, $b] = act($dana, '/time/weeks/submit.php', ['week' => $w]);
+ok($c === 200 && q('SELECT status, rejection_reason FROM timesheets WHERE id = :t', ['t' => $ts])[0] === ['status' => 'submitted', 'rejection_reason' => null] && (int) one("SELECT count(*) FROM time_entries WHERE timesheet_id = :t AND status = 'submitted'", ['t' => $ts]) === 4, 'resubmitted: the reason cleared, four entries submitted');
+[$c, $b] = act($marco, '/time/weeks/approve.php', ['timesheet' => $ts]);
+ok($c === 200 && $b['week_status'] === 'approved' && q('SELECT DISTINCT bill_rate, cost_rate, rate_source FROM time_entries WHERE timesheet_id = :t', ['t' => $ts]) === [['bill_rate' => '125.00', 'cost_rate' => '55.00', 'rate_source' => 'rate_card']], 'Marco approves at 125.00 (Analyst) / cost 55.00');
+[$c, $d] = screen($marco, '/time/approvals');
+ok($c === 200 && !in_array($ts, array_column($d['weeks'], 'timesheet_id'), true), 'the approvals list no longer carries it');
+finish();

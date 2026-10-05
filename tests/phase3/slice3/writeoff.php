@@ -1,0 +1,33 @@
+<?php
+/** Proof — write-off (spec "Proof", 7): an approved unbilled entry written off with a reason; without → 422; a draft → the verb's words; the written-off page; realization's view. */
+require __DIR__ . '/lib.php';
+[$acme, $beta] = time_world();
+$priya = as_member(26); $marco = as_member(27); $bea = as_member(28); $ann = as_member(29);
+$w = monday(2); $ts = week_id(26, $w);
+$entry = (int) one("SELECT id FROM time_entries WHERE timesheet_id = :t AND status = 'approved' AND billable ORDER BY entry_date, id LIMIT 1", ['t' => $ts]);
+ok($entry > 0, 'an approved billable entry of Priya\'s stands (from the approve proof)');
+[$c, $b] = act($marco, '/time/entries/write-off.php', ['entry' => $entry]);
+ok($c === 422 && isset(fields($b)['reason']), 'without a reason: 422 (field reason)');
+[$c, $b] = act($priya, '/time/entries/write-off.php', ['entry' => $entry, 'reason' => 'SMOKE x']);
+ok($c === 403, 'Priya may not write off: 403');
+$since = last_activity_id();
+[$c, $b] = act($marco, '/time/entries/write-off.php', ['entry' => $entry, 'reason' => 'SMOKE goodwill — the client was not told about the rework']);
+ok($c === 200 && q('SELECT status, written_off_by, written_off_reason FROM time_entries WHERE id = :e', ['e' => $entry])[0] === ['status' => 'written_off', 'written_off_by' => 27, 'written_off_reason' => 'SMOKE goodwill — the client was not told about the rework'], 'written off with the reason by Marco');
+$log = activity('time_entry.write_off', $since);
+$after = json_decode((string) $log[0]['after'], true);
+ok(count($log) === 1 && (int) $log[0]['timesheet_id'] === $ts && $after['bill_value'] === '720.00' && $after['currency'] === 'USD' && str_contains($after['reason'], 'goodwill'), 'time_entry.write_off logged with the bill value (720.00), the currency and the reason');
+[$c, $b] = act($marco, '/time/entries/write-off.php', ['entry' => $entry, 'reason' => 'SMOKE again']);
+ok($c === 422 && msg($b) === 'Only an approved entry is written off (this one is written_off)', 'writing it off again: the verb\'s words');
+[$c, $b] = log_time($priya, $acme, day(monday(0), 2), '1');
+$draft = (int) $b['record_id'];
+[$c, $b] = act($marco, '/time/entries/write-off.php', ['entry' => $draft, 'reason' => 'SMOKE no']);
+ok($c === 422 && str_contains(msg($b), 'Only an approved entry is written off'), 'a draft: refused');
+[$c, $d] = screen($marco, '/time/written-off');
+ok($c === 200 && in_array($entry, array_column($d['entries'], 'entry_id'), true) && $d['total_hours'] === '4.00', 'the written-off page lists it (4.00 h)');
+$body = page($marco, '/time/written-off')['body'];
+ok(str_contains($body, 'id="written-off-' . $entry . '"') && str_contains($body, 'goodwill') && str_contains($body, '720.00 USD'), 'with the reason and the value');
+ok(page($ann, '/time/written-off')['code'] === 200 && page($priya, '/time/written-off')['code'] === 403, 'Finance reads it; a Consultant is refused');
+[$c, $d] = screen($marco, '/time/weeks/' . $ts);
+ok($d['days'][0]['entries'][0]['status'] === 'written_off' && $d['timesheet']['status'] === 'approved', 'the week view shows the entry written off; the week stays approved');
+ok((string) one("SELECT hours_used FROM ct_budget_status(:e)", ['e' => $acme]) !== '0', 'the budget still counts the hours (worked, not billed)');
+finish();

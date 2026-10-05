@@ -62,7 +62,7 @@ const groupsOf = async (page) => (await page.locator('.nxl-navbar .nxl-caption l
   // HTMX navigation: a tab swaps #page-content, pushes the URL and sets the title
   await page.click('#tab-timesheet');
   await page.waitForURL(BASE + '/time/');
-  await page.waitForSelector('#timesheet-coming');
+  await page.waitForSelector('#week-header');                    // slice 3 built it
   ok(page.url() === BASE + '/time/', 'the Time tab pushed /time/ without a page load');
   ok((await page.title()).startsWith('My timesheet'), 'and set the title (' + (await page.title()) + ')');
   ok(await page.evaluate(() => document.querySelector('#tab-timesheet').classList.contains('active')), 'and highlighted the tab');
@@ -112,7 +112,7 @@ const groupsOf = async (page) => (await page.locator('.nxl-navbar .nxl-caption l
   const groups = await groupsOf(page);
   ok(groups.join(',') === 'work,reports,settings,me', 'a consultant\'s groups: ' + groups.join(', ') + ' (no Manage, no Billing)');
   ok((await page.locator('#nav-time-approvals').count()) === 0 && (await page.locator('#nav-my-settings').count()) === 1, 'no Time approvals; My settings is there');
-  ok(!(await shown(page, '#home-approvals')) && await shown(page, '#home-my-week-empty'), 'home: no "Approvals waiting", the empty "My week"');
+  ok(!(await shown(page, '#home-approvals')) && await shown(page, '#home-my-week'), 'home: no "Approvals waiting", "My week" (slice 3)');
   ok((await page.locator('#header-role-badge').innerText()).includes('Consultant'), 'the badge reads Consultant');
   ok((await page.locator('#app-tabbar .app-tab').count()) === 5, 'five tabs for a consultant too (time, expenses, engagements)');
   await page.screenshot({ path: `${SHOTS}/phone-dashboard-consultant.png` });
@@ -137,7 +137,7 @@ const groupsOf = async (page) => (await page.locator('.nxl-navbar .nxl-caption l
   await page.screenshot({ path: `${SHOTS}/desktop-dashboard.png` });
   await page.click('#nav-engagements .nxl-link');                 // a placeholder (slice 2) — HTMX navigation pushes its URL
   await page.waitForURL(BASE + '/engagements/');
-  await page.waitForSelector('#engagements-coming');
+  await page.waitForSelector('#engagement-filters');             // slice 2 built it
   ok((await page.title()).startsWith('Engagements'), 'HTMX navigation: /engagements/ pushed, title "' + (await page.title()) + '"');
   await page.screenshot({ path: `${SHOTS}/desktop-placeholder.png` });
   await page.goBack();

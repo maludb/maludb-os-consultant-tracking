@@ -15,7 +15,7 @@ $matrix = [
     '/' => $all, '/settings/' => $all, '/settings/tokens/' => $all, '/notifications' => $all, '/activity' => $all, '/engagements/' => $all, '/clients/' => $all, '/reports/' => $all,
     '/time/' => 'user manager billing admin', '/expenses/' => 'user manager billing admin',
     '/time/approvals' => 'manager billing admin', '/expenses/approvals' => 'manager billing admin', '/usage/' => 'manager billing admin', '/usage/os' => 'manager billing admin',
-    '/usage/budgets' => 'manager billing admin', '/billing/unbilled' => 'manager billing admin', '/invoices/' => 'manager billing admin', '/settings/allocation-rules/' => 'manager billing admin',
+    '/usage/budgets' => 'manager billing finance admin', '/billing/unbilled' => 'manager billing admin', '/invoices/' => 'manager billing admin', '/settings/allocation-rules/' => 'manager billing admin',
     '/settings/schedules/' => 'manager billing admin', '/reports/ar-aging' => 'manager billing finance admin', '/exports' => 'billing finance admin',
     '/credit-notes/' => 'billing admin', '/payments/' => 'billing admin', '/billing/claims' => 'billing admin', '/expenses/reimbursements' => 'billing admin', '/settings/rate-cards/' => 'manager billing finance admin',
     '/settings/general' => 'admin', '/settings/numbering' => 'admin', '/settings/roles/' => 'admin', '/settings/cost-rates/' => 'billing finance admin', '/settings/capacity/' => 'admin',
@@ -56,8 +56,8 @@ $r = req('GET', '/', ['jar' => $jManager] + $json);
 $d = json_decode($r['body'], true)['data'] ?? [];
 ok($r['code'] === 200 && $d['may']['approve'] === true && $d['may']['time'] === true && array_key_exists('my_week', $d) && array_key_exists('approvals', $d) && array_key_exists('billing', $d), 'the dashboard answers JSON: the shape (may, my_week, approvals, billing, …)');
 $h = page($jUser, '/')['body'];
-ok(!str_contains($h, 'id="home-approvals"') && str_contains($h, 'id="home-my-week-empty"') && str_contains($h, 'id="dashboard-log-btn"') && !str_contains($h, 'id="home-billing"'), 'a Consultant\'s home: My week, Log time; no approvals, no billing');
-ok(str_contains(page($jManager, '/')['body'], 'id="home-approvals-empty"') && str_contains(page($jManager, '/')['body'], 'id="home-budget-alerts-empty"'), 'a Manager\'s home shows Approvals waiting and Budget alerts (empty until their slices)');
+ok(!str_contains($h, 'id="home-approvals"') && str_contains($h, 'id="home-my-week"') && str_contains($h, 'id="dashboard-log-btn"') && !str_contains($h, 'id="home-billing"'), 'a Consultant\'s home: My week (slice 3), Log time; no approvals, no billing');
+ok(str_contains(page($jManager, '/')['body'], 'id="home-approvals"') && str_contains(page($jManager, '/')['body'], 'id="home-budget-alerts"'), 'a Manager\'s home shows Approvals waiting (slice 3) and Budget alerts (slice 2)');
 ok(page($jFinance, '/')['code'] === 200 && !str_contains(page($jFinance, '/')['body'], 'id="dashboard-log-btn"') && str_contains(page($jFinance, '/')['body'], 'id="home-billing-empty"'), 'Finance\'s home: no Log time, the billing figures (empty until their slices)');
 
 echo "2. My settings — how I am told\n";

@@ -1,6 +1,6 @@
 {
     "generated_from": "docs/consultant-tracking-action-manifest.md",
-    "generated_at": "2026-10-05T09:47:24+00:00",
+    "generated_at": "2026-10-05T10:09:38+00:00",
     "screens": {
         "dashboard": {
             "screen": "dashboard",
@@ -332,8 +332,8 @@
                 "week",
                 "member"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "time-entry-add": {
             "screen": "time-entry-add",
@@ -345,8 +345,8 @@
                 "date",
                 "week"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "time-entry-edit": {
             "screen": "time-entry-edit",
@@ -354,8 +354,8 @@
             "section": "Time — THE EXEMPLAR (slice 3)",
             "when": "to change a draft or rejected entry",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "time-approvals": {
             "screen": "time-approvals",
@@ -365,8 +365,8 @@
             "params": [
                 "member"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "timesheet-view": {
             "screen": "timesheet-view",
@@ -374,8 +374,8 @@
             "section": "Time — THE EXEMPLAR (slice 3)",
             "when": "one week as its manager sees it: the entries with rates, approve or reject, the timeline",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "team-time": {
             "screen": "team-time",
@@ -386,8 +386,8 @@
                 "week",
                 "department"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "missing-time": {
             "screen": "missing-time",
@@ -397,8 +397,8 @@
             "params": [
                 "week"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "written-off": {
             "screen": "written-off",
@@ -410,8 +410,8 @@
                 "to",
                 "engagement"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "expense-list": {
             "screen": "expense-list",
@@ -2903,7 +2903,7 @@
             "approval": null,
             "log_event": "time_entry.save",
             "who": "own or manage",
-            "built": false
+            "built": true
         },
         "time_entry_delete": {
             "action": "time_entry_delete",
@@ -2922,7 +2922,7 @@
             "approval": "deletion",
             "log_event": "time_entry.delete",
             "who": "own or manage",
-            "built": false
+            "built": true
         },
         "timer_start": {
             "action": "timer_start",
@@ -2953,7 +2953,7 @@
             "approval": null,
             "log_event": "timer.start",
             "who": "own",
-            "built": false
+            "built": true
         },
         "timer_stop": {
             "action": "timer_stop",
@@ -2970,7 +2970,7 @@
             "approval": null,
             "log_event": "timer.stop",
             "who": "own",
-            "built": false
+            "built": true
         },
         "timesheet_submit": {
             "action": "timesheet_submit",
@@ -2995,7 +2995,7 @@
             "approval": null,
             "log_event": "timesheet.submit",
             "who": "own or manage",
-            "built": false
+            "built": true
         },
         "timesheet_reopen": {
             "action": "timesheet_reopen",
@@ -3016,7 +3016,7 @@
             "approval": null,
             "log_event": "timesheet.reopen",
             "who": "own or manage",
-            "built": false
+            "built": true
         },
         "timesheet_approve": {
             "action": "timesheet_approve",
@@ -3035,7 +3035,7 @@
             "approval": "other",
             "log_event": "timesheet.approve",
             "who": "approve",
-            "built": false
+            "built": true
         },
         "timesheet_reject": {
             "action": "timesheet_reject",
@@ -3060,7 +3060,7 @@
             "approval": "other",
             "log_event": "timesheet.reject",
             "who": "approve",
-            "built": false
+            "built": true
         },
         "time_entry_write_off": {
             "action": "time_entry_write_off",
@@ -3087,7 +3087,7 @@
             "approval": "money_out",
             "log_event": "time_entry.write_off",
             "who": "manage",
-            "built": false
+            "built": true
         },
         "timesheet_nudge_send": {
             "action": "timesheet_nudge_send",
@@ -3112,7 +3112,7 @@
             "approval": "external_send",
             "log_event": "timesheet.nudge",
             "who": "approve or billing",
-            "built": false
+            "built": true
         },
         "expense_save": {
             "action": "expense_save",

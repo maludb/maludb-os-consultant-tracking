@@ -1,0 +1,28 @@
+{
+  "schema": "maludb-os.registry/1",
+  "app_key": "consultant_tracking",
+  "name": "Consultant Tracking",
+  "note": "The installer (bin/app_install.php, step 'registry') writes mcp/registries/consultant_tracking.json in the kernel from this file's `resolve` block plus mcp/action_registry.json. Each resolve tool answers a plain LIST of rows carrying id_field and label_field when given `q` alone. The tools are the Phase 1 tool surface's names; Phase 4 builds them (mcp/records_server.py). A repeated param (entries, expenses, charges) is a list of ids, never resolved by name.",
+  "resolve": {
+    "client": {"tool": "find_clients", "query_param": "q", "id_field": "client_id", "label_field": "name", "params": ["client"]},
+    "engagement": {"tool": "find_engagements", "query_param": "q", "id_field": "engagement_id", "label_field": "label", "params": ["engagement"]},
+    "milestone": {"tool": "milestones", "query_param": "q", "id_field": "milestone_id", "label_field": "name", "params": ["milestone"]},
+    "timesheet": {"tool": "timesheets_pending", "query_param": "q", "id_field": "timesheet_id", "label_field": "label", "params": ["timesheet", "week"]},
+    "time_entry": {"tool": "my_timesheet", "query_param": "q", "id_field": "entry_id", "label_field": "label", "params": ["entry", "time_entry"]},
+    "expense": {"tool": "my_expenses", "query_param": "q", "id_field": "expense_id", "label_field": "label", "params": ["expense"]},
+    "usage_charge": {"tool": "usage_pending", "query_param": "q", "id_field": "usage_charge_id", "label_field": "label", "params": ["charge", "usage_charge"]},
+    "invoice": {"tool": "find_invoices", "query_param": "q", "id_field": "invoice_id", "label_field": "label", "params": ["invoice"]},
+    "credit_note": {"tool": "credit_notes_issued", "query_param": "q", "id_field": "credit_note_id", "label_field": "label", "params": ["credit_note"]},
+    "payment_claim": {"tool": "payment_claims", "query_param": "q", "id_field": "claim_id", "label_field": "label", "params": ["claim"]},
+    "rate_card": {"tool": "rate_cards", "query_param": "q", "id_field": "rate_card_id", "label_field": "name", "params": ["rate_card"]},
+    "consulting_role": {"tool": "ct_settings", "query_param": "q", "id_field": "consulting_role_id", "label_field": "title", "params": ["consulting_role", "role"]},
+    "activity_type": {"tool": "ct_settings", "query_param": "q", "id_field": "activity_type_id", "label_field": "label", "params": ["activity", "activity_type"]},
+    "expense_category": {"tool": "ct_settings", "query_param": "q", "id_field": "category_id", "label_field": "label", "params": ["category"]},
+    "usage_provider": {"tool": "ct_settings", "query_param": "q", "id_field": "provider_id", "label_field": "name", "params": ["provider"]},
+    "allocation_rule": {"tool": "allocation_rules", "query_param": "q", "id_field": "rule_id", "label_field": "name", "params": ["rule", "allocation_rule"]},
+    "recurring_charge": {"tool": "recurring_due", "query_param": "q", "id_field": "schedule_id", "label_field": "description", "params": ["schedule"]},
+    "ai_statement": {"tool": "ai_statement_status", "query_param": "q", "id_field": "ai_statement_id", "label_field": "period", "params": ["statement", "ai_statement"]},
+    "member": {"tool": "find_members", "query_param": "q", "id_field": "member_id", "label_field": "display_name", "params": ["member", "to_member", "person", "manager"]},
+    "department": {"tool": "find_departments", "query_param": "q", "id_field": "department_id", "label_field": "name", "params": ["department", "practice"]}
+  }
+}

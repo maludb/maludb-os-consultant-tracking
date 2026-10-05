@@ -123,5 +123,20 @@ written into the spec's "Open questions" for the owner — never guessed.
 - Kernel items this application waits on (design §12): K17 catalog seed (first), K18 the people rule, K19 a cost tag on runs,
   K16/K8 wake-an-agent; siblings: G1 (General Ledger's `invoice_receipts` share and source import), H2 (HR pays
   reimbursements), P1 (Projects' `projects_list`).
-- **State (2026-10-05): the plan APPROVED (§15 D1–D16, D16 revised to the GL division); the repository created; the planning
-  model is building toward the handoff.** Next: K17 in the kernel, then Phase 0's second half (step 2 above).
+- **State (2026-10-05): the plan APPROVED (§15 D1–D16, D16 revised to the GL division); K17 applied in the kernel (db/168); Phase 0's
+  second half BUILT and PROVEN** — `db/001`–`015` (171 checks, `db/proof/phase0_proof.sql`), the kit from General Ledger un-ledgered
+  (`tests/phase0/run.sh`, 15 checks; scratch ports 8301–8307), `maludb-os.json`, `os/{expert,biller}.md`, seven skills, `deploy/`,
+  the installer's `plan` clean. The decisions taken while building are design §16 (a–h) — rules, not questions. **Next: Phase 1**
+  (the tool surface, the manifest, the registry, the ten specs) as the checkpoint before any PHP.
+- The proofs: `tests/setup_dev.sh` builds the scratch database `ct_dev` and writes `$CT_DEV_ENV` (`/tmp/ct-dev.env`); `tests/phase0/run.sh`
+  is the regression (the schema proof, then the kit on `php -S :8307` with `tests/dev_router.php`); `bin/directory_sync.php --from-file
+  bin/dev_directory.json` applies the fixture (Owner 1, Priya 26, Marco 27, Bea 28, Ann 29, Dana 30). **Never put a `config/.env` here
+  before the installer's `apply`** except the three-line port pin of `deploy/ROOT_STEPS.sh` step 0.
+- The shell's menu table is `app/features/shell/nav.php` (five groups: Work, Manage, Billing, Reports, Settings; the phone's tabs Home,
+  Time, Expenses, Engagements). `app/activity.php` takes `engagement_id`, `client_id`, `invoice_id`, `timesheet_id` (and `actor_client_id`
+  for the public door) on every row. `app/auth.php` has `require_can_see_engagement()` / `require_can_manage_engagement()` over the SQL
+  rules. `PARTIAL_UPDATE_TARGETS` is empty until the manifest names the `*_update` handlers. The writer's verbs are SQL functions
+  (`ct_timesheet_submit/approve/reject/reopen`, `ct_time_entry_write_off`, `ct_timer_start/stop`, `ct_expense_submit/approve/reject/
+  mark_reimbursed`, `ct_usage_charge_approve/void`, `ct_recurring_charge_run`, `ct_ai_statement_load/allocate`, `ct_invoice_add_unbilled/
+  issue/mark_sent/void/write_off`, `ct_credit_note_issue`, `ct_payment_claim_confirm`, `ct_secure_link_mint/invoice`, `ct_budget_alerts_check`);
+  a handler calls the verb inside `ct_guard()` and shows the database's sentence.

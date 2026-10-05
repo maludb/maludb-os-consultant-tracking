@@ -576,7 +576,42 @@ Every recommendation of §13 was taken, in one sitting, the same day the plan wa
 **2026-10-04 — the plan approved.** The plan written (this document); the repository `maludb/maludb-os-consultant-tracking`
 created private in the org and cloned to `/srv/apps/consultant_tracking`; the owner answered all sixteen questions of §13 the
 same day, every recommendation taken (§15, D1–D16); **2026-10-05 D16 revised**: the planning model builds through the exemplar,
-the worker takes slices 4–9 and Phases 4–5. Nothing else exists yet. Next, in the order of `CLAUDE.md`: **K17** (the catalog seed) in the kernel; **Phase 0's second half** — the schema `db/001`–`0NN` and
-its proof on a scratch database, the kit from Help Desk, `maludb-os.json`, `os/{expert,biller}.md`, the seven skills, `deploy/`
-with `ROOT_STEPS.sh` pinning 8185/8831/8832; then **Phase 1** (the tool surface, the manifest, the ten specs) as the checkpoint
-before any PHP; then Phase 2, slices 1–2, and **slice 3 — time — the exemplar; the handoff to Sonnet 5.5 follows it**.
+the worker takes slices 4–9 and Phases 4–5.
+
+**2026-10-05 — K17 and Phase 0's second half BUILT and proven.** K17 in the kernel (db/168, applied). The schema `db/001`–`015`:
+the mirror and roles (`ct_has_right()`, `ct_sees_all()`), settings and the gapless numbering, the seeded vocabulary (consulting roles,
+activity types, expense categories, usage providers, tax), clients and contacts, attachments and notes, rate cards and the guarded
+cost rates, engagements with staffing, role rates, milestones, budget alerts, the rate resolution (`ct_resolve_rate`) and the
+visibility rule (`ct_visible_engagement_ids`, `ct_can_see_engagement`, `ct_managed_engagement_ids`, `ct_can_log_on`), time
+(weeks, entries, the timer; submit / reopen / approve with the snapshots / reject / write-off), expenses (the receipt rule; submit /
+approve / reject / mark reimbursed), usage (charges with the three pricings, imports, schedules, the kernel's statement kept
+verbatim and allocated by rules with the remainder), invoicing (lines, the backing items billed once, add-unbilled through the
+grouping, issue with the PO rule and the NTE override, send, void releasing the items, write-off, credit notes and applications,
+payments as status, claims, the secure link), notifications and dispatches, the nine report functions, 44 `mcp_*` views.
+`db/proof/phase0_proof.sql`: **171 checks green** on the scratch database (every actor of §2, the rate chain, the week's life with
+every refusal, the receipt rule, the three pricings, a schedule, the statement allocated to the cent with its remainder and
+re-allocated around an approved charge, the milestone's life, add-unbilled, the PO and NTE rules, the secure link and the claim,
+paid derived, void releasing, write-off, a credit note, every report with figures, who sees what for seven actors and two
+non-members, the activity trail). The kit copied from General Ledger (Help Desk's lineage) and un-ledgered — the engagement
+gates, the activity funnel's keys (engagement, client, invoice, timesheet), the menu of five groups, the directory fixture of the
+firm's actors, the dev router with the `/i/` door — proven without a kernel (`tests/phase0/run.sh`, **15 checks green**, ports
+8301–8307). `maludb-os.json` (every port env required, six shares, one read, two agents with grants and the 07:00 duty, 47
+approval categories), `os/{expert,biller}.md`, seven skills (four runbooks), `deploy/` templates with the public door and
+`ROOT_STEPS.sh` pinning 8185/8831/8832, `deploy/kernel-registry-consultant_tracking.json` (20 entities); the installer's `plan`
+reads the repository clean (the two MCP ports show unfilled until the owner's step 0 pin, as designed).
+
+**Decisions taken while building** (recorded here, not relitigated): (a) **"billed" is not a status** — a time entry, an expense
+or a usage charge is billed when an invoice line item names it (`ct_item_billed()`), one truth; only a milestone carries
+`invoiced` as a status (set on issue, returned to `accepted` by a void); (b) **status moves happen only through the functions** —
+the guards refuse a direct `UPDATE … SET status` unless the transaction-local `ct.via_function` is set, which the verbs set;
+PHP calls the verbs; (c) **the cost-rate table is readable by anyone holding `cost.view` business-wide** (Billing, Finance,
+admin) — hiding it from Billing while showing the cost snapshot on every entry would be theatre; a Manager never reads it and
+sees cost on their own engagements only; (d) **rejected hours count in the week's totals** (they are being fixed, not gone);
+(e) **re-allocating the AI statement keeps every piece an approved charge holds and remakes the rest** — per rule and line, never
+skipping a whole line; (f) **the margin bills approved hours only**; written-off hours cost and never bill; (g) **the aging is of
+today's open invoices** bucketed by the date asked — a historical aging is Extended; (h) retainers are refused by the guard
+(`kind = 'retainer'` admitted by the CHECK) until their spec lands.
+
+**Next**: Phase 1 — `docs/consultant-tracking-mcp-tool-surface.md`, `docs/consultant-tracking-action-manifest.md`,
+`mcp/action_registry.json`, the ten specs — as the checkpoint before any PHP; then Phase 2, slices 1–2, and **slice 3 — time —
+the exemplar**; the handoff to Sonnet 5.5 follows it.

@@ -1,0 +1,486 @@
+{
+  "schema": "maludb-os.application/1",
+  "catalog_key": "consultant_tracking",
+  "name": "Consultant Tracking",
+  "description": "Professional services for a technical or AI consultancy: clients and engagements (time-and-materials with expenses, or fixed bid against milestones), weekly timesheets with a timer, expenses with receipts snapped on a phone, hosting and model-usage pass-through — by hand, from a provider's usage export, from a hosting schedule, or allocated from the kernel's monthly AI statement by rules —, invoices by email and a secure link with their backing detail, and the firm's reports: unbilled work, utilization, realization, budget burn, margin, AI cost vs. billed. It bills and never keeps the books: the accounting system reads it through the kernel.",
+  "business_area": "Sales & Service",
+  "category": "other",
+  "icon": "feather-briefcase",
+  "version": "0.1.0",
+  "criticality": "high",
+  "vhost": {
+    "label": "consulting",
+    "document_root": "html",
+    "internal_port_env": "APP_INTERNAL_PORT"
+  },
+  "database": {
+    "suffix": "consultant_tracking",
+    "migrations": "db",
+    "roles": {
+      "rw": "consultant_tracking_rw",
+      "records_ro": "consultant_tracking_records_ro",
+      "activity_ro": "consultant_tracking_activity_ro"
+    }
+  },
+  "env": {
+    "required": [
+      "APP_NAME",
+      "APP_URL",
+      "DB_HOST",
+      "DB_PORT",
+      "DB_NAME",
+      "DB_USER",
+      "DB_PASSWORD",
+      "MCP_RECORDS_DB_USER",
+      "MCP_RECORDS_DB_PASSWORD",
+      "MCP_ACTIVITY_DB_USER",
+      "MCP_ACTIVITY_DB_PASSWORD",
+      "APP_INTERNAL_PORT",
+      "MCP_RECORDS_PORT",
+      "MCP_ACTIVITY_PORT",
+      "ACTION_TOKEN_KEY",
+      "ACTIONS_RELAY_KEY",
+      "OS_APPLICATION_TOKEN",
+      "OS_INTERNAL_URL",
+      "OS_LAUNCHER_URL",
+      "APP_KEY",
+      "MALUDB_API_URL",
+      "MALUDB_API_TOKEN"
+    ],
+    "optional": [
+      "MALUMAIL_API_KEY",
+      "MALUMAIL_API_URL",
+      "MAIL_FROM",
+      "MAIL_FROM_NAME",
+      "ATTACHMENT_MAX_BYTES",
+      "CT_LINK_LIFETIME_DAYS",
+      "API_CORS_ORIGINS"
+    ]
+  },
+  "services": [
+    "deploy/consultant_tracking-records-mcp.service",
+    "deploy/consultant_tracking-activity-mcp.service",
+    "deploy/consultant_tracking-activity-ingest.service",
+    "deploy/consultant_tracking-activity-ingest.timer",
+    "deploy/consultant_tracking-directory-sync.service",
+    "deploy/consultant_tracking-directory-sync.timer",
+    "deploy/consultant_tracking-worker.service",
+    "deploy/consultant_tracking-worker.timer"
+  ],
+  "endpoints": [
+    {
+      "name": "Web UI",
+      "kind": "ui",
+      "path": "/",
+      "auth_kind": "none",
+      "agent_reachable": false
+    },
+    {
+      "name": "Health",
+      "kind": "http_api",
+      "path": "/api/v1/health",
+      "auth_kind": "none",
+      "agent_reachable": false
+    }
+  ],
+  "actions": {
+    "manifest": "docs/consultant-tracking-action-manifest.md",
+    "registry": "mcp/action_registry.json",
+    "base_url_env": "APP_INTERNAL_PORT"
+  },
+  "skills": [
+    "skills/consulting-basics",
+    "skills/rates-and-billing-rules",
+    "skills/writing-to-clients",
+    "skills/monday-missing-time",
+    "skills/draft-the-period-invoices",
+    "skills/allocate-the-ai-statement",
+    "skills/budget-review"
+  ],
+  "sso": {
+    "path": "/sso",
+    "logout_path": "/sso/logout"
+  },
+  "directory": {
+    "reads": true,
+    "writes": false
+  },
+  "assistant": {
+    "command_bar": true,
+    "agent": "expert"
+  },
+  "shares": [
+    {
+      "tool": "invoices_issued",
+      "description": "Invoices issued in a period, lines summarised by kind (time, expense, usage, milestone, fixed, adjustment) — for the ledger's source import (os.ct-invoices/1)",
+      "scoped": false
+    },
+    {
+      "tool": "credit_notes_issued",
+      "description": "Credit notes issued in a period, the same shape, negative (os.ct-credit-notes/1)",
+      "scoped": false
+    },
+    {
+      "tool": "expenses_by_category",
+      "description": "Approved company-card expenses by category and month, no person named (os.ct-expenses/1)",
+      "scoped": false
+    },
+    {
+      "tool": "unbilled_summary",
+      "description": "Approved, unbilled work at bill value per engagement as of a date — the WIP accrual (os.ct-wip/1)",
+      "scoped": false
+    },
+    {
+      "tool": "reimbursements_approved",
+      "description": "Approved, unreimbursed personal-card expenses per member — for HR to pay in a pay run (os.ct-reimbursements/1)",
+      "scoped": false,
+      "people": true
+    },
+    {
+      "tool": "engagement_list",
+      "description": "Active engagements: number, name, client short name, kind, dates; no money (os.ct-engagements/1)",
+      "scoped": false
+    }
+  ],
+  "reads": [
+    {
+      "app": "gl",
+      "tool": "invoice_receipts",
+      "why": "Mark our invoices paid from the ledger's receipts, by our invoice number (G1 — owed by General Ledger)"
+    }
+  ],
+  "agents": [
+    {
+      "key": "expert",
+      "job_description": "os/expert.md",
+      "access_capability": "write",
+      "hired_on_install": true,
+      "roles": [
+        "manager"
+      ],
+      "tool_grants": {
+        "Records MCP": [
+          "find_clients",
+          "get_client",
+          "find_engagements",
+          "get_engagement",
+          "engagement_staffing",
+          "resolve_rate",
+          "budget_status",
+          "milestones",
+          "budget_alerts",
+          "rate_cards",
+          "my_timesheet",
+          "missing_time",
+          "timesheets_pending",
+          "time_summary",
+          "utilization",
+          "time_written_off",
+          "my_timer",
+          "my_expenses",
+          "my_reimbursements_due",
+          "expenses_pending",
+          "expense_summary",
+          "usage_summary",
+          "ai_passthrough",
+          "ai_statement_status",
+          "allocation_rules",
+          "recurring_due",
+          "usage_pending",
+          "unbilled_summary",
+          "unbilled_items",
+          "invoices_due_to_draft",
+          "find_invoices",
+          "get_invoice",
+          "revenue",
+          "ar_aging",
+          "payment_claims",
+          "credit_notes_issued",
+          "realization",
+          "margin",
+          "client_statement",
+          "find_members",
+          "find_departments",
+          "ct_settings",
+          "records_search"
+        ],
+        "Activity MCP": [
+          "record_history",
+          "actor_timeline",
+          "who_touched",
+          "recent_activity",
+          "activity_search"
+        ],
+        "Actions MCP": [
+          "time_entry_save",
+          "timesheet_submit",
+          "expense_save",
+          "expense_submit",
+          "invoice_draft",
+          "invoice_add_unbilled",
+          "invoice_line_save",
+          "usage_charge_draft",
+          "client_save",
+          "engagement_save",
+          "note_add",
+          "invoice_issue",
+          "invoice_send"
+        ]
+      },
+      "skills": [
+        "skills/consulting-basics",
+        "skills/rates-and-billing-rules",
+        "skills/writing-to-clients"
+      ]
+    },
+    {
+      "key": "biller",
+      "job_description": "os/biller.md",
+      "access_capability": "write",
+      "hired_on_install": true,
+      "roles": [
+        "billing"
+      ],
+      "duty": {
+        "name": "The morning billing",
+        "schedule_cron": "0 7 * * *"
+      },
+      "tool_grants": {
+        "Records MCP": [
+          "missing_time",
+          "unbilled_summary",
+          "unbilled_items",
+          "invoices_due_to_draft",
+          "ai_statement_status",
+          "recurring_due",
+          "budget_status",
+          "budget_alerts",
+          "ar_aging",
+          "payment_claims",
+          "find_engagements",
+          "get_engagement",
+          "find_invoices",
+          "get_invoice",
+          "find_clients",
+          "find_members",
+          "ct_settings",
+          "records_search"
+        ],
+        "Activity MCP": [
+          "record_history"
+        ],
+        "Actions MCP": [
+          "invoice_draft",
+          "invoice_add_unbilled",
+          "ai_statement_pull",
+          "ai_statement_allocate",
+          "recurring_charge_run",
+          "usage_charge_draft",
+          "budget_alert_write",
+          "timesheet_nudge_send",
+          "invoice_remind",
+          "note_add",
+          "morning_note_send"
+        ]
+      },
+      "skills": [
+        "skills/consulting-basics",
+        "skills/rates-and-billing-rules",
+        "skills/monday-missing-time",
+        "skills/draft-the-period-invoices",
+        "skills/allocate-the-ai-statement",
+        "skills/budget-review"
+      ]
+    }
+  ],
+  "approvals": [
+    {
+      "action": "invoice_issue",
+      "category": "money_out"
+    },
+    {
+      "action": "credit_note_issue",
+      "category": "money_out"
+    },
+    {
+      "action": "invoice_void",
+      "category": "money_out"
+    },
+    {
+      "action": "invoice_write_off",
+      "category": "money_out"
+    },
+    {
+      "action": "payment_record",
+      "category": "money_out"
+    },
+    {
+      "action": "payment_void",
+      "category": "money_out"
+    },
+    {
+      "action": "payment_claim_confirm",
+      "category": "money_out"
+    },
+    {
+      "action": "time_entry_write_off",
+      "category": "money_out"
+    },
+    {
+      "action": "credit_note_void",
+      "category": "money_out"
+    },
+    {
+      "action": "invoice_send",
+      "category": "external_send"
+    },
+    {
+      "action": "invoice_remind",
+      "category": "external_send"
+    },
+    {
+      "action": "statement_send",
+      "category": "external_send"
+    },
+    {
+      "action": "timesheet_nudge_send",
+      "category": "external_send"
+    },
+    {
+      "action": "timesheet_approve",
+      "category": "other"
+    },
+    {
+      "action": "timesheet_reject",
+      "category": "other"
+    },
+    {
+      "action": "expense_approve",
+      "category": "other"
+    },
+    {
+      "action": "expense_reject",
+      "category": "other"
+    },
+    {
+      "action": "usage_charge_approve",
+      "category": "other"
+    },
+    {
+      "action": "milestone_accept",
+      "category": "other"
+    },
+    {
+      "action": "expense_mark_reimbursed",
+      "category": "other"
+    },
+    {
+      "action": "payment_claim_dismiss",
+      "category": "other"
+    },
+    {
+      "action": "client_delete",
+      "category": "deletion"
+    },
+    {
+      "action": "engagement_delete",
+      "category": "deletion"
+    },
+    {
+      "action": "attachment_delete",
+      "category": "deletion"
+    },
+    {
+      "action": "rate_card_delete",
+      "category": "deletion"
+    },
+    {
+      "action": "usage_import_delete",
+      "category": "deletion"
+    },
+    {
+      "action": "allocation_rule_delete",
+      "category": "deletion"
+    },
+    {
+      "action": "time_entry_delete",
+      "category": "deletion"
+    },
+    {
+      "action": "expense_delete",
+      "category": "deletion"
+    },
+    {
+      "action": "invoice_delete",
+      "category": "deletion"
+    },
+    {
+      "action": "recurring_charge_delete",
+      "category": "deletion"
+    },
+    {
+      "action": "milestone_delete",
+      "category": "deletion"
+    },
+    {
+      "action": "note_delete",
+      "category": "deletion"
+    },
+    {
+      "action": "settings_save",
+      "category": "other"
+    },
+    {
+      "action": "consulting_role_save",
+      "category": "other"
+    },
+    {
+      "action": "rate_card_save",
+      "category": "other"
+    },
+    {
+      "action": "rate_card_rate_save",
+      "category": "other"
+    },
+    {
+      "action": "cost_rate_save",
+      "category": "other"
+    },
+    {
+      "action": "capacity_save",
+      "category": "other"
+    },
+    {
+      "action": "activity_type_save",
+      "category": "other"
+    },
+    {
+      "action": "expense_category_save",
+      "category": "other"
+    },
+    {
+      "action": "usage_provider_save",
+      "category": "other"
+    },
+    {
+      "action": "allocation_rule_save",
+      "category": "other"
+    },
+    {
+      "action": "recurring_charge_save",
+      "category": "other"
+    },
+    {
+      "action": "tax_rate_save",
+      "category": "other"
+    },
+    {
+      "action": "engagement_role_rate_save",
+      "category": "other"
+    },
+    {
+      "action": "numbering_save",
+      "category": "other"
+    }
+  ]
+}

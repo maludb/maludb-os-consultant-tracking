@@ -20,4 +20,4 @@ $was = ct_guard($pdo, static function () use ($pdo, $id, $a): array {
     $pdo->commit();
     return $was;
 });
-ct_done('Removed ' . $was['filename'], $id, ct_land(return_path(record_url($a['record_type'], $a['record_id'])), 'file_removed', 'documents'), str_replace('_', '', $a['record_type']) . 'Changed');
+ct_done('Removed ' . $was['filename'], $id, ct_land(return_path(record_url($a['record_type'], $a['record_id'], $pdo)), 'file_removed', 'documents'), str_replace('_', '', $a['record_type']) . 'Changed');

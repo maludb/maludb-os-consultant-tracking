@@ -7,8 +7,14 @@ declare(strict_types=1);
  */
 function home_summary(PDO $pdo, int $memberId): array
 {
+    $alerts = null;
+    if (has_right('engagements.manage') || has_right('reports.view')) {           // slice 2: the open alerts and the engagements ending within 30 days, of what the caller may see
+        require_once dirname(__DIR__) . '/engagements/queries.php';
+        $alerts = ['open' => array_slice(find_budget_alerts($pdo, null, true), 0, 8), 'ending' => find_engagements($pdo, ['ending_within_days' => 30], 8),
+                   'active' => count_engagements($pdo, ['status' => ['active']])];
+    }
     return [
-        'my_week' => null, 'timer' => null, 'my_expenses' => null, 'approvals' => null, 'budget_alerts' => null, 'billing' => null, 'clerk_note' => null,
+        'my_week' => null, 'timer' => null, 'my_expenses' => null, 'approvals' => null, 'budget_alerts' => $alerts, 'billing' => null, 'clerk_note' => null,
         'may' => [
             'time' => has_right('time.write'), 'expenses' => has_right('expenses.write'),
             'approve' => has_right('time.approve') || has_right('expenses.approve') || has_right('usage.approve'),

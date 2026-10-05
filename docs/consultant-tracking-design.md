@@ -628,5 +628,11 @@ manifest, the design-system assets, 57 placeholders that name their slice; `test
 table (`cost.table` = cost.view across every engagement: the admin, Billing, Finance), capacity, the five vocabulary tables (one view, one handler body), the firm's
 settings and the numbering, the generic documents and notes doors (`/engagements/attachments/*`, `/engagements/notes/*`, the file at `/attachments/{id}`) and the
 shared record partials; `tests/phase3/slice1/run.sh` — **259 checks green**; the registry reads 23 screens and 34 actions built.
-**Next**: slice 2 (engagements), then slice 3 — time — the exemplar; the handoff to Sonnet 5.5 follows it.
+**2026-10-05 — Slice 2 BUILT and proven** (`docs/build-specs/engagements.md`): engagements as cards with budget bars, the form (the kind fixes it; Start now; the manager
+staffed as principal), the record with tabs (Overview, Staffing, Rates, Milestones, Timeline; Time/Expenses/Usage/Invoices as empty shapes), the moves through the guard,
+staffing with the EXCLUDE refused in words, role rates in place with each person's resolution, milestones delivered and accepted with evidence, the budgets screen and
+the alerts, the home's Budget alerts region; `tests/phase3/slice2/run.sh` — **173 checks green**; the registry reads 31 screens and 52 actions built. Two rules learned:
+a Manager opens an engagement for any live client (the view guards details, not names); an unseen engagement answers 404 on every handler.
+**Next**: slice 3 — time — the exemplar; the handoff to Sonnet 5.5 follows it.
+
 

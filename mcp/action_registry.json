@@ -1,6 +1,6 @@
 {
     "generated_from": "docs/consultant-tracking-action-manifest.md",
-    "generated_at": "2026-10-05T09:15:39+00:00",
+    "generated_at": "2026-10-05T09:47:24+00:00",
     "screens": {
         "dashboard": {
             "screen": "dashboard",
@@ -253,8 +253,8 @@
                 "manager",
                 "mine"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "engagement-add": {
             "screen": "engagement-add",
@@ -264,8 +264,8 @@
             "params": [
                 "client"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "engagement-view": {
             "screen": "engagement-view",
@@ -275,8 +275,8 @@
             "params": [
                 "tab"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "engagement-edit": {
             "screen": "engagement-edit",
@@ -284,8 +284,8 @@
             "section": "Engagements (slice 2)",
             "when": "to change an engagement's terms, dates, budgets, cadence, policy, grouping, manager, practice",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "engagement-staffing": {
             "screen": "engagement-staffing",
@@ -293,7 +293,7 @@
             "section": "Engagements (slice 2)",
             "when": "who is staffed, in what role, at what override; add and end a staffing",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "engagement-rates": {
@@ -302,7 +302,7 @@
             "section": "Engagements (slice 2)",
             "when": "the role rates on this engagement overriding the card; what each person resolves to today",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "engagement-milestones": {
@@ -311,7 +311,7 @@
             "section": "Engagements (slice 2)",
             "when": "the milestones: add, deliver, accept, cancel",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "budget-alerts": {
@@ -320,8 +320,8 @@
             "section": "Engagements (slice 2)",
             "when": "every active engagement's budgets and burn, and the alerts to acknowledge",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "timesheet": {
             "screen": "timesheet",
@@ -2122,7 +2122,7 @@
             "approval": null,
             "log_event": "engagement.create",
             "who": "manage (engagements.manage)",
-            "built": false
+            "built": true
         },
         "engagement_update": {
             "action": "engagement_update",
@@ -2273,7 +2273,7 @@
             "approval": null,
             "log_event": "engagement.update",
             "who": "manage",
-            "built": false,
+            "built": true,
             "partial": true
         },
         "engagement_activate": {
@@ -2293,7 +2293,7 @@
             "approval": null,
             "log_event": "engagement.activate",
             "who": "manage",
-            "built": false
+            "built": true
         },
         "engagement_hold": {
             "action": "engagement_hold",
@@ -2318,7 +2318,7 @@
             "approval": null,
             "log_event": "engagement.hold",
             "who": "manage",
-            "built": false
+            "built": true
         },
         "engagement_close": {
             "action": "engagement_close",
@@ -2343,7 +2343,7 @@
             "approval": null,
             "log_event": "engagement.close",
             "who": "manage",
-            "built": false
+            "built": true
         },
         "engagement_reopen": {
             "action": "engagement_reopen",
@@ -2368,7 +2368,7 @@
             "approval": null,
             "log_event": "engagement.reopen",
             "who": "manage",
-            "built": false
+            "built": true
         },
         "engagement_cancel": {
             "action": "engagement_cancel",
@@ -2393,7 +2393,7 @@
             "approval": null,
             "log_event": "engagement.cancel",
             "who": "manage",
-            "built": false
+            "built": true
         },
         "engagement_delete": {
             "action": "engagement_delete",
@@ -2412,7 +2412,7 @@
             "approval": "deletion",
             "log_event": "engagement.delete",
             "who": "manage",
-            "built": false
+            "built": true
         },
         "engagement_member_save": {
             "action": "engagement_member_save",
@@ -2473,7 +2473,7 @@
             "approval": null,
             "log_event": "engagement.staff",
             "who": "manage (staffing.write)",
-            "built": false
+            "built": true
         },
         "engagement_member_end": {
             "action": "engagement_member_end",
@@ -2498,7 +2498,7 @@
             "approval": null,
             "log_event": "engagement.unstaff",
             "who": "manage",
-            "built": false
+            "built": true
         },
         "engagement_role_rate_save": {
             "action": "engagement_role_rate_save",
@@ -2529,7 +2529,7 @@
             "approval": "other",
             "log_event": "engagement.role_rate",
             "who": "manage",
-            "built": false
+            "built": true
         },
         "milestone_save": {
             "action": "milestone_save",
@@ -2584,7 +2584,7 @@
             "approval": null,
             "log_event": "milestone.save",
             "who": "manage (milestones.write)",
-            "built": false
+            "built": true
         },
         "milestone_deliver": {
             "action": "milestone_deliver",
@@ -2609,7 +2609,7 @@
             "approval": null,
             "log_event": "milestone.deliver",
             "who": "manage",
-            "built": false
+            "built": true
         },
         "milestone_accept": {
             "action": "milestone_accept",
@@ -2646,7 +2646,7 @@
             "approval": "other",
             "log_event": "milestone.accept",
             "who": "manage",
-            "built": false
+            "built": true
         },
         "milestone_cancel": {
             "action": "milestone_cancel",
@@ -2671,7 +2671,7 @@
             "approval": null,
             "log_event": "milestone.cancel",
             "who": "manage",
-            "built": false
+            "built": true
         },
         "milestone_delete": {
             "action": "milestone_delete",
@@ -2692,7 +2692,7 @@
             "approval": "deletion",
             "log_event": "milestone.delete",
             "who": "manage",
-            "built": false
+            "built": true
         },
         "budget_alert_write": {
             "action": "budget_alert_write",
@@ -2711,7 +2711,7 @@
             "approval": null,
             "log_event": "budget_alert.write",
             "who": "manage or billing",
-            "built": false
+            "built": true
         },
         "budget_alert_acknowledge": {
             "action": "budget_alert_acknowledge",
@@ -2730,7 +2730,7 @@
             "approval": null,
             "log_event": "budget_alert.acknowledge",
             "who": "manage",
-            "built": false
+            "built": true
         },
         "attachment_add": {
             "action": "attachment_add",

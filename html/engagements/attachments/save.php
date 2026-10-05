@@ -33,4 +33,4 @@ $id = ct_guard($pdo, static function () use ($pdo, $me, $type, $recordId, $file,
     $pdo->commit();
     return $id;
 });
-ct_done('Attached ' . basename((string) $file['name']), $id, ct_land(return_path(record_url($type, $recordId)), 'attached', 'documents'), str_replace('_', '', $type) . 'Changed', ['attachment_id' => $id, 'url' => '/attachments/' . $id]);
+ct_done('Attached ' . basename((string) $file['name']), $id, ct_land(return_path(record_url($type, $recordId, $pdo)), 'attached', 'documents'), str_replace('_', '', $type) . 'Changed', ['attachment_id' => $id, 'url' => '/attachments/' . $id]);

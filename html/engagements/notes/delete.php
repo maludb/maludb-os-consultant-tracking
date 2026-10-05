@@ -18,4 +18,4 @@ $was = ct_guard($pdo, static function () use ($pdo, $id, $me): array {
     $pdo->commit();
     return $was;
 });
-ct_done('Removed the note', $id, ct_land(return_path(record_url($n['record_type'], (int) $n['record_id'])), 'note_removed', 'notes'), str_replace('_', '', $n['record_type']) . 'Changed');
+ct_done('Removed the note', $id, ct_land(return_path(record_url($n['record_type'], (int) $n['record_id'], $pdo)), 'note_removed', 'notes'), str_replace('_', '', $n['record_type']) . 'Changed');

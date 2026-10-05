@@ -26,4 +26,4 @@ $id = ct_guard($pdo, static function () use ($pdo, $me, $type, $recordId, $body)
     $pdo->commit();
     return $id;
 });
-ct_done('Noted on the ' . str_replace('_', ' ', $type), $id, ct_land(return_path(record_url($type, $recordId)), 'noted', 'notes'), str_replace('_', '', $type) . 'Changed', ['note_id' => $id]);
+ct_done('Noted on the ' . str_replace('_', ' ', $type), $id, ct_land(return_path(record_url($type, $recordId, $pdo)), 'noted', 'notes'), str_replace('_', '', $type) . 'Changed', ['note_id' => $id]);

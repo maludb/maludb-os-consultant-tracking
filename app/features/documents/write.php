@@ -187,8 +187,11 @@ function record_writable(PDO $pdo, string $recordType, int $recordId): bool
 }
 
 /** The page a record lives on (the landing after a file or note is added). */
-function record_url(string $recordType, int $recordId): string
+function record_url(string $recordType, int $recordId, ?PDO $pdo = null): string
 {
+    if ($recordType === 'milestone' && $pdo !== null) {
+        return '/engagements/' . (int) one_value($pdo, 'SELECT engagement_id FROM milestones WHERE id = :id', ['id' => $recordId]) . '/milestones';
+    }
     return match ($recordType) {
         'client' => '/clients/' . $recordId, 'engagement' => '/engagements/' . $recordId, 'milestone' => '/engagements/milestones/' . $recordId, 'expense' => '/expenses/' . $recordId,
         'usage_charge' => '/usage/' . $recordId, 'usage_import' => '/usage/imports/' . $recordId, 'invoice' => '/invoices/' . $recordId, 'credit_note' => '/credit-notes/' . $recordId,

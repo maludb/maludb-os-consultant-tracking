@@ -32,7 +32,9 @@ function home_summary(PDO $pdo, int $memberId): array
     if (has_right('time.approve') || has_right('expenses.approve') || has_right('usage.approve')) {   // slice 3 fills the weeks; 4 and 5 add theirs
         require_once dirname(__DIR__) . '/time/queries.php';
         require_once dirname(__DIR__) . '/expenses/queries.php';
-        $approvals = ['weeks' => has_right('time.approve') ? array_slice(timesheets_pending($pdo, $memberId), 0, 8) : [], 'expenses' => has_right('expenses.approve') ? array_slice(expenses_pending($pdo, $memberId), 0, 8) : null, 'usage' => null];
+        require_once dirname(__DIR__) . '/usage/queries.php';
+        $approvals = ['weeks' => has_right('time.approve') ? array_slice(timesheets_pending($pdo, $memberId), 0, 8) : [], 'expenses' => has_right('expenses.approve') ? array_slice(expenses_pending($pdo, $memberId), 0, 8) : null,
+                      'usage' => has_right('usage.approve') ? usage_pending($pdo, 8) : null];
     }
     return [
         'my_week' => $myWeek, 'timer' => $timer, 'my_expenses' => $myExpenses, 'approvals' => $approvals, 'budget_alerts' => $alerts, 'billing' => null, 'clerk_note' => null,

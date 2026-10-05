@@ -5,6 +5,9 @@
  *   GET  /api/v1/directory/changes.php  → state.feed (os.directory-changes/1); ?since= answers state.incremental when set, else an empty change
  *   POST /api/v1/runs/facts.php {token} → state.facts[<run id>] (the run token's third part), else {valid: false}
  *   POST /api/v1/agents/chat.php        → state.chat (a canned reply) or the refusal state.chat_status names, echoing the acting member it saw
+ *   GET  /api/v1/ledger/periods.php     → A5, from state.ledger: no ?period= answers os.ledger-periods/1 (state.ledger.periods — the months and their status); ?period=YYYY-MM answers
+ *                                         state.ledger.docs[<period>] (an os.ledger-period/1 document, as the kernel sends it), a 422 for a month it has none of; state.ledger.mode = down answers 503;
+ *                                         every request is appended to "<state file>.ledger" (the period asked, or "list")
  *   POST /api/v1/notify/sms.php         → K6, as state.sms says (mode = ok | no_sender | not_held | no_verified_phone | opted_out | rate_limited | server_error);
  *                                         every request body is appended to "<state file>.sms" (one JSON line each)
  * Every call needs Authorization: Bearer $OS_APPLICATION_TOKEN (else 401), like the real one. Never a real kernel.
@@ -16,6 +19,13 @@ $out = static function (array $body, int $status = 200): never { http_response_c
 if ($auth !== 'Bearer ' . getenv('OS_APPLICATION_TOKEN')) { $out(['error' => ['code' => 'unauthorized', 'message' => 'A valid application token is required.']], 401); }
 $input = json_decode((string) file_get_contents('php://input'), true) ?: [];
 switch ($path) {
+    case '/api/v1/ledger/periods.php':
+        $ledger = $state['ledger'] ?? ['periods' => [], 'docs' => []];
+        file_put_contents((string) getenv('FAKE_KERNEL_STATE') . '.ledger', ($_GET['period'] ?? 'list') . "\n", FILE_APPEND);
+        if (($ledger['mode'] ?? '') === 'down') { $out(['error' => ['code' => 'unavailable', 'message' => 'The ledger is down.']], 503); }
+        if (!isset($_GET['period'])) { $out(['schema' => 'os.ledger-periods/1', 'periods' => $ledger['periods'] ?? []]); }
+        if (!isset($ledger['docs'][$_GET['period']])) { $out(['error' => ['code' => 'invalid', 'message' => 'period is written YYYY-MM.']], 422); }
+        $out($ledger['docs'][$_GET['period']]);
     case '/api/v1/notify/sms.php':
         $sms = $state['sms'] ?? ['mode' => 'ok'];
         $log = (string) getenv('FAKE_KERNEL_STATE') . '.sms';

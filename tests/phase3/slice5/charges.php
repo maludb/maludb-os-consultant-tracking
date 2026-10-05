@@ -1,0 +1,162 @@
+<?php
+/** Proof — charges (spec "Proof", 1): the hosting 180 at +20 % → 216; two million tokens at resale 15 → 30; the form's refusals in words; the provider's invoice stored in the same transaction and taken away on a refusal; approve (the budget alert over 80 % and its notice); void with a reason; a billed one refused; locked once approved; a Consultant → 403. */
+require __DIR__ . '/lib.php';
+[$acme, $beta] = usage_world();
+shell_exec('rm -rf ' . escapeshellarg(dirname(__DIR__, 3) . '/storage/attachments/usage_charge'));     // the scratch store of an earlier run (the ids repeat on a fresh database)
+$priya = as_member(26); $marco = as_member(27); $bea = as_member(28); $owner = as_member(1);
+q('UPDATE engagements SET ai_budget_amount = 400 WHERE id = :e', ['e' => $acme]);
+
+echo "1. Who may\n";
+[$c, $b] = draft_charge($priya, $acme);
+ok($c === 403 && msg($b) === 'You may not record usage charges.', 'Priya (a Consultant): usage_charge_draft → 403 "You may not record usage charges."');
+ok(page($priya, '/usage/')['code'] === 403 && page($priya, '/usage/new')['code'] === 403 && page($priya, '/usage/import')['code'] === 403 && page($priya, '/usage/os')['code'] === 403, 'and the list, the form, the import and the OS statement: 403');
+ok(!str_contains(page($priya, '/')['body'], 'id="nav-usage"') && str_contains(page($marco, '/')['body'], 'id="nav-usage"'), 'the menu hides AI usage from Priya and shows it to Marco');
+
+echo "2. The hosting: 180 at +20 % → 216\n";
+$since = last_activity_id();
+[$c, $b] = draft_charge($marco, $acme, ['description' => 'SMOKE Acme VM, September', 'pricing' => 'markup', 'markup_pct' => '20', 'provider' => provider('aws')]);
+$u1 = (int) ($b['record_id'] ?? 0);
+$x = usage_row($u1);
+ok($c === 200 && $u1 > 0 && $b['number'] === 'USG-000001' && $b['status'] === 'draft' && ($b['refresh'] ?? '') === 'usageChanged' && ($b['location'] ?? '') === '/usage/' . $u1 . '?notice=saved', 'usage_charge_draft: 200, record_id ' . $u1 . ', USG-000001, a draft, lands on the record (' . ($b['did'] ?? msg($b)) . ')');
+ok($x['cost_amount'] === '180.00' && $x['billable_amount'] === '216.00' && $x['currency'] === 'USD' && $x['source'] === 'manual' && $x['status'] === 'draft' && (int) $x['created_by'] === 27 && $x['pricing'] === 'markup' && $x['markup_pct'] === '20.00' && (int) $x['provider_id'] === provider('aws'), 'the database made the money: cost 180.00 from quantity × unit cost, billable 216.00 at +20 %, USD from the engagement, source manual');
+$log = activity('usage_charge.draft', $since);
+$after = json_decode((string) $log[0]['after'], true);
+ok(count($log) === 1 && (int) $log[0]['engagement_id'] === $acme && $log[0]['entity_type'] === 'usage_charge' && (int) $log[0]['entity_id'] === $u1 && $after['number'] === 'USG-000001' && $after['cost_amount'] === '180.00' && $after['billable_amount'] === '216.00' && $after['amount'] === '216.00' && $after['currency'] === 'USD' && $after['kind'] === 'hosting' && $after['source'] === 'manual' && $after['quantity'] === '1.0000' && $after['unit'] === 'months', 'usage_charge.draft logged with engagement_id, number, kind, quantity, unit, cost_amount, billable_amount, amount, currency, source');
+[$c, $d] = screen($marco, '/usage/' . $u1);
+ok($c === 200 && $d['charge']['cost_amount'] === '180.00' && $d['charge']['billable_amount'] === '216.00' && $d['may']['approve'] === true && $d['may']['void'] === true && $d['may']['edit'] === true && $d['charge']['provider']['name'] === 'AWS', 'the record\'s JSON: the cost (a Manager of the engagement sees it), may approve, void, edit');
+ok(page($marco, '/usage/' . $u1)['code'] === 200 && str_contains(page($marco, '/usage/' . $u1)['body'], 'id="usage-money-billable"'), 'the page renders its money card');
+
+echo "3. Two million tokens at resale 15 per million → 30\n";
+[$c, $b] = draft_charge($marco, $acme, ['kind' => 'model_usage', 'description' => 'SMOKE Acme tokens', 'quantity' => '2000000', 'unit' => 'tokens', 'unit_cost' => '0.000003', 'pricing' => 'resale', 'resale_unit_price' => '15', 'provider' => provider('anthropic')]);
+$u2 = (int) ($b['record_id'] ?? 0);
+$x = usage_row($u2);
+ok($c === 200 && $x['cost_amount'] === '6.00' && $x['billable_amount'] === '30.00' && $x['unit'] === 'tokens' && $x['pricing'] === 'resale' && $x['resale_unit_price'] === '15.000000', '2,000,000 tokens at 0.000003 cost 6.00 and resell at 15 per million → 30.00');
+[$c, $b] = draft_charge($marco, $acme, ['description' => 'SMOKE at cost', 'unit_cost' => '99.999999', 'quantity' => '3']);
+$x = usage_row((int) $b['record_id']);
+ok($c === 200 && $x['cost_amount'] === '300.00' && $x['billable_amount'] === '300.00' && $x['unit_cost'] === '99.999999', 'at cost: 3 × 99.999999 rounds once to 300.00; billable = cost');
+$u3 = (int) $b['record_id'];
+
+echo "4. The form's refusals, in words\n";
+$n = (int) one('SELECT count(*) FROM usage_charges');
+[$c, $b] = draft_charge($marco, $acme, ['pricing' => 'resale']);
+ok($c === 422 && isset(fields($b)['resale_unit_price']), 'resale without a price: 422, field resale_unit_price');
+[$c, $b] = draft_charge($marco, $acme, ['pricing' => 'gold', 'kind' => 'magic', 'unit' => 'bushels', 'period_end' => '2026-08-01', 'quantity' => '-4', 'description' => '']);
+ok($c === 422 && isset(fields($b)['pricing'], $b['error']['fields']['kind'], $b['error']['fields']['unit'], $b['error']['fields']['period_end'], $b['error']['fields']['quantity'], $b['error']['fields']['description']), 'a bad pricing, kind, unit, period, quantity and description: every field named (' . implode(',', array_keys(fields($b))) . ')');
+[$c, $b] = draft_charge($marco, $acme, ['markup_pct' => '900', 'pricing' => 'markup']);
+ok($c === 422 && isset(fields($b)['markup_pct']), 'a markup over 500: 422');
+[$c, $b] = act($marco, '/usage/save.php', ['kind' => 'hosting']);
+ok($c === 422 && isset(fields($b)['engagement']), 'no engagement: 422 with the field');
+ok((int) one('SELECT count(*) FROM usage_charges') === $n, 'and nothing was saved');
+[$c, $b] = draft_charge($marco, (int) one("SELECT id FROM engagements WHERE name = 'SMOKE Beas expense eng'") ?: 999999);
+ok(in_array($c, [403, 404, 422], true), 'an engagement he does not manage or that is not there: refused (' . $c . ')');
+
+echo "5. The provider's invoice: stored with the charge, taken away on a refusal\n";
+function usage_files(): int { clearstatcache(); $n = 0; $r = dirname(__DIR__, 3) . '/storage/attachments/usage_charge'; if (!is_dir($r)) { return 0; } foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($r, FilesystemIterator::SKIP_DOTS)) as $f) { if ($f->isFile()) { $n++; } } return $n; }
+$files = usage_files();
+$pdf = sys_get_temp_dir() . '/ct-invoice-' . bin2hex(random_bytes(3)) . '.pdf';
+file_put_contents($pdf, "%PDF-1.4\n1 0 obj<</Type/Catalog>>endobj\ntrailer<</Root 1 0 R>>\n%%EOF\n");
+$since = last_activity_id();
+[$c, $b] = upload($marco, '/usage/save.php', ['engagement' => $acme, 'kind' => 'hosting', 'description' => 'SMOKE with the invoice', 'period_start' => '2026-09-01', 'period_end' => '2026-09-30', 'quantity' => '1', 'unit' => 'months', 'unit_cost' => '50'], 'file', $pdf, 'aws-sep.pdf');
+$u4 = (int) ($b['record_id'] ?? 0);
+$a = q("SELECT * FROM attachments WHERE record_type = 'usage_charge' AND record_id = :r", ['r' => $u4]);
+ok($c === 200 && count($a) === 1 && $a[0]['filename'] === 'aws-sep.pdf' && $a[0]['mime_type'] === 'application/pdf' && str_starts_with($a[0]['storage_path'], 'attachments/usage_charge/' . $u4 . '/') && usage_files() === $files + 1 && $a[0]['client_visible'] === false, 'the invoice is an attachment of the charge (application/pdf from finfo, under storage/attachments/usage_charge/, not client-visible)');
+$att = activity('usage_charge.attach', $since);
+ok(count($att) === 1 && json_decode((string) $att[0]['after'], true)['filename'] === 'aws-sep.pdf' && (int) $att[0]['engagement_id'] === $acme, 'usage_charge.attach logged with the filename and the engagement');
+ok(req('GET', '/attachments/' . (int) $a[0]['id'], ['jar' => $marco])['code'] === 200 && req('GET', '/attachments/' . (int) $a[0]['id'], ['jar' => $priya])['code'] === 404, 'Marco opens it through the gate; Priya gets 404');
+$count = (int) one('SELECT count(*) FROM usage_charges');
+$exe = sys_get_temp_dir() . '/ct-bad-' . bin2hex(random_bytes(3)) . '.exe';
+file_put_contents($exe, 'MZ not a document');
+[$c, $b] = upload($marco, '/usage/save.php', ['engagement' => $acme, 'kind' => 'hosting', 'description' => 'SMOKE refused file', 'period_start' => '2026-09-01', 'period_end' => '2026-09-30', 'quantity' => '1', 'unit' => 'months', 'unit_cost' => '10'], 'file', $exe, 'bad.exe');
+ok($c === 422 && (int) one('SELECT count(*) FROM usage_charges') === $count && usage_files() === $files + 1, 'a file that is refused: 422, no charge made (the same transaction), no orphan file');
+[$c, $b] = upload($marco, '/usage/save.php', ['charge' => $u4, 'description' => 'SMOKE with the invoice, edited'], 'file', $pdf, 'aws-sep-2.pdf');
+ok($c === 200 && (int) one("SELECT count(*) FROM attachments WHERE record_type = 'usage_charge' AND record_id = :r", ['r' => $u4]) === 2, 'editing a draft with another file adds a second document');
+
+echo "6. Change a draft; an approved one is locked\n";
+$since = last_activity_id();
+[$c, $b] = act($marco, '/usage/save.php', ['charge' => $u1, 'quantity' => '2', 'unit_cost' => '180', 'engagement' => $acme, 'kind' => 'hosting', 'description' => 'SMOKE Acme VM, September', 'period_start' => '2026-09-01', 'period_end' => '2026-09-30', 'unit' => 'months', 'pricing' => 'markup', 'markup_pct' => '20']);
+$x = usage_row($u1);
+ok($c === 200 && $x['cost_amount'] === '360.00' && $x['billable_amount'] === '432.00', 'quantity 1 → 2: the database recomputes cost 360.00 and billable 432.00');
+$log = activity('usage_charge.draft', $since);
+ok(count($log) === 1 && json_decode((string) $log[0]['before'], true)['quantity'] === '1.0000' && json_decode((string) $log[0]['after'], true)['quantity'] === '2.0000' && json_decode((string) $log[0]['after'], true)['billable_amount'] === '432.00' && !isset(json_decode((string) $log[0]['after'], true)['period_start']) && !isset(json_decode((string) $log[0]['before'], true)['period_start']), 'the change is logged as before and after of what changed only (no period, no engagement)');
+[$c, $b] = act($marco, '/usage/save.php', ['charge' => $u1, 'quantity' => '1', 'unit_cost' => '180', 'engagement' => $acme, 'kind' => 'hosting', 'description' => 'SMOKE Acme VM, September', 'period_start' => '2026-09-01', 'period_end' => '2026-09-30', 'unit' => 'months', 'pricing' => 'markup', 'markup_pct' => '20']);
+ok($c === 200 && usage_row($u1)['billable_amount'] === '216.00', 'and back to 216.00');
+[$c, $d] = screen($marco, '/usage/' . $u1 . '/edit');
+ok($c === 200 && $d['charge']['usage_charge_id'] === $u1 && count($d['engagements']) >= 2, 'the edit page (JSON): the charge, the engagements he manages');
+
+echo "7. Approve — and the AI budget's warning at 80 %\n";
+[$c, $b] = act($priya, '/usage/approve.php', ['charge' => $u1]);
+ok($c === 403 && msg($b) === 'You may not approve usage charges.', 'Priya: usage_charge_approve → 403');
+$since = last_activity_id();
+[$c, $b] = act($marco, '/usage/approve.php', ['charge' => $u1]);
+$x = usage_row($u1);
+ok($c === 200 && $b['status'] === 'approved' && $b['billable_amount'] === '216.00' && $x['status'] === 'approved' && (int) $x['approved_by'] === 27 && $x['approved_at'] !== null, 'usage_charge_approve by the manager: approved, the amount answered');
+$log = activity('usage_charge.approve', $since);
+$after = json_decode((string) $log[0]['after'], true);
+ok(count($log) === 1 && (int) $log[0]['engagement_id'] === $acme && $after['amount'] === '216.00' && $after['currency'] === 'USD' && $after['number'] === 'USG-000001' && $after['cost_amount'] === '180.00' && json_decode((string) $log[0]['before'], true)['status'] === 'draft', 'usage_charge.approve logged with engagement_id, amount (the billable amount), currency, number');
+ok($b['new_ai_alerts'] === 1 && (int) one("SELECT count(*) FROM budget_alerts WHERE engagement_id = :e AND kind = 'ai' AND threshold_pct = 80", ['e' => $acme]) === 1, 'the AI budget is 400 and the live charges cost 536: approving runs the check and writes one ai alert at 80');
+ok((int) one("SELECT count(*) FROM notifications WHERE kind = 'budget_alert'") === 0, 'Marco approved it himself: no notice to himself');
+[$c, $b] = act($marco, '/usage/approve.php', ['charge' => $u1]);
+ok($c === 422 && msg($b) === 'Usage charge USG-000001 is already approved', 'approving twice: the verb\'s words (' . msg($b) . ')');
+[$c, $b] = act($marco, '/usage/save.php', ['charge' => $u1, 'quantity' => '3', 'engagement' => $acme]);
+ok($c === 422 && str_contains(msg($b), 'is approved and locked; void it and make another'), 'an approved charge\'s quantity: the trigger\'s words (' . msg($b) . ')');
+$r = page($marco, '/usage/' . $u1 . '/edit');
+ok($r['code'] === 422 && str_contains($r['body'], 'void it and make another'), 'its edit page: 422 in words');
+[$c, $b] = act($marco, '/usage/delete.php', ['charge' => $u1]);
+ok($c === 422 && str_contains(msg($b), 'is approved and is never deleted'), 'its delete: the trigger\'s words');
+
+echo "8. The alert and its notice, on Beta (budget 100)\n";
+q('UPDATE engagements SET ai_budget_amount = 100 WHERE id = :e', ['e' => $beta]);
+$since = last_activity_id();
+[$c, $b] = draft_charge($bea, $beta, ['description' => 'SMOKE Beta tokens A', 'unit_cost' => '50']);
+$ba = (int) $b['record_id'];
+$told = q("SELECT member_id, record_type, record_id FROM notifications WHERE kind = 'usage_drafted' AND record_id = :r", ['r' => $ba]);
+ok($c === 200 && $told === [['member_id' => 27, 'record_type' => 'usage_charge', 'record_id' => $ba]], 'Bea drafts a 50.00 charge on Beta: Marco (its manager) is told usage_drafted; Bea is not told her own');
+[$c, $b] = draft_charge($bea, $beta, ['description' => 'SMOKE Beta tokens B', 'unit_cost' => '40']);
+$bb = (int) $b['record_id'];
+[$c, $b] = act($bea, '/usage/approve.php', ['charge' => $ba]);
+ok($c === 200 && $b['new_ai_alerts'] === 1, 'approving A: the live charges now cost 90 of 100 (90 %, drafts count): one new ai alert');
+$al = q("SELECT * FROM budget_alerts WHERE engagement_id = :e AND kind = 'ai'", ['e' => $beta]);
+ok(count($al) === 1 && (int) $al[0]['threshold_pct'] === 80, 'the alert: kind ai, threshold 80');
+$told = q("SELECT member_id, record_type, record_id, title FROM notifications WHERE kind = 'budget_alert' ORDER BY id DESC LIMIT 1");
+ok(count($told) === 1 && $told[0]['member_id'] === 27 && $told[0]['record_type'] === 'engagement' && (int) $told[0]['record_id'] === $beta && str_contains($told[0]['title'], '80%'), 'Marco is told: budget_alert on the engagement (' . ($told[0]['title'] ?? '') . ')');
+[$c, $b] = act($bea, '/usage/approve.php', ['charge' => $bb]);
+ok($c === 200 && $b['new_ai_alerts'] === 0 && (int) one("SELECT count(*) FROM notifications WHERE kind = 'budget_alert'") === 1, 'approving B writes no second alert and no second notice');
+$ap = activity('usage_charge.approve', $since);
+ok(count($ap) === 2 && $ap[0]['source'] === 'web' && (int) $ap[0]['actor_member_id'] === 28, 'both approvals logged, by Bea');
+q('UPDATE engagements SET ai_budget_amount = NULL WHERE id = :e', ['e' => $beta]);
+
+echo "9. Void: a reason, unbilled only\n";
+[$c, $b] = act($marco, '/usage/void.php', ['charge' => $u1]);
+ok($c === 422 && isset(fields($b)['reason']), 'void without a reason: 422, field reason');
+$since = last_activity_id();
+[$c, $b] = act($marco, '/usage/void.php', ['charge' => $u1, 'reason' => 'SMOKE the VM was shut down in the middle of the month']);
+$x = usage_row($u1);
+ok($c === 200 && $x['status'] === 'void' && $x['void_reason'] === 'SMOKE the VM was shut down in the middle of the month' && (int) $x['voided_by'] === 27, 'usage_charge_void: void, with the reason and who');
+$log = activity('usage_charge.void', $since);
+$after = json_decode((string) $log[0]['after'], true);
+ok(count($log) === 1 && $after['reason'] === 'SMOKE the VM was shut down in the middle of the month' && $after['amount'] === '216.00' && $after['currency'] === 'USD' && (int) $log[0]['engagement_id'] === $acme, 'usage_charge.void logged with the reason, the amount, the currency, the engagement');
+[$c, $b] = act($marco, '/usage/void.php', ['charge' => $u1, 'reason' => 'again']);
+ok($c === 422 && msg($b) === 'Usage charge USG-000001 is already void', 'voiding twice: the verb\'s words');
+[$c, $b] = act($marco, '/usage/save.php', ['charge' => $u1, 'quantity' => '9', 'engagement' => $acme]);
+ok($c === 422 && str_contains(msg($b), 'is void and cannot change'), 'a void charge does not change');
+act($marco, '/usage/approve.php', ['charge' => $u2]);
+// a billed one (slice 6's fixture: an invoice line item by SQL)
+$inv = (int) one("INSERT INTO invoices (client_id, engagement_id, due_date, currency, created_by) VALUES ((SELECT client_id FROM engagements WHERE id = :e), :e2, current_date + 30, 'USD', 1) RETURNING id", ['e' => $acme, 'e2' => $acme]);
+$line = (int) one("INSERT INTO invoice_lines (invoice_id, kind, description, unit_price) VALUES (:i, 'usage', 'SMOKE usage', 30) RETURNING id", ['i' => $inv]);
+q('INSERT INTO invoice_line_items (invoice_id, line_id, usage_charge_id, amount) VALUES (:i, :l, :u, 30)', ['i' => $inv, 'l' => $line, 'u' => $u2]);
+[$c, $d] = screen($marco, '/usage/' . $u2);
+ok($c === 200 && $d['charge']['billed'] === true && $d['may']['void'] === false, 'a billed charge shows Billed and offers no Void (slice 6\'s fixture: an invoice line item by SQL)');
+[$c, $b] = act($marco, '/usage/void.php', ['charge' => $u2, 'reason' => 'too late']);
+ok($c === 422 && msg($b) === 'Usage charge USG-000002 is on an invoice; credit the invoice instead', 'voiding a billed one: the verb\'s words (' . msg($b) . ')');
+ok(str_contains(page($marco, '/usage/?status=approved')['body'], 'id="charge-row-' . $u2 . '-billed"'), 'the list shows the Billed chip');
+
+echo "10. Delete a draft\n";
+[$c, $b] = draft_charge($marco, $acme, ['description' => 'SMOKE to remove', 'unit_cost' => '5']);
+$u5 = (int) $b['record_id'];
+$since = last_activity_id();
+[$c, $b] = act($priya, '/usage/delete.php', ['charge' => $u5]);
+ok($c === 403, 'Priya: usage_charge_delete → 403');
+[$c, $b] = act($marco, '/usage/delete.php', ['charge' => $u5]);
+$log = activity('usage_charge.delete', $since);
+ok($c === 200 && (int) one('SELECT count(*) FROM usage_charges WHERE id = :u', ['u' => $u5]) === 0 && count($log) === 1 && (int) $log[0]['engagement_id'] === $acme && json_decode((string) $log[0]['before'], true)['status'] === 'draft', 'usage_charge_delete: gone, usage_charge.delete logged with the engagement');
+finish();

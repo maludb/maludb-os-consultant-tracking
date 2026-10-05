@@ -1,6 +1,6 @@
 {
     "generated_from": "docs/consultant-tracking-action-manifest.md",
-    "generated_at": "2026-10-05T11:22:03+00:00",
+    "generated_at": "2026-10-05T12:02:13+00:00",
     "screens": {
         "dashboard": {
             "screen": "dashboard",
@@ -504,8 +504,8 @@
                 "source",
                 "status"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "usage-add": {
             "screen": "usage-add",
@@ -515,8 +515,8 @@
             "params": [
                 "engagement"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "usage-view": {
             "screen": "usage-view",
@@ -524,8 +524,8 @@
             "section": "AI usage and hosting (slice 5)",
             "when": "one charge: quantity, cost, pricing, billable, its source (import, schedule, statement line), approve or void, the timeline",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "usage-edit": {
             "screen": "usage-edit",
@@ -533,8 +533,8 @@
             "section": "AI usage and hosting (slice 5)",
             "when": "to change a draft charge",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "usage-import": {
             "screen": "usage-import",
@@ -545,8 +545,8 @@
                 "provider",
                 "engagement"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "os-statement": {
             "screen": "os-statement",
@@ -556,8 +556,8 @@
             "params": [
                 "period"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "allocation-rule-list": {
             "screen": "allocation-rule-list",
@@ -565,8 +565,8 @@
             "section": "AI usage and hosting (slice 5)",
             "when": "the rules that place the OS statement on engagements",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "allocation-rule-add": {
             "screen": "allocation-rule-add",
@@ -576,8 +576,8 @@
             "params": [
                 "engagement"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "allocation-rule-edit": {
             "screen": "allocation-rule-edit",
@@ -585,8 +585,8 @@
             "section": "AI usage and hosting (slice 5)",
             "when": "to change a rule",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "schedule-list": {
             "screen": "schedule-list",
@@ -596,8 +596,8 @@
             "params": [
                 "engagement"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "schedule-add": {
             "screen": "schedule-add",
@@ -607,8 +607,8 @@
             "params": [
                 "engagement"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "schedule-edit": {
             "screen": "schedule-edit",
@@ -616,8 +616,8 @@
             "section": "AI usage and hosting (slice 5)",
             "when": "to change a schedule",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "unbilled": {
             "screen": "unbilled",
@@ -3413,7 +3413,7 @@
             "approval": null,
             "log_event": "usage_charge.draft",
             "who": "usage",
-            "built": false
+            "built": true
         },
         "usage_charge_delete": {
             "action": "usage_charge_delete",
@@ -3432,7 +3432,7 @@
             "approval": "deletion",
             "log_event": "usage_charge.delete",
             "who": "usage",
-            "built": false
+            "built": true
         },
         "usage_charge_approve": {
             "action": "usage_charge_approve",
@@ -3451,7 +3451,7 @@
             "approval": "other",
             "log_event": "usage_charge.approve",
             "who": "approve (usage.approve)",
-            "built": false
+            "built": true
         },
         "usage_charge_void": {
             "action": "usage_charge_void",
@@ -3476,7 +3476,7 @@
             "approval": null,
             "log_event": "usage_charge.void",
             "who": "usage",
-            "built": false
+            "built": true
         },
         "usage_import": {
             "action": "usage_import",
@@ -3519,7 +3519,7 @@
             "approval": null,
             "log_event": "usage_import.run",
             "who": "usage",
-            "built": false
+            "built": true
         },
         "usage_import_delete": {
             "action": "usage_import_delete",
@@ -3538,7 +3538,7 @@
             "approval": "deletion",
             "log_event": "usage_import.delete",
             "who": "usage",
-            "built": false
+            "built": true
         },
         "ai_statement_pull": {
             "action": "ai_statement_pull",
@@ -3557,7 +3557,7 @@
             "approval": null,
             "log_event": "ai_statement.pull",
             "who": "usage",
-            "built": false
+            "built": true
         },
         "ai_statement_allocate": {
             "action": "ai_statement_allocate",
@@ -3576,7 +3576,7 @@
             "approval": null,
             "log_event": "ai_statement.allocate",
             "who": "usage",
-            "built": false
+            "built": true
         },
         "allocation_rule_save": {
             "action": "allocation_rule_save",
@@ -3667,7 +3667,7 @@
             "approval": "other",
             "log_event": "allocation_rule.save",
             "who": "usage",
-            "built": false
+            "built": true
         },
         "allocation_rule_delete": {
             "action": "allocation_rule_delete",
@@ -3686,7 +3686,7 @@
             "approval": "deletion",
             "log_event": "allocation_rule.delete",
             "who": "usage",
-            "built": false
+            "built": true
         },
         "recurring_charge_save": {
             "action": "recurring_charge_save",
@@ -3795,7 +3795,7 @@
             "approval": "other",
             "log_event": "recurring_charge.save",
             "who": "usage",
-            "built": false
+            "built": true
         },
         "recurring_charge_run": {
             "action": "recurring_charge_run",
@@ -3814,7 +3814,7 @@
             "approval": null,
             "log_event": "recurring_charge.run",
             "who": "usage",
-            "built": false
+            "built": true
         },
         "recurring_charge_delete": {
             "action": "recurring_charge_delete",
@@ -3833,7 +3833,7 @@
             "approval": "deletion",
             "log_event": "recurring_charge.delete",
             "who": "usage",
-            "built": false
+            "built": true
         },
         "invoice_draft": {
             "action": "invoice_draft",

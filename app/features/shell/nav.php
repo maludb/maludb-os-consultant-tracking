@@ -49,7 +49,7 @@ function nav_groups(): array
             ['activity-types','/settings/activity-types/','feather-list',     'Activity types',    'settings.manage'],
             ['categories',   '/settings/categories/','feather-folder',        'Expense categories','settings.manage'],
             ['providers',    '/settings/providers/', 'feather-server',        'Providers',         'settings.manage'],
-            ['allocation-rules','/settings/allocation-rules/','feather-git-merge','Allocation rules','settings.manage'],
+            ['allocation-rules','/settings/allocation-rules/','feather-git-merge','Allocation rules','usage.write'],
             ['schedules',    '/settings/schedules/', 'feather-refresh-cw',    'Hosting schedules', 'usage.write'],
             ['agents',       '/settings/agents',     'feather-cpu',           'Agents',            'settings.manage'],
             ['connections',  '/settings/connections','feather-share-2',       'Connections',       'settings.manage'],

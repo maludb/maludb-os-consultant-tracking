@@ -156,7 +156,7 @@ function record_visible(PDO $pdo, string $recordType, int $recordId): bool
 {
     $views = ['client' => ['mcp_clients', 'client_id'], 'engagement' => ['mcp_engagements', 'engagement_id'], 'milestone' => ['mcp_milestones', 'milestone_id'], 'expense' => ['mcp_expenses', 'expense_id'],
               'usage_charge' => ['mcp_usage_charges', 'usage_charge_id'], 'invoice' => ['mcp_invoices', 'invoice_id'], 'credit_note' => ['mcp_credit_notes', 'credit_note_id'],
-              'timesheet' => ['mcp_timesheets', 'timesheet_id'], 'usage_import' => ['mcp_usage_imports', 'usage_import_id']];
+              'timesheet' => ['mcp_timesheets', 'timesheet_id'], 'usage_import' => ['mcp_usage_imports', 'import_id']];
     if (!isset($views[$recordType])) {
         return false;
     }

@@ -7,8 +7,8 @@ $clientId = $cur['client_id'] ?? $prefillClient; $kind = $cur['kind'] ?? 'time_a
     <form method="post" action="/engagements/save.php" hx-post="/engagements/save.php" hx-target="#flash" id="engagement-form">
         <?= csrf_field() ?><?php if ($id !== null): ?><input type="hidden" name="engagement" value="<?= (int) $id ?>"><?php endif; ?>
         <div class="card mb-3"><div class="card-header"><h5 class="card-title mb-0">The engagement</h5></div><div class="card-body">
-            <label class="form-label fs-12 text-muted" for="engagement-form-field-client">Client</label>
-            <select name="client" id="engagement-form-field-client" class="form-select btn-touch mb-3" required><option value="">Choose</option><?php foreach ($clients as $c): ?><option value="<?= (int) $c['client_id'] ?>" data-currency="<?= e($c['currency'] ?? $settings['base_currency']) ?>" data-card="<?= (int) ($c['default_rate_card_id'] ?? 0) ?>" <?= $clientId === (int) $c['client_id'] ? 'selected' : '' ?>><?= e($c['name']) ?></option><?php endforeach; ?></select>
+            <label class="form-label fs-12 text-muted" id="engagement-form-field-client-label" for="engagement-form-field-client-open">Client</label>
+            <?= picker_field(['id' => 'engagement-form-field-client', 'labelledby' => 'engagement-form-field-client-label', 'name' => 'client', 'source' => 'client_live', 'value' => $clientId, 'required' => true, 'placeholder' => 'Choose']) ?>
             <label class="form-label fs-12 text-muted" for="engagement-form-field-name">Name</label>
             <input type="text" name="name" id="engagement-form-field-name" class="form-control btn-touch mb-3" maxlength="160" required value="<?= e($cur['name'] ?? '') ?>">
             <label class="form-label fs-12 text-muted">Kind</label>
@@ -50,7 +50,7 @@ $clientId = $cur['client_id'] ?? $prefillClient; $kind = $cur['kind'] ?? 'time_a
         </div></div>
         <div class="card mb-3"><div class="card-header"><h5 class="card-title mb-0">Who runs it</h5></div><div class="card-body">
             <div class="row g-2 mb-3">
-                <div class="col-12 col-md-6"><label class="form-label fs-12 text-muted" for="engagement-form-field-manager">Manager<?= $cur === null ? ' (staffed as principal)' : '' ?></label><select name="manager" id="engagement-form-field-manager" class="form-select btn-touch"><option value="">Nobody yet</option><?php foreach ($members as $m): if ($m['member_kind'] !== 'human') { continue; } ?><option value="<?= (int) $m['member_id'] ?>" <?= ($cur['manager_member_id'] ?? $me) === (int) $m['member_id'] ? 'selected' : '' ?>><?= e($m['display_name']) ?></option><?php endforeach; ?></select></div>
+                <div class="col-12 col-md-6"><label class="form-label fs-12 text-muted" id="engagement-form-field-manager-label" for="engagement-form-field-manager-open">Manager<?= $cur === null ? ' (staffed as principal)' : '' ?></label><?= picker_field(['id' => 'engagement-form-field-manager', 'labelledby' => 'engagement-form-field-manager-label', 'name' => 'manager', 'source' => 'member', 'value' => $cur['manager_member_id'] ?? $me, 'placeholder' => 'Nobody yet', 'params' => ['human' => 1]]) ?></div>
                 <div class="col-12 col-md-6"><label class="form-label fs-12 text-muted" for="engagement-form-field-department">Practice</label><select name="department" id="engagement-form-field-department" class="form-select btn-touch"><option value="">None</option><?php foreach ($departments as $d): ?><option value="<?= (int) $d['department_id'] ?>" <?= ($cur['department_id'] ?? ((int) one_value(db(), 'SELECT ct_primary_department(:m)', ['m' => $me]) ?: null)) === (int) $d['department_id'] ? 'selected' : '' ?>><?= e($d['name']) ?></option><?php endforeach; ?></select></div>
             </div>
             <label class="form-label fs-12 text-muted" for="engagement-form-field-projects">Projects reference (the key of its project there, by hand)</label>

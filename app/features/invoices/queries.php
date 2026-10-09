@@ -247,6 +247,23 @@ function draftable_engagements(PDO $pdo): array
     }, $pdo->query("SELECT engagement_id, number, name, client_name, currency, kind, po_number, status FROM mcp_engagements WHERE status IN ('active', 'on_hold', 'closed') AND (i_manage OR (SELECT ct_has_right('billing.write'))) ORDER BY number")->fetchAll());
 }
 
+/** One page of draftable_engagements() for the record picker, searched by number, name, client or PO: [rows, total]. */
+function draftable_engagements_page(PDO $pdo, string $q, int $limit, int $offset): array
+{
+    $where = "status IN ('active', 'on_hold', 'closed') AND (i_manage OR (SELECT ct_has_right('billing.write')))";
+    $args = [];
+    if ($q !== '') {
+        $where .= ' AND (number ILIKE :q OR name ILIKE :q OR client_name ILIKE :q OR po_number ILIKE :q)';
+        $args['q'] = '%' . str_replace(['%', '_'], ['\\%', '\\_'], $q) . '%';
+    }
+    $st = $pdo->prepare('SELECT count(*) FROM mcp_engagements WHERE ' . $where);
+    $st->execute($args);
+    $total = (int) $st->fetchColumn();
+    $st = $pdo->prepare('SELECT engagement_id, number, name, client_name, currency, kind, po_number, status FROM mcp_engagements WHERE ' . $where . ' ORDER BY number LIMIT ' . $limit . ' OFFSET ' . $offset);
+    $st->execute($args);
+    return ['rows' => $st->fetchAll(), 'total' => $total];
+}
+
 // ---- WIP and what is due to draft ---------------------------------------------------------------------------------------------------------------------------------
 
 /** ct_unbilled(): the approved, billable, unbilled work per engagement. */

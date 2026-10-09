@@ -3,7 +3,7 @@
 <div class="main-content" id="payment-list-content">
     <?= view('shared/notice.php', ['notice' => $notice]) ?>
     <form method="get" action="/payments/" class="card mb-3" id="payment-filter-form"><div class="card-body"><div class="row g-2 align-items-end">
-        <div class="col-12 col-md-4"><label class="form-label fs-12 text-muted" for="payment-filter-client">Client</label><select name="client" id="payment-filter-client" class="form-select btn-touch"><option value="">All</option><?php foreach ($clients as $c): ?><option value="<?= (int) $c['client_id'] ?>" <?= $f['client_id'] === (int) $c['client_id'] ? 'selected' : '' ?>><?= e($c['name']) ?></option><?php endforeach; ?></select></div>
+        <div class="col-12 col-md-4"><label class="form-label fs-12 text-muted" id="payment-filter-client-label" for="payment-filter-client-open">Client</label><?= picker_field(['id' => 'payment-filter-client', 'labelledby' => 'payment-filter-client-label', 'name' => 'client', 'source' => 'client', 'value' => $f['client_id'], 'placeholder' => 'All']) ?></div>
         <div class="col-6 col-md-3"><label class="form-label fs-12 text-muted" for="payment-filter-from">From</label><input type="date" name="from" id="payment-filter-from" class="form-control btn-touch" value="<?= e((string) $f['from']) ?>"></div>
         <div class="col-6 col-md-3"><label class="form-label fs-12 text-muted" for="payment-filter-to">To</label><input type="date" name="to" id="payment-filter-to" class="form-control btn-touch" value="<?= e((string) $f['to']) ?>"></div>
         <div class="col-12 col-md-2 d-grid"><button type="submit" class="btn btn-primary btn-touch" id="payment-filter-btn">Filter</button></div>

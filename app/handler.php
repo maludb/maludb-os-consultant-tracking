@@ -208,6 +208,23 @@ function members_for_pick(PDO $pdo): array
     return $pdo->query("SELECT m.id AS member_id, m.display_name, m.member_kind FROM members m WHERE m.status = 'active' AND m.capability IS NOT NULL ORDER BY m.member_kind, m.display_name")->fetchAll();
 }
 
+/** One page of members_for_pick() for the record picker, searched by name; $humansOnly drops the agents: [rows, total]. */
+function members_page(PDO $pdo, string $q, bool $humansOnly, int $limit, int $offset): array
+{
+    $where = "m.status = 'active' AND m.capability IS NOT NULL" . ($humansOnly ? " AND m.member_kind = 'human'" : '');
+    $args = [];
+    if ($q !== '') {
+        $where .= ' AND m.display_name ILIKE :q';
+        $args['q'] = '%' . str_replace(['%', '_'], ['\\%', '\\_'], $q) . '%';
+    }
+    $st = $pdo->prepare('SELECT count(*) FROM members m WHERE ' . $where);
+    $st->execute($args);
+    $total = (int) $st->fetchColumn();
+    $st = $pdo->prepare('SELECT m.id AS member_id, m.display_name, m.member_kind, m.job_title FROM members m WHERE ' . $where . ' ORDER BY m.member_kind, m.display_name, m.id LIMIT ' . $limit . ' OFFSET ' . $offset);
+    $st->execute($args);
+    return ['rows' => $st->fetchAll(), 'total' => $total];
+}
+
 /** The live departments of the mirror. [{department_id, name}] */
 function find_live_departments(PDO $pdo): array
 {

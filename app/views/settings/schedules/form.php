@@ -6,8 +6,8 @@ $id = $cur['schedule_id'] ?? null; $screen = $cur === null ? 'schedule-add' : 's
     <form method="post" action="/settings/schedules/save.php" hx-post="/settings/schedules/save.php" hx-target="#flash" id="schedule-form">
         <?= csrf_field() ?><?php if ($id !== null): ?><input type="hidden" name="schedule" value="<?= (int) $id ?>"><?php endif; ?>
         <div class="card mb-3"><div class="card-body">
-            <label class="form-label fs-12 text-muted" for="schedule-form-field-engagement">Engagement</label>
-            <select name="engagement" id="schedule-form-field-engagement" class="form-select btn-touch mb-3" required><?php if ($engagements === []): ?><option value="">None</option><?php endif; ?><?php foreach ($engagements as $g): ?><option value="<?= (int) $g['engagement_id'] ?>" <?= $selected === (int) $g['engagement_id'] ? 'selected' : '' ?>><?= e($g['number'] . ' · ' . $g['name'] . ' (' . $g['currency'] . ')') ?></option><?php endforeach; ?></select>
+            <label class="form-label fs-12 text-muted" id="schedule-form-field-engagement-label" for="schedule-form-field-engagement-open">Engagement</label>
+            <?= picker_field(['id' => 'schedule-form-field-engagement', 'labelledby' => 'schedule-form-field-engagement-label', 'name' => 'engagement', 'source' => 'engagement_managed', 'value' => $selected, 'required' => true]) ?>
             <label class="form-label fs-12 text-muted" for="schedule-form-field-description">What it is</label>
             <input type="text" name="description" id="schedule-form-field-description" class="form-control btn-touch mb-3" maxlength="500" required placeholder="Acme VM, monthly" value="<?= e($cur['description'] ?? '') ?>">
             <div class="row g-2 mb-3"><div class="col-6"><label class="form-label fs-12 text-muted" for="schedule-form-field-kind">Kind</label><select name="kind" id="schedule-form-field-kind" class="form-select btn-touch"><?php foreach (USAGE_KINDS as $k => $l): ?><option value="<?= e($k) ?>" <?= ($cur['kind'] ?? 'hosting') === $k ? 'selected' : '' ?>><?= e($l) ?></option><?php endforeach; ?></select></div>

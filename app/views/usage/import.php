@@ -12,8 +12,8 @@ $stepClass = static fn (int $n, int $cur): string => $n === $cur ? 'bg-primary' 
         <div class="card mb-3"><div class="card-body">
             <label class="form-label fs-12 text-muted" for="import-field-provider">Provider (its saved mapping is offered)</label>
             <select name="provider" id="import-field-provider" class="form-select btn-touch mb-3" required><option value="">Choose…</option><?php foreach ($providers as $p): ?><option value="<?= (int) $p['provider_id'] ?>" <?= $provId === $p['provider_id'] ? 'selected' : '' ?>><?= e($p['name']) ?><?= $p['csv_mapping'] !== null ? ' — mapping saved' : '' ?></option><?php endforeach; ?></select>
-            <label class="form-label fs-12 text-muted" for="import-field-engagement">Engagement the charges go on</label>
-            <select name="engagement" id="import-field-engagement" class="form-select btn-touch mb-3" required><option value="">Choose…</option><?php foreach ($engagements as $g): ?><option value="<?= (int) $g['engagement_id'] ?>" <?= (int) $engagement === (int) $g['engagement_id'] ? 'selected' : '' ?>><?= e($g['number'] . ' · ' . $g['name'] . ' (' . $g['currency'] . ')') ?></option><?php endforeach; ?></select>
+            <label class="form-label fs-12 text-muted" id="import-field-engagement-label" for="import-field-engagement-open">Engagement the charges go on</label>
+            <?= picker_field(['id' => 'import-field-engagement', 'labelledby' => 'import-field-engagement-label', 'name' => 'engagement', 'source' => 'engagement_managed', 'value' => (int) $engagement, 'required' => true]) ?>
             <label class="form-label fs-12 text-muted" for="import-field-file"><?= $token !== '' ? 'The file: ' . e($fileName) . ' (kept for this step; choose another to replace it)' : 'The provider\'s usage export (CSV)' ?></label>
             <input type="file" name="file" id="import-field-file" class="form-control btn-touch" accept=".csv,text/csv,text/plain" <?= $token === '' ? 'required' : '' ?>>
         </div></div>

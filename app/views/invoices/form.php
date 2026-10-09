@@ -3,9 +3,8 @@
 <div class="main-content" id="invoice-form-content">
     <form method="post" action="/invoices/save.php" hx-post="/invoices/save.php" hx-target="#flash" class="card" id="invoice-form"><div class="card-body"><div class="row g-3">
         <?= csrf_field() ?>
-        <div class="col-12"><label class="form-label" for="invoice-form-field-engagement">Engagement</label>
-            <select name="engagement" id="invoice-form-field-engagement" class="form-select btn-touch" required><option value="">Choose the engagement</option>
-            <?php foreach ($engagements as $e): ?><option value="<?= (int) $e['engagement_id'] ?>" <?= $prefill === (int) $e['engagement_id'] ? 'selected' : '' ?>><?= e($e['number'] . ' · ' . $e['name'] . ' (' . $e['client_name'] . ', ' . $e['currency'] . ')') ?></option><?php endforeach; ?></select>
+        <div class="col-12"><label class="form-label" for="invoice-form-field-engagement-open">Engagement</label>
+            <?= picker_field(['id' => 'invoice-form-field-engagement', 'name' => 'engagement', 'source' => 'engagement_draftable', 'value' => $prefill, 'required' => true, 'placeholder' => 'Choose the engagement', 'labelledby' => 'invoice-form-field-engagement-label', 'label' => $selected === null ? null : $selected['number'] . ' · ' . $selected['name']]) ?>
             <div class="form-text">One engagement an invoice. The client and the currency are the engagement's; the PO is its PO unless you type one.</div></div>
         <div class="col-6 col-md-3"><label class="form-label" for="invoice-form-field-period-start">Period from</label><input type="date" name="period_start" id="invoice-form-field-period-start" class="form-control btn-touch" value="<?= e((string) $from) ?>"></div>
         <div class="col-6 col-md-3"><label class="form-label" for="invoice-form-field-period-end">Period to</label><input type="date" name="period_end" id="invoice-form-field-period-end" class="form-control btn-touch" value="<?= e((string) $to) ?>"></div>

@@ -61,8 +61,14 @@ AI usage and hosting pass-through, invoices) and **is not the books**: the accou
   pinned in `config/.env` before the installer's `apply` (8185 / 8831 / 8832 — design §13.15). **Never put a `config/.env`
   here before `apply`** except that three-line port pin (`deploy/ROOT_STEPS.sh` step 0); proofs read `$CT_DEV_ENV`.
 - Phone first: a consultant logs time and snaps receipts at 375 px; the week grid is a day list on a phone; `capture="environment"`
-  on the expense form; no modals; full-page create/edit; cards for named things, tables for timesheets, lines and ledgers;
+  on the expense form; no modals — except the record picker (below), a chooser that shows no record and submits no form; full-page create/edit; cards for named things, tables for timesheets, lines and ledgers;
   every name a link, every page a way back.
+- **A form that chooses a record uses the record picker** (2026-10-09; `docs/build-specs/record-picker.md`; the design-system reference
+  `record-picker.md`): clients, engagements and people are never a `<select>` of every row. `picker_field()` (inside the hand-written label
+  markup; the label's `for` is `{id}-open`) keeps the select's `name` and `id` on a hidden input, so no handler, `hx-include` or action row
+  changes; `app/pickers.php` is the registry — a source per record kind AND per scope, its `roles` the rights of the screens that use it, its
+  `search` reading the views those screens read; `GET /pick/` (`html/pick/index.php`) answers the rows as a fragment. Vocabulary lists
+  (roles, categories, activity types, rate cards, tax rates, providers, practices, units, kinds, statuses) stay selects. Proof: `tests/picker/run.sh`.
 - Commit after every finished step on `main`, in the sibling repos' message style (`Consultant Tracking: …`); never push
   unless the owner asks. Smokes and fixtures are named `SMOKE <run>`; proofs run on a scratch database and never touch the
   installed application; the installer's `plan` (`php /var/www/bin/app_install.php plan /srv/apps/consultant_tracking`) runs

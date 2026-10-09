@@ -22,8 +22,8 @@ $pick = static function (string $kind, ?int $value, string $field, array $names,
             <?= $pick('agent', $cur['kernel_agent_id'] ?? null, 'agent', $names, 'Agent') ?>
             <?= $pick('department', $cur['kernel_department_id'] ?? null, 'department', $names, 'Department') ?>
             <?= $pick('application', $cur['kernel_application_id'] ?? null, 'application', $names, 'Application') ?>
-            <label class="form-label fs-12 text-muted" for="rule-form-field-engagement">Engagement that gets the share</label>
-            <select name="engagement" id="rule-form-field-engagement" class="form-select btn-touch mb-3" required><?php if ($engagements === []): ?><option value="">None</option><?php endif; ?><?php foreach ($engagements as $g): ?><option value="<?= (int) $g['engagement_id'] ?>" <?= $selected === (int) $g['engagement_id'] ? 'selected' : '' ?>><?= e($g['number'] . ' · ' . $g['name']) ?></option><?php endforeach; ?></select>
+            <label class="form-label fs-12 text-muted" id="rule-form-field-engagement-label" for="rule-form-field-engagement-open">Engagement that gets the share</label>
+            <?= picker_field(['id' => 'rule-form-field-engagement', 'labelledby' => 'rule-form-field-engagement-label', 'name' => 'engagement', 'source' => 'engagement_managed', 'value' => $selected, 'required' => true]) ?>
             <label class="form-label fs-12 text-muted" for="rule-form-field-share">Share of each matching line, %</label>
             <input type="text" name="share_pct" id="rule-form-field-share" class="form-control btn-touch mb-3" inputmode="decimal" required value="<?= e($cur['share_pct'] ?? '100') ?>">
             <?= view('usage/partials/pricing.php', ['cur' => $cur, 'prefix' => 'rule-form']) ?>

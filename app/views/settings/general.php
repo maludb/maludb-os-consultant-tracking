@@ -51,8 +51,8 @@
             <input type="text" name="reminder_days" id="settings-form-field-reminders" class="form-control btn-touch mb-3" value="<?= e(implode(', ', $s['reminder_days'])) ?>" placeholder="7, 21, 45">
             <input type="hidden" name="share_receipts_default" value="no">
             <label class="d-flex align-items-center gap-2 border rounded px-3 btn-touch mb-3" for="settings-form-field-share"><input type="checkbox" class="form-check-input mt-0" name="share_receipts_default" value="yes" id="settings-form-field-share" <?= $s['share_receipts_default'] ? 'checked' : '' ?>>Share receipts with the client on the secure link (a new engagement's default)</label>
-            <label class="form-label fs-12 text-muted" for="settings-form-field-note">Who receives the Billing Clerk's morning note</label>
-            <select name="morning_note_member" id="settings-form-field-note" class="form-select btn-touch"><option value="">Nobody</option><?php foreach ($members as $m): ?><option value="<?= (int) $m['member_id'] ?>" <?= $s['morning_note_member_id'] === (int) $m['member_id'] ? 'selected' : '' ?>><?= e($m['display_name']) ?> (<?= $m['member_kind'] === 'agent' ? 'agent' : 'person' ?>)</option><?php endforeach; ?></select>
+            <label class="form-label fs-12 text-muted" id="settings-form-field-note-label" for="settings-form-field-note-open">Who receives the Billing Clerk's morning note</label>
+            <?= picker_field(['id' => 'settings-form-field-note', 'labelledby' => 'settings-form-field-note-label', 'name' => 'morning_note_member', 'source' => 'member', 'value' => $s['morning_note_member_id'], 'placeholder' => 'Nobody']) ?>
         </div></div>
         <button type="submit" class="btn btn-primary btn-touch w-100" id="settings-form-save-btn">Save</button>
     </form>

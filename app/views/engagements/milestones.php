@@ -34,8 +34,8 @@ $tone = ['planned' => 'secondary', 'delivered' => 'info', 'accepted' => 'success
                 <?= csrf_field() ?><input type="hidden" name="milestone" value="<?= (int) $acc['milestone_id'] ?>">
                 <label class="form-label fs-12 text-muted" for="milestone-accept-field-note">Who at the client accepted it, and how</label>
                 <textarea name="acceptance_note" id="milestone-accept-field-note" class="form-control mb-3" rows="3" maxlength="2000" required placeholder="Jo (AP) by email on Mar 3"></textarea>
-                <label class="form-label fs-12 text-muted" for="milestone-accept-field-by">Recorded by</label>
-                <select name="accepted_by" id="milestone-accept-field-by" class="form-select btn-touch mb-3"><?php foreach (members_for_pick(db()) as $m): if ($m['member_kind'] !== 'human') { continue; } ?><option value="<?= (int) $m['member_id'] ?>" <?= (int) $m['member_id'] === (int) current_member_id() ? 'selected' : '' ?>><?= e($m['display_name']) ?></option><?php endforeach; ?></select>
+                <label class="form-label fs-12 text-muted" id="milestone-accept-field-by-label" for="milestone-accept-field-by-open">Recorded by</label>
+                <?= picker_field(['id' => 'milestone-accept-field-by', 'labelledby' => 'milestone-accept-field-by-label', 'name' => 'accepted_by', 'source' => 'member', 'value' => current_member_id(), 'required' => true, 'params' => ['human' => 1]]) ?>
                 <label class="form-label fs-12 text-muted" for="milestone-accept-field-file">Evidence (the client's email, the signed sheet) — optional</label>
                 <input type="file" name="file" id="milestone-accept-field-file" class="form-control btn-touch mb-3">
                 <?php if ((float) $acc['amount'] > 0): ?><div class="fs-12 text-muted mb-3">Accepting fixes the amount (<?= e(fmt_money($acc['amount'], $e['currency'])) ?>) and makes it billable.</div><?php endif; ?>

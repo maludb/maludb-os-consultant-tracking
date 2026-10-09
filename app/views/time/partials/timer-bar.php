@@ -10,7 +10,7 @@
     <?php elseif ($loggable !== []): ?>
     <form method="post" action="/time/timer/start.php" hx-post="/time/timer/start.php" hx-target="#flash" class="row g-2 align-items-center" id="timer-bar-form">
         <?= csrf_field() ?><input type="hidden" name="return_to" value="<?= e($returnTo) ?>">
-        <div class="col-7 col-md-5"><select name="engagement" class="form-select btn-touch" id="timer-bar-field-engagement" aria-label="Engagement"><?php foreach ($loggable as $g): ?><option value="<?= (int) $g['engagement_id'] ?>"><?= e($g['number'] . ' · ' . $g['name']) ?></option><?php endforeach; ?></select></div>
+        <div class="col-7 col-md-5"><?= picker_field(['id' => 'timer-bar-field-engagement', 'name' => 'engagement', 'source' => 'engagement_loggable', 'value' => $loggable[0]['engagement_id'], 'label' => $loggable[0]['number'] . ' · ' . $loggable[0]['name'], 'required' => true, 'params' => ['member_id' => (int) current_member_id(), 'on' => (int) date('Ymd')]]) ?></div>
         <div class="col-5 col-md-3 d-none d-md-block"><select name="activity" class="form-select btn-touch" id="timer-bar-field-activity" aria-label="Activity"><option value="">Activity</option><?php foreach ($activities as $a): ?><option value="<?= (int) $a['id'] ?>"><?= e($a['label']) ?></option><?php endforeach; ?></select></div>
         <div class="col-5 col-md-4"><button type="submit" class="btn btn-primary btn-touch w-100" id="timer-bar-start-btn"><i class="feather-play me-1"></i>Start timer</button></div>
     </form>

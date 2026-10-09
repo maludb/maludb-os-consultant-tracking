@@ -82,6 +82,7 @@ require_once __DIR__ . '/activity.php';
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/directory.php';
 require_once __DIR__ . '/mail.php';
+require_once __DIR__ . '/picker.php';
 require_once __DIR__ . '/features/shell/nav.php';
 require_once __DIR__ . '/views/shared/money.php';
 

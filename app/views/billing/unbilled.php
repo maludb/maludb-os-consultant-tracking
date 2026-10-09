@@ -3,7 +3,7 @@
 <div class="main-content" id="unbilled-content">
     <form method="get" action="/billing/unbilled" class="card mb-3" id="unbilled-filter-form"><div class="card-body"><div class="row g-2 align-items-end">
         <div class="col-6 col-md-3"><label class="form-label fs-12 text-muted" for="unbilled-filter-as-of">As of</label><input type="date" name="as_of" id="unbilled-filter-as-of" class="form-control btn-touch" value="<?= e((string) $asOf) ?>"></div>
-        <div class="col-6 col-md-4"><label class="form-label fs-12 text-muted" for="unbilled-filter-client">Client</label><select name="client" id="unbilled-filter-client" class="form-select btn-touch"><option value="">All</option><?php foreach ($clients as $c): ?><option value="<?= (int) $c['client_id'] ?>" <?= $client === (int) $c['client_id'] ? 'selected' : '' ?>><?= e($c['name']) ?></option><?php endforeach; ?></select></div>
+        <div class="col-6 col-md-4"><label class="form-label fs-12 text-muted" id="unbilled-filter-client-label" for="unbilled-filter-client-open">Client</label><?= picker_field(['id' => 'unbilled-filter-client', 'labelledby' => 'unbilled-filter-client-label', 'name' => 'client', 'source' => 'client', 'value' => $client, 'placeholder' => 'All']) ?></div>
         <div class="col-12 col-md-2 d-grid"><button type="submit" class="btn btn-primary btn-touch" id="unbilled-filter-btn">Show</button></div>
     </div></div></form>
     <?php if ($totals !== []): ?><div class="alert alert-info fs-12" id="unbilled-totals">Approved and not yet billed: <?php foreach ($totals as $cur => $t): ?><strong id="unbilled-total-<?= e($cur) ?>"><?= e(fmt_money($t, $cur)) ?></strong> <?php endforeach; ?></div><?php endif; ?>

@@ -9,8 +9,8 @@ $ps = $cur['period_start'] ?? date('Y-m-01'); $pe = $cur['period_end'] ?? date('
     <form method="post" action="/usage/save.php" hx-post="/usage/save.php" hx-target="#flash" hx-encoding="multipart/form-data" enctype="multipart/form-data" id="usage-form">
         <?= csrf_field() ?><?php if ($id !== null): ?><input type="hidden" name="charge" value="<?= (int) $id ?>"><?php endif; ?>
         <div class="card mb-3"><div class="card-body">
-            <label class="form-label fs-12 text-muted" for="usage-form-field-engagement">Engagement</label>
-            <select name="engagement" id="usage-form-field-engagement" class="form-select btn-touch mb-3" required><?php if ($engagements === []): ?><option value="">None</option><?php endif; ?><?php foreach ($engagements as $g): ?><option value="<?= (int) $g['engagement_id'] ?>" <?= $selected === (int) $g['engagement_id'] ? 'selected' : '' ?>><?= e($g['number'] . ' · ' . $g['name'] . ' (' . $g['client_name'] . ', ' . $g['currency'] . ')') ?></option><?php endforeach; ?></select>
+            <label class="form-label fs-12 text-muted" id="usage-form-field-engagement-label" for="usage-form-field-engagement-open">Engagement</label>
+            <?= picker_field(['id' => 'usage-form-field-engagement', 'labelledby' => 'usage-form-field-engagement-label', 'name' => 'engagement', 'source' => 'engagement_managed', 'value' => $selected, 'required' => true]) ?>
             <label class="form-label fs-12 text-muted" for="usage-form-field-kind">Kind</label>
             <select name="kind" id="usage-form-field-kind" class="form-select btn-touch mb-3" <?= $dis ?>><?php foreach (USAGE_KINDS as $k => $l): ?><option value="<?= e($k) ?>" <?= ($cur['kind'] ?? 'hosting') === $k ? 'selected' : '' ?>><?= e($l) ?></option><?php endforeach; ?></select>
             <label class="form-label fs-12 text-muted" for="usage-form-field-provider">Provider</label>

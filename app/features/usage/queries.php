@@ -146,6 +146,23 @@ function usage_engagements(PDO $pdo): array
     }, $pdo->query("SELECT e.engagement_id, e.number, e.name, e.client_name, e.currency FROM mcp_engagements e WHERE e.i_manage AND e.status IN ('active', 'on_hold') ORDER BY e.number")->fetchAll());
 }
 
+/** One page of usage_engagements() for the record picker, searched by number, name or client: [rows, total]. */
+function usage_engagements_page(PDO $pdo, string $q, int $limit, int $offset): array
+{
+    $where = "e.i_manage AND e.status IN ('active', 'on_hold')";
+    $args = [];
+    if ($q !== '') {
+        $where .= ' AND (e.number ILIKE :q OR e.name ILIKE :q OR e.client_name ILIKE :q)';
+        $args['q'] = '%' . str_replace(['%', '_'], ['\\%', '\\_'], $q) . '%';
+    }
+    $st = $pdo->prepare('SELECT count(*) FROM mcp_engagements e WHERE ' . $where);
+    $st->execute($args);
+    $total = (int) $st->fetchColumn();
+    $st = $pdo->prepare('SELECT e.engagement_id, e.number, e.name, e.client_name, e.currency FROM mcp_engagements e WHERE ' . $where . ' ORDER BY e.number LIMIT ' . $limit . ' OFFSET ' . $offset);
+    $st->execute($args);
+    return ['rows' => $st->fetchAll(), 'total' => $total];
+}
+
 /** The live providers for the pick: [{provider_id, provider_key, name, csv_mapping}]. */
 function usage_providers_for_pick(PDO $pdo): array
 {

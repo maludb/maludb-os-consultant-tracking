@@ -14,7 +14,13 @@
 - **Ids** are kebab-case `{entity}-list`, `{entity}-add`, `{entity}-view`, `{entity}-edit`, plus named screens.
 - **Canonical URLs** need the rewrites in `deploy/apache-consultant_tracking.conf`: `/{x}/new` → `form.php`, `/{x}/{id}/edit` →
   `form.php?id=`, `/{x}/{id}` → `view.php?id=`, `/{x}/{id}/{page}` → `{page}.php?id=`, `/reports/{report}` → `report.php?report=`.
-  Every consultant screen is designed at 375 px first; every screen is a page, never a modal.
+  Every consultant screen is designed at 375 px first; every screen is a page, never a modal — the one exception is the record picker
+  (below), a chooser that shows no record and submits no form.
+- **The record picker** (2026-10-09, `docs/build-specs/record-picker.md`): `GET /pick/?source=&q=&page=&<declared params>` → `html/pick/index.php`,
+  a fragment (the picker's rows), not a screen and not an action: nothing is logged and no tool is generated for it. `app/pickers.php`
+  names the sources (`client`, `client_live`, `engagement`, `engagement_draftable`, `engagement_loggable`, `engagement_managed`,
+  `member`), the rights that admit a caller and their filter params. A picker field keeps the select's `name` and `id` on a hidden input,
+  so every action row below is unchanged.
 - **Prefill params** become query-string values the GET controller reads.
 - **Every screen partial stamps** `data-screen`, `data-entity`, `data-record-id` on `#page-content`, so "that", "this engagement"
   and "approve it" resolve against the page the user is on.

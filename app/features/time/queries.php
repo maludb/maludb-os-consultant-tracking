@@ -113,6 +113,23 @@ function loggable_engagements(PDO $pdo, int $memberId, string $date): array
     }, $st->fetchAll());
 }
 
+/** One page of loggable_engagements() for the record picker, searched by number, name or client: [rows, total]. */
+function loggable_engagements_page(PDO $pdo, int $memberId, string $date, string $q, int $limit, int $offset): array
+{
+    $where = 'ct_can_log_on(e.engagement_id, :m, :d)';
+    $args = ['m' => $memberId, 'd' => $date];
+    if ($q !== '') {
+        $where .= ' AND (e.number ILIKE :q OR e.name ILIKE :q OR e.client_name ILIKE :q)';
+        $args['q'] = '%' . str_replace(['%', '_'], ['\\%', '\\_'], $q) . '%';
+    }
+    $st = $pdo->prepare('SELECT count(*) FROM mcp_engagements e WHERE ' . $where);
+    $st->execute($args);
+    $total = (int) $st->fetchColumn();
+    $st = $pdo->prepare('SELECT engagement_id, number, name, client_name, currency FROM mcp_engagements e WHERE ' . $where . ' ORDER BY number LIMIT ' . $limit . ' OFFSET ' . $offset);
+    $st->execute($args);
+    return ['rows' => $st->fetchAll(), 'total' => $total];
+}
+
 /** The caller's running timer, or null. */
 function my_timer(PDO $pdo, int $memberId): ?array
 {

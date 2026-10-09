@@ -8,7 +8,9 @@ $sel = static function (string $name, string $label, array $opts, string $valueK
     }
     return $h . '</select></div>';
 };
-$engs = array_map(static fn (array $e): array => ['engagement_id' => $e['engagement_id'], 'label' => $e['number'] . ' ' . $e['name']], $pick['engagements']);
+// A record filter (engagement, client, person) is the record picker; the hidden input keeps the select's name and id.
+$pk = static fn (string $name, string $label, string $source, $current, array $params = []): string => '<div class="col-6 col-md-3"><label class="form-label fs-12 text-muted" id="report-f-' . $name . '-label" for="report-f-' . $name . '-open">' . e($label) . '</label>'
+    . picker_field(['id' => 'report-f-' . $name, 'name' => $name, 'source' => $source, 'value' => $current === '' ? null : $current, 'placeholder' => 'Any', 'params' => $params, 'labelledby' => 'report-f-' . $name . '-label']) . '</div>';
 ?>
 <form method="get" action="/reports/<?= e($key) ?>" class="card mb-3" id="report-filters"><div class="card-body p-3">
     <?php if ($def['period']): ?>
@@ -31,10 +33,10 @@ $engs = array_map(static fn (array $e): array => ['engagement_id' => $e['engagem
         <?php if ($has('status')): $opts = $key === 'expenses' ? EXPENSE_REPORT_STATUSES : BUDGET_STATUSES; ?>
             <div class="col-6 col-md-2"><label class="form-label fs-12 text-muted" for="report-f-status">Status</label><select name="status" id="report-f-status" class="form-select btn-touch"><?php foreach ($opts as $v => $l): ?><option value="<?= e($v) ?>" <?= ($f['status'] ?? '') === $v ? 'selected' : '' ?>><?= e($l) ?></option><?php endforeach; ?></select></div>
         <?php endif; ?>
-        <?= $has('engagement') ? $sel('engagement', 'Engagement', $engs, 'engagement_id', 'label', $f['engagement'] ?? '') : '' ?>
-        <?= $has('client') ? $sel('client', 'Client', $pick['clients'], 'client_id', 'name', $f['client'] ?? '') : '' ?>
-        <?= $has('member') ? $sel('member', 'Person', $pick['members'], 'member_id', 'display_name', $f['member'] ?? '') : '' ?>
-        <?= $has('manager') ? $sel('manager', 'Manager', $pick['members'], 'member_id', 'display_name', $f['manager'] ?? '') : '' ?>
+        <?= $has('engagement') ? $pk('engagement', 'Engagement', 'engagement', $f['engagement'] ?? '') : '' ?>
+        <?= $has('client') ? $pk('client', 'Client', 'client', $f['client'] ?? '') : '' ?>
+        <?= $has('member') ? $pk('member', 'Person', 'member', $f['member'] ?? '', ['human' => 1]) : '' ?>
+        <?= $has('manager') ? $pk('manager', 'Manager', 'member', $f['manager'] ?? '', ['human' => 1]) : '' ?>
         <?= $has('department') ? $sel('department', 'Practice', $pick['departments'], 'department_id', 'name', $f['department'] ?? '') : '' ?>
         <?= $has('category') ? $sel('category', 'Category', $pick['categories'], 'category_id', 'label', $f['category'] ?? '') : '' ?>
         <div class="col-12 col-md-2 d-grid"><button type="submit" class="btn btn-primary btn-touch" id="report-show-btn">Show</button></div>

@@ -27,8 +27,8 @@
             <div class="card" id="cost-rate-form-card"><div class="card-header"><h5 class="card-title mb-0"><?= $editing === null ? 'Add a range' : 'Change a range' ?></h5></div><div class="card-body">
                 <form method="post" action="/settings/cost-rates/save.php" hx-post="/settings/cost-rates/save.php" hx-target="#flash" id="cost-rate-form">
                     <?= csrf_field() ?><?php if ($editing !== null): ?><input type="hidden" name="cost_rate" value="<?= (int) $editing['id'] ?>"><?php endif; ?>
-                    <label class="form-label fs-12 text-muted" for="cost-rate-form-field-member">Person</label>
-                    <select name="member" id="cost-rate-form-field-member" class="form-select btn-touch mb-3" required <?= $editing !== null ? 'disabled' : '' ?>><option value="">Choose</option><?php foreach ($members as $m): if ($m['member_kind'] !== 'human') { continue; } ?><option value="<?= (int) $m['member_id'] ?>" <?= ($editing['member_id'] ?? null) === (int) $m['member_id'] ? 'selected' : '' ?>><?= e($m['display_name']) ?></option><?php endforeach; ?></select>
+                    <label class="form-label fs-12 text-muted" id="cost-rate-form-field-member-label" for="cost-rate-form-field-member-open">Person</label>
+                    <?= picker_field(['id' => 'cost-rate-form-field-member', 'labelledby' => 'cost-rate-form-field-member-label', 'name' => 'member', 'source' => 'member', 'value' => $editing['member_id'] ?? null, 'required' => true, 'placeholder' => 'Choose', 'params' => ['human' => 1], 'disabled' => $editing !== null, 'extra' => $editing !== null ? ' disabled' : '']) ?>
                     <label class="form-label fs-12 text-muted" for="cost-rate-form-field-cost">Hourly cost (<?= e($currency) ?>)</label>
                     <input type="text" name="hourly_cost" id="cost-rate-form-field-cost" class="form-control btn-touch mb-3" inputmode="decimal" required value="<?= e($editing === null ? '' : number_format((float) $editing['hourly_cost'], 2, '.', '')) ?>">
                     <div class="row g-2 mb-3">

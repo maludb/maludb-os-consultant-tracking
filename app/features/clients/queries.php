@@ -23,8 +23,25 @@ function client_cast(array $c): array
     return $c;
 }
 
-/** The clients the caller may see. $filters: q (name, code or legal name), archived (true lists the archived ones instead). */
-function find_clients(PDO $pdo, array $filters = [], int $limit = 100): array
+/** The clients the caller may see. $filters: q (name, code or legal name), archived (true lists the archived ones instead). $offset pages the list (the record picker). */
+function find_clients(PDO $pdo, array $filters = [], int $limit = 100, int $offset = 0): array
+{
+    [$where, $args] = client_where($filters);
+    $st = $pdo->prepare(CLIENT_SELECT . ' WHERE ' . $where . ' ORDER BY lower(c.name), c.client_id LIMIT ' . max(1, min(500, $limit)) . ' OFFSET ' . max(0, $offset));
+    $st->execute($args);
+    return array_map('client_cast', $st->fetchAll());
+}
+
+/** How many clients find_clients() would list for the filters (the record picker's "of N"). */
+function count_clients(PDO $pdo, array $filters = []): int
+{
+    [$where, $args] = client_where($filters);
+    $st = $pdo->prepare('SELECT count(*) FROM mcp_clients c WHERE ' . $where);
+    $st->execute($args);
+    return (int) $st->fetchColumn();
+}
+
+function client_where(array $filters): array
 {
     $where = [!empty($filters['archived']) ? 'c.archived_at IS NOT NULL' : 'c.archived_at IS NULL'];
     $args = [];
@@ -32,9 +49,27 @@ function find_clients(PDO $pdo, array $filters = [], int $limit = 100): array
         $where[] = '(c.name ILIKE :q OR c.legal_name ILIKE :q OR c.code ILIKE :q)';
         $args['q'] = '%' . str_replace(['%', '_'], ['\\%', '\\_'], (string) $filters['q']) . '%';
     }
-    $st = $pdo->prepare(CLIENT_SELECT . ' WHERE ' . implode(' AND ', $where) . ' ORDER BY lower(c.name), c.client_id LIMIT ' . max(1, min(500, $limit)));
+    return [implode(' AND ', $where), $args];
+}
+
+/**
+ * Every live client by name, one page — the engagement form's client field (the view guards a client's details, not its name,
+ * so a manager can open an engagement for a client none of whose engagements they see yet). [rows [client_id, name, code], total]
+ */
+function find_live_clients_page(PDO $pdo, string $q, int $limit, int $offset): array
+{
+    $where = 'archived_at IS NULL';
+    $args = [];
+    if ($q !== '') {
+        $where .= ' AND (name ILIKE :q OR legal_name ILIKE :q OR code ILIKE :q)';
+        $args['q'] = '%' . str_replace(['%', '_'], ['\\%', '\\_'], $q) . '%';
+    }
+    $st = $pdo->prepare('SELECT count(*) FROM clients WHERE ' . $where);
     $st->execute($args);
-    return array_map('client_cast', $st->fetchAll());
+    $total = (int) $st->fetchColumn();
+    $st = $pdo->prepare('SELECT id AS client_id, name, code FROM clients WHERE ' . $where . ' ORDER BY lower(name), id LIMIT ' . $limit . ' OFFSET ' . $offset);
+    $st->execute($args);
+    return ['rows' => $st->fetchAll(), 'total' => $total];
 }
 
 /** One client the caller may see, archived or not, with its live contacts. */

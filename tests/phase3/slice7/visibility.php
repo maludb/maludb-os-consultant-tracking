@@ -56,7 +56,8 @@ ok(!str_contains($r['body'], 'name="member"') && !str_contains($r['body'], 'name
 
 echo "5. A Manager's pickers and figures hold his engagements only\n";
 $b = page($marco, '/reports/realization?' . http_build_query(whole()))['body'];
-ok(str_contains($b, 'ENG-0001 SMOKE Time Acme') && str_contains($b, 'ENG-0002 SMOKE Time Beta') && !str_contains($b, 'ENG-0003'), 'the engagement picker: Acme and Beta, not Bea\'s ENG-0003');
+$pk = page($marco, '/pick/?source=engagement')['body'];   // the engagement filter is the record picker now: its rows come from the endpoint, scoped by the same view
+ok(str_contains($b, 'data-picker-source="engagement"') && str_contains($pk, 'ENG-0001 · SMOKE Time Acme') && str_contains($pk, 'ENG-0002 · SMOKE Time Beta') && !str_contains($pk, 'ENG-0003'), 'the engagement picker: Acme and Beta, not Bea\'s ENG-0003');
 [$c, $d] = report_json($marco, 'budget-burn');
 ok(array_column($d['rows'], 'engagement_number') === ['ENG-0001', 'ENG-0002'], 'budget burn: his two');
 [$c, $d] = report_json($marco, 'realization', whole());
